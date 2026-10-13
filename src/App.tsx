@@ -58,8 +58,8 @@ export default function App() {
             <div className="hero__copy">
               <span className="tag"><i /> Nuevo · Para autónomos</span>
               <h1>
-                <Words text="La regularización" /><br />
-                <span className="hl"><Words text="ya no te pilla." base={0.35} /><svg viewBox="0 0 400 24" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M4 16 C 60 2, 110 24, 170 10 S 300 2, 396 14" /></svg></span>
+                <Words text="Elige tu tramo" /><br />
+                <span className="hl"><Words text="a tiempo." base={0.35} /></span>
               </h1>
               <p className="hero__lead">Tramix sigue tus ingresos, proyecta cómo cierras el año y te avisa <b>antes</b> de cada plazo para cambiar de tramo.</p>
               <Waitlist id="wl-hero" />

@@ -4,7 +4,7 @@
 html { scroll-behavior: smooth; }
 body { margin: 0; font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.55; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 h1, h2, h3 { font-family: var(--font-display); margin: 0; line-height: 1.02; letter-spacing: -0.04em; text-wrap: balance; }
-h1 { font-size: clamp(2.7rem, 7.2vw, 6.4rem); font-weight: 800; }
+h1 { font-size: clamp(2.6rem, 6.6vw, 5.8rem); font-weight: 800; }
 h2 { font-size: clamp(2.2rem, 6.4vw, 5rem); font-weight: 800; }
 h3 { font-size: 1.35rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; }
 p { margin: 0; }
