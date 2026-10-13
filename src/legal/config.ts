@@ -3,10 +3,10 @@
  * Fill these in BEFORE going public. Empty values render as a visible "pendiente" marker.
  */
 export const TITULAR = {
-  nombre: "",        // Nombre y apellidos o razón social
-  nif: "",           // NIF
+  nombre: "Paola Gregorio Vélez de Mendizabal",        // Nombre y apellidos o razón social
+  nif: "72852409R",           // NIF
   domicilio: "",     // Domicilio
-  email: "",         // Email de contacto
+  email: "paolagregoriio@gmail.com",         // Email de contacto
   dominio: "",       // p. ej. tramix.app
 };
 export const pend = (v: string) => v || "[pendiente de completar]";
