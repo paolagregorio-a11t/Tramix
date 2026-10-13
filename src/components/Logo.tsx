@@ -10,7 +10,7 @@ export function Logo({ size = 34, withWordmark = true }: Props) {
         <rect x="44" y="8" width="14" height="48" rx="4" fill="var(--accent)" />
       </svg>
       {withWordmark && (
-        <span style={{ fontWeight: 700, fontSize: size * 0.9, letterSpacing: "-0.04em" }}>tramix</span>
+        <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: size * 0.85, letterSpacing: "-0.04em" }}>tramix</span>
       )}
     </span>
   );
