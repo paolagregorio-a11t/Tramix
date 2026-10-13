@@ -28,11 +28,18 @@ Compra el dominio elegido (por ejemplo `tramix.app`) **después** de comprobarlo
 
 Si algo falla, **Vercel → Logs** muestra qué variable falta (`waitlist: missing environment variables: …`).
 
-## 5. Antes de hacerlo público
+## 5. Asistente de IA gratuito (opcional)
+El asistente responde sin IA a las cuatro preguntas sugeridas. Para que también conteste preguntas libres:
+1. Crea una clave gratuita en [Groq](https://console.groq.com/keys) (modelos Llama) o en [Google AI Studio](https://aistudio.google.com/apikey) (Gemini).
+2. Añade en Vercel `AI_API_KEY` (y `AI_BASE_URL` / `AI_MODEL` si usas Gemini; ver `.env.example`).
+3. Antes de lanzar, **revisa los límites y las condiciones del plan gratuito**: cambian con el tiempo y algunos planes gratuitos pueden usar las consultas para mejorar sus modelos. Por eso solo se envían cifras agregadas, nunca el email ni datos que identifiquen al usuario.
+4. Limita el abuso con *Vercel Firewall → Rate limiting* sobre `/api/ask` (el freno incluido solo protege cada instancia).
+
+## 6. Antes de hacerlo público
 - Completa `src/legal/config.ts` (nombre, NIF, domicilio, email). Mientras estén vacíos, las páginas legales muestran "[pendiente de completar]".
-- **Verifica la tabla de tramos** de `src/engine/tramos.ts` con el BOE o la TGSS y cambia `verified` a `true`. Mientras no lo esté, la demo avisa de que las cifras son ilustrativas.
+- **Confirma la tabla de tramos** de `src/engine/tramos.ts` con el texto de la Orden PJC/297/2026 (BOE-A-2026-7296) y cambia `estado` a `"verificada-boe"`. Hoy está "contrastada" entre fuentes secundarias, no leída del BOE.
+- Confirma también las fechas límite de cambio de base (`ventanas()` en `src/engine/calc.ts`).
 - Haz que una gestoría o un abogado revise los textos legales.
-- Actualiza `VITE_PREVIEW` a nada (por defecto ya está desactivado): solo se usa para las vistas previas sin servidor.
 
 ## Comandos
 ```

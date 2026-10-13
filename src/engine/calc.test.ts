@@ -28,6 +28,20 @@ describe("tramoPara", () => {
   });
 });
 
+describe("tabla 2026", () => {
+  it("has 15 tramos with strictly increasing upper bounds", () => {
+    expect(TABLA_2026.tramos).toHaveLength(15);
+    TABLA_2026.tramos.slice(1).forEach((x, i) => expect(x.hasta).toBeGreaterThan(TABLA_2026.tramos[i].hasta));
+  });
+  it("matches the minimum quotas published by independent sources", () => {
+    expect(cuotaMinima(1, TABLA_2026)).toBe(205.88);
+    expect(cuotaMinima(15, TABLA_2026)).toBe(607.35);
+  });
+  it("never lowers the minimum base as yield rises", () => {
+    TABLA_2026.tramos.slice(1).forEach((x, i) => expect(x.baseMin).toBeGreaterThanOrEqual(TABLA_2026.tramos[i].baseMin));
+  });
+});
+
 describe("cuotaMinima", () => {
   it("is base x rate, rounded to cents", () => {
     expect(cuotaMinima(1, TABLA_2026)).toBe(Math.round(653.59 * 0.315 * 100) / 100);
@@ -46,6 +60,20 @@ describe("proyectar", () => {
   it("collapses to a point when the year is complete", () => {
     const p = proyectar(Array.from({ length: 12 }, () => ({ ingresos: 2000, gastos: 500 })), TABLA_2026)!;
     expect(p.tramoBajo).toBe(p.tramoAlto);
+  });
+});
+
+describe("proyectar con escenario", () => {
+  const meses = Array.from({ length: 9 }, () => ({ ingresos: 2000, gastos: 500 }));
+  it("uses the scenario for the remaining months with no band", () => {
+    const p = proyectar(meses, TABLA_2026, "persona-fisica", 0.15, 5000)!;
+    expect(p.bajo).toBeCloseTo(p.alto);
+    expect(p.restante).toBe(5000);
+  });
+  it("a higher scenario never lowers the tramo", () => {
+    const lo = proyectar(meses, TABLA_2026, "persona-fisica", 0.15, 1000)!;
+    const hi = proyectar(meses, TABLA_2026, "persona-fisica", 0.15, 4000)!;
+    expect(hi.tramoMedio).toBeGreaterThanOrEqual(lo.tramoMedio);
   });
 });
 

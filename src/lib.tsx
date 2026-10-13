@@ -50,3 +50,18 @@ export function useClock(total: number, startPaused = false, active = true) {
   }, [playing, active, total]);
   return { t, playing, setPlaying, seek: setT };
 }
+
+/** Smoothly counts toward `value` so figures feel alive when inputs change. */
+export function useCountUp(value: number, ms = 600) {
+  const [v, setV] = useState(value);
+  const from = useRef(value);
+  useEffect(() => {
+    const a = from.current, t0 = performance.now();
+    if (typeof matchMedia !== "undefined" && matchMedia("(prefers-reduced-motion: reduce)").matches) { setV(value); from.current = value; return; }
+    let raf = 0;
+    const tick = (now: number) => { const p = clamp((now - t0) / ms); setV(a + (value - a) * ease(p)); if (p < 1) raf = requestAnimationFrame(tick); else from.current = value; };
+    raf = requestAnimationFrame(tick);
+    return () => { cancelAnimationFrame(raf); from.current = value; };
+  }, [value, ms]);
+  return v;
+}

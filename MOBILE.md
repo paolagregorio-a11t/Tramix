@@ -1,33 +1,38 @@
 # Apps para iOS y Android
 
-La web ya es una **PWA**: en el móvil, "Añadir a pantalla de inicio" la instala como app, con icono propio, pantalla completa y funcionamiento sin conexión. Es la vía más rápida para enseñarla hoy.
+Hay cuatro formas de llevar Tramix al móvil, de la más rápida a la más completa. Las dos primeras no necesitan tiendas, Mac ni Android Studio.
 
-Para publicarla en **App Store** y **Google Play** usamos [Capacitor](https://capacitorjs.com), que envuelve la misma web en una app nativa. Así hay un solo código para web, iOS y Android.
+## 1. Instalarla desde el navegador (PWA) · gratis · hoy mismo
+Es la opción recomendada para la demo. La web ya es una PWA: icono propio, pantalla completa y funcionamiento sin conexión.
 
-## Requisitos
-| | Qué necesitas | Coste |
-|---|---|---|
-| Android | Android Studio + cuenta de Google Play Console | 25 € (pago único) |
-| iOS | Un Mac con Xcode + cuenta de Apple Developer | 99 €/año |
+- **Android (Chrome):** menú ⋮ → *Instalar aplicación*. La web también muestra un botón **Instalar** que lo hace con un toque.
+- **iPhone (Safari):** botón Compartir → *Añadir a pantalla de inicio*.
+- **Ordenador (Chrome/Edge):** icono de instalar en la barra de direcciones.
 
-No se pueden generar los binarios desde un entorno sin Mac (iOS) ni Android Studio. Por eso los proyectos nativos no están en el repositorio: se crean en tu equipo.
+La demo incluye un botón **Instalar** y una hoja con estas instrucciones según el dispositivo. Requiere que la web esté publicada con HTTPS (ver `DEPLOY.md`).
 
-## Pasos
+## 2. APK de Android sin Android Studio · gratis
+Un APK es el archivo de instalación de Android: puedes pasarlo por WhatsApp o email e instalarlo (hay que permitir "instalar apps de origen desconocido").
+
+1. Sube el repositorio a GitHub y, en **Settings → Secrets and variables → Actions → Variables**, crea `SITE_URL` con la dirección de tu web (`https://tu-dominio.com`).
+2. Ve a **Actions → Android APK → Run workflow**.
+3. Cuando termine (unos 5–10 minutos), descarga `tramix-debug-apk` desde la ejecución.
+
+Es un APK de pruebas, válido para enseñarlo y probarlo, no para Google Play. El flujo está escrito pero **todavía no lo he podido ejecutar**: si un paso falla, el registro de GitHub dice cuál.
+
+## 3. Google Play sin Android Studio · 25 € (pago único)
+Con [PWABuilder](https://www.pwabuilder.com) pegas la dirección de tu web ya publicada y genera el paquete para Google Play. Necesitas una cuenta de Google Play Console. Es la ruta más corta a la tienda de Android.
+
+## 4. App Store de iPhone · 99 €/año
+Apple exige una cuenta de desarrollador de pago y una compilación firmada. No hace falta tener un Mac propio: servicios en la nube como Codemagic o Expo EAS compilan en Macs remotos. Con esta base (Capacitor) los pasos son:
 ```
-npm install
-npm run build
-npx cap add android      # y/o: npx cap add ios
-npm run cap:sync         # cada vez que cambies la web
-npx cap open android     # abre Android Studio  (o: npx cap open ios)
+npm install && npm run build
+npx cap add ios && npm run cap:sync
 ```
-Desde Android Studio o Xcode puedes probarla en un emulador o en tu móvil y luego generar el paquete para la tienda.
+y subir el resultado desde el servicio de compilación. Apple además revisa que la app sea más que una web envuelta; añadir notificaciones push nativas ayuda.
 
-## Antes de subir a las tiendas
-- Cambia `appId` en `capacitor.config.ts` (es permanente una vez publicada).
-- Iconos y pantalla de inicio: usa `public/icons/icon-512.png` como base (herramienta: `@capacitor/assets`).
-- Apple exige **política de privacidad** pública y una cuenta de prueba si hay login. Google pide el formulario de *Data safety*.
-- Apple revisa que la app sea "más que una web": conviene añadir notificaciones push nativas (`@capacitor/push-notifications`) para los avisos de plazo.
-- Los avisos por email siguen funcionando igual; las notificaciones push requieren un servicio aparte (Firebase Cloud Messaging / APNs).
-
-## Cuando la app tenga cuentas de usuario
-Esta versión es una demo sin cuentas ni servidor de datos. Para la app real hará falta: login, base de datos (por ejemplo Supabase, con servidores en la UE), y que los avisos se calculen en el servidor.
+## Antes de publicar en cualquier tienda
+- Cambia `appId` en `capacitor.config.ts` (es permanente).
+- Iconos: `public/icons/icon-512.png` como base.
+- Política de privacidad pública (ya hay una en la web) y, en Google Play, el formulario *Data safety*.
+- La app nativa llama a la API de la web desplegada (`VITE_API_BASE`), así que primero hay que desplegar `DEPLOY.md`.

@@ -16,8 +16,11 @@ export function config() {
 }
 export type Config = ReturnType<typeof config>;
 
+/** Public endpoints, no cookies: any origin may call them (needed by the installed native app). */
+const CORS = { "access-control-allow-origin": "*", "access-control-allow-methods": "POST, OPTIONS", "access-control-allow-headers": "content-type" };
+export const preflight = () => new Response(null, { status: 204, headers: CORS });
 export const json = (body: unknown, status = 200) =>
-  new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" } });
+  new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store", ...CORS } });
 
 export const EMAIL_RE = /^[^\s@]{1,64}@[^\s@]+\.[^\s@]{2,}$/;
 export const normalize = (e: string) => e.trim().toLowerCase();

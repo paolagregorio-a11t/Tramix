@@ -32,14 +32,17 @@ export type Proyeccion = {
 
 /**
  * Projects the year-end tramo as a RANGE, never a single figure.
- * Remaining months are estimated from the mean of the last 3 recorded months, ±15%.
+ * Remaining months are estimated from the mean of the last 3 recorded months, ±15%,
+ * or from a scenario value (monthly computable yield) supplied by the user.
  */
-export function proyectar(meses: Month[], t: TramosTable, r: Regimen = "persona-fisica", banda = 0.15): Proyeccion | null {
+export function proyectar(meses: Month[], t: TramosTable, r: Regimen = "persona-fisica", banda = 0.15, restanteOverride?: number): Proyeccion | null {
   if (meses.length === 0) return null;
   const ys = meses.map((m) => rendimientoMes(m, r));
   const acumulado = ys.reduce((a, b) => a + b, 0);
   const ult = ys.slice(-3);
-  const base = ult.reduce((a, b) => a + b, 0) / ult.length;
+  // A user-supplied scenario replaces the trend and removes the ±band: it is an assumption, not an estimate.
+  const base = restanteOverride ?? ult.reduce((a, b) => a + b, 0) / ult.length;
+  if (restanteOverride !== undefined) banda = 0;
   const faltan = 12 - meses.length;
   const media = (f: number) => (acumulado + base * f * faltan) / 12;
   const bajo = media(1 - banda), medio = media(1), alto = media(1 + banda);

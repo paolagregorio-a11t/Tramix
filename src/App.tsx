@@ -3,7 +3,8 @@ import { Logo } from "./components/Logo";
 import { PhoneDemo } from "./components/PhoneDemo";
 import { Film } from "./components/Film";
 import { Waitlist } from "./components/Waitlist";
-import { Bell } from "./components/Icons";
+import { Bell, IconDownload } from "./components/Icons";
+import { InstallSheet } from "./components/InstallSheet";
 import { Count, Reveal, useInView } from "./lib";
 import { useRoute } from "./useRoute";
 import { DemoApp } from "./demo/DemoApp";
@@ -25,6 +26,7 @@ export default function App() {
 }
 
 function Home() {
+  const [inst, setInst] = useState(false);
   const hero = useRef<HTMLDivElement>(null);
   const [filmRef, filmSeen] = useInView<HTMLDivElement>(0.2);
   const [lineRef, lineSeen] = useInView<HTMLDivElement>(0.4);
@@ -52,6 +54,7 @@ function Home() {
           <nav>
             <a href="#corto">El corto</a>
             <a href="#demo">Probar la demo</a>
+            <button type="button" className="nav__inst" onClick={() => setInst(true)}><IconDownload size={15} /> Instalar</button>
             <a href="#como">Cómo funciona</a>
             <a className="btn btn--ink" href="#lista">Lista de espera</a>
           </nav>
@@ -173,7 +176,7 @@ function Home() {
               <details><summary>¿Los cálculos son oficiales?</summary><p>Son orientativos. Se basan en lo que introduces y en las tablas de tramos de cada año, y no sustituyen el consejo de un gestor ni la información de la Seguridad Social.</p></details>
               <details><summary>¿Qué hacéis con mis datos?</summary><p>De momento solo guardamos tu email si te apuntas a la lista de espera, con tu consentimiento y para avisarte del lanzamiento. Los datos de la demo se quedan en tu navegador. Puedes leer los detalles en la <a href="#privacidad">política de privacidad</a>.</p></details>
               <details><summary>¿Cuándo estará disponible?</summary><p>Estamos preparando la primera versión. Quien se apunte a la lista recibirá un aviso antes que nadie, sin enviarte nada más mientras tanto.</p></details>
-              <details><summary>¿Habrá app para móvil?</summary><p>Sí, la idea es tenerla en iPhone y Android. La demo ya funciona desde el navegador del móvil.</p></details>
+              <details><summary>¿Habrá app para móvil?</summary><p>Ya puedes instalarla en tu iPhone o Android desde el navegador, sin tiendas: se abre a pantalla completa y con su icono. Después llegará también a App Store y Google Play. <button type="button" className="faq__link" onClick={() => setInst(true)}>Cómo instalarla</button></p></details>
             </div>
           </div>
         </section>
@@ -192,10 +195,11 @@ function Home() {
       <footer className="footer">
         <div className="container footer__in">
           <Logo size={26} tone="light" />
-          <nav className="footer__links" aria-label="Legal"><a href="#aviso-legal">Aviso legal</a><a href="#privacidad">Privacidad</a><a href="#cookies">Cookies</a></nav>
+          <nav className="footer__links" aria-label="Legal"><a href="#aviso-legal">Aviso legal</a><a href="#privacidad">Privacidad</a><a href="#cookies">Cookies</a><button type="button" onClick={() => setInst(true)}>Instalar en el móvil</button></nav>
           <p>Cálculos orientativos; no es asesoramiento fiscal. © {new Date().getFullYear()} Tramix</p>
         </div>
       </footer>
+      {inst && <InstallSheet onClose={() => setInst(false)} />}
     </>
   );
 }

@@ -1,0 +1,27 @@
+# Builds an installable Android APK in GitHub's cloud: no Android Studio and no Mac needed.
+# Run it from the repo: Actions > "Android APK" > Run workflow. Download the APK from the run's Artifacts.
+# NOTE: this workflow has not been run yet; if a step fails, the log says which one.
+name: Android APK
+on: workflow_dispatch
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: 21 }
+      - run: npm ci
+      - name: Build web (API calls go to the deployed site)
+        run: npm run build
+        env:
+          VITE_API_BASE: ${{ vars.SITE_URL }}   # repo Settings > Variables > SITE_URL = https://tu-dominio.com
+      - run: npx cap add android
+      - run: npx cap sync android
+      - run: ./gradlew assembleDebug
+        working-directory: android
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tramix-debug-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk

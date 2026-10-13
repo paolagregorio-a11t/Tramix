@@ -37,11 +37,12 @@ const pages: Record<LegalKey, { title: string; body: ReactNode }> = {
         <ul>
           <li><b>Email de la lista de espera.</b> Para avisarte del lanzamiento de Tramix y enviarte el correo de bienvenida. Base jurídica: tu consentimiento (art. 6.1.a RGPD).</li>
           <li><b>Datos introducidos en la demo.</b> Se guardan únicamente en tu navegador (almacenamiento local) y no se envían a ningún servidor.</li>
+          <li><b>Preguntas al asistente.</b> Si escribes una pregunta libre, se envía junto con unas cifras agregadas (tramo, rendimiento mensual previsto, plazo) a un proveedor de modelos de inteligencia artificial para generar la respuesta. No enviamos tu email ni datos que te identifiquen; no escribas datos personales en la pregunta. Base jurídica: tu iniciativa al usar la función.</li>
         </ul>
         <h2>Cuánto tiempo los conservamos</h2>
         <p>Hasta que retires tu consentimiento o solicites la supresión. Si no hay lanzamiento, se eliminarán a los 24 meses.</p>
         <h2>Destinatarios</h2>
-        <p>Usamos proveedores que tratan datos por nuestra cuenta, con contrato de encargo de tratamiento: un servicio de envío de correo electrónico y la plataforma de alojamiento del sitio. No cedemos tus datos a terceros para fines propios.</p>
+        <p>Usamos proveedores que tratan datos por nuestra cuenta, con contrato de encargo de tratamiento: un servicio de envío de correo electrónico, la plataforma de alojamiento del sitio y un proveedor de inteligencia artificial para el asistente. No cedemos tus datos a terceros para fines propios.</p>
         <h2>Tus derechos</h2>
         <p>Puedes acceder, rectificar, suprimir, oponerte, limitar el tratamiento y solicitar la portabilidad de tus datos, y retirar el consentimiento en cualquier momento, escribiendo a {pend(TITULAR.email)}. Si consideras que no hemos atendido tus derechos, puedes reclamar ante la Agencia Española de Protección de Datos (aepd.es).</p>
         <h2>Darse de baja</h2>

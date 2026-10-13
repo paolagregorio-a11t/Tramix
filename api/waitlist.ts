@@ -1,5 +1,5 @@
 import { welcomeEmail } from "../emails/welcome";
-import { EMAIL_RE, config, json, missing, normalize, resend, unsubscribeUrl } from "./_lib";
+import { EMAIL_RE, config, json, preflight, missing, normalize, resend, unsubscribeUrl } from "./_lib";
 
 /**
  * POST /api/waitlist  { email, consent, website }
@@ -45,3 +45,5 @@ export async function POST(request: Request): Promise<Response> {
 
   return json({ ok: true });
 }
+
+export const OPTIONS = async (): Promise<Response> => preflight();
