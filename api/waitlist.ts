@@ -1,3 +1,4 @@
+import { LOGO_BASE64 } from "../emails/logo";
 import { welcomeEmail } from "../emails/welcome";
 import { EMAIL_RE, config, json, preflight, missing, normalize, resend, unsubscribeUrl } from "./_lib";
 
@@ -6,6 +7,16 @@ import { EMAIL_RE, config, json, preflight, missing, normalize, resend, unsubscr
  * Adds the address to the Resend audience and sends the welcome email, once per address.
  */
 export async function POST(request: Request): Promise<Response> {
+  try {
+    return await handle(request);
+  } catch (e) {
+    // Network failure or provider outage: answer cleanly instead of crashing the function.
+    console.error("waitlist: unexpected failure", e);
+    return json({ error: "No hemos podido guardar tu email. Inténtalo de nuevo en unos minutos." }, 502);
+  }
+}
+
+async function handle(request: Request): Promise<Response> {
   const c = config();
   const gaps = missing(c);
   if (gaps.length) {
@@ -32,11 +43,12 @@ export async function POST(request: Request): Promise<Response> {
   }
 
   const unsub = unsubscribeUrl(c, email);
-  const mail = welcomeEmail({ site: c.site, unsubscribeUrl: unsub, contactEmail: c.contactEmail, senderName: c.senderName });
+  const mail = welcomeEmail({ site: c.site, unsubscribeUrl: unsub, contactEmail: c.contactEmail, senderName: c.senderName, logoCid: true });
   const sent = await resend(c, "/emails", {
     method: "POST",
     body: JSON.stringify({
       from: c.from, to: [email], subject: mail.subject, html: mail.html, text: mail.text,
+      attachments: [{ filename: "logo.png", content: LOGO_BASE64, content_type: "image/png", content_id: "tramix-logo" }],
       ...(c.replyTo ? { reply_to: c.replyTo } : {}),
       headers: { "List-Unsubscribe": `<${unsub}>`, "List-Unsubscribe-Post": "List-Unsubscribe=One-Click" },
     }),

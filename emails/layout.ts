@@ -4,7 +4,8 @@
  */
 export const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
-export type Brand = { site: string; unsubscribeUrl: string; contactEmail: string; senderName: string };
+/** logoCid: reference the logo as an inline attachment (cid:tramix-logo) instead of a hosted URL. */
+export type Brand = { site: string; unsubscribeUrl: string; contactEmail: string; senderName: string; logoCid?: boolean };
 
 const C = { navy: "#0b1220", navy2: "#121c33", steel: "#2e4c86", gold: "#e9b44c", paper: "#f5f7fa", ink: "#0b1220", muted: "#5a6478", line: "#e1e6ee" };
 export const color = C;
@@ -35,7 +36,7 @@ export function layout(o: { preheader: string; body: string; brand: Brand; why: 
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${C.paper}"><tr><td align="center" style="padding:24px 12px">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;background:#ffffff;border-radius:20px;overflow:hidden">
     <tr><td bgcolor="${C.navy}" style="padding:28px 36px">
-      <a href="${esc(b.site)}" style="text-decoration:none"><img src="${esc(b.site)}/email/logo.png" width="140" alt="Tramix" style="display:block;border:0;height:auto;color:#fff;font:800 24px ${FONT}"></a>
+      <a href="${esc(b.site)}" style="text-decoration:none"><img src="${b.logoCid ? "cid:tramix-logo" : esc(b.site) + "/email/logo.png"}" width="140" alt="Tramix" style="display:block;border:0;height:auto;color:#fff;font:800 24px ${FONT}"></a>
     </td></tr>
     <tr><td style="height:4px;line-height:4px;font-size:0" bgcolor="${C.gold}">&nbsp;</td></tr>
     <tr><td style="padding:36px 36px 12px">${o.body}</td></tr>

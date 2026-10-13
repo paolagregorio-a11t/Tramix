@@ -30,6 +30,8 @@ describe("POST /api/waitlist", () => {
     expect(body.to).toEqual(["ana@example.com"]);
     expect(body.from).toBe(ENV.EMAIL_FROM);
     expect(body.html).toContain("Ya estás en la lista de Tramix");
+    expect(body.html).toContain("cid:tramix-logo");
+    expect(body.attachments[0].content_id).toBe("tramix-logo");
     expect(body.headers["List-Unsubscribe"]).toContain("/api/unsubscribe?email=ana%40example.com&t=");
   });
   it("does not email an address that is already on the list", async () => {
@@ -62,6 +64,11 @@ describe("POST /api/waitlist", () => {
     mockResend({ "GET /audiences/aud_1/contacts/:e": notFound, "POST /emails": () => new Response("{}", { status: 500 }) });
     vi.spyOn(console, "error").mockImplementation(() => {});
     expect((await joinPost(req({ email: "ana@example.com", consent: true }))).status).toBe(200);
+  });
+  it("answers 502, never crashes, when the provider is unreachable", async () => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    vi.stubGlobal("fetch", vi.fn(async () => { throw new TypeError("fetch failed"); }));
+    expect((await joinPost(req({ email: "ana@example.com", consent: true }))).status).toBe(502);
   });
   it("fails visibly when the contact cannot be stored", async () => {
     mockResend({ "GET /audiences/aud_1/contacts/:e": notFound, "POST /audiences/aud_1/contacts": () => new Response("{}", { status: 500 }) });
