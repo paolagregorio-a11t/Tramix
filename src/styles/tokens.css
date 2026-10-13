@@ -1,34 +1,25 @@
-/* Tramix design tokens. Dark-first: the brand lives on deep ink with teal light and an amber alert. */
+/* Tramix tokens. Loud on purpose: electric cobalt, sun yellow, hot pink, with ink for weight. */
 :root {
-  --ink-950: #07211f;
-  --ink-900: #0b2e33;
-  --ink-800: #123b41;
-  --ink-700: #1f4d54;
-  --mint-50: #f4faf9;
-  --mint-200: #cfe6e3;
-  --teal-700: #0f766e;
-  --teal-500: #2dd4bf;
-  --teal-300: #5eaaa3;
-  --amber-500: #f59e0b;
-  --amber-400: #fbbf24;
-  --danger: #fb7185;
+  --cobalt: #2a3bff;
+  --cobalt-deep: #131c9e;
+  --cobalt-soft: #7b88ff;
+  --ink: #0a0e2e;
+  --ink-2: #151a4a;
+  --paper: #f3f4ff;
+  --sun: #ffd60a;
+  --pink: #ff4f8b;
+  --mint: #19e3a1;
 
-  --bg: var(--ink-950);
-  --surface: var(--ink-800);
-  --text: var(--mint-50);
-  --text-muted: #9cc2c0;
-  --border: var(--ink-700);
-  --primary: var(--teal-500);
-  --on-primary: var(--ink-950);
-  --accent: var(--amber-400);
+  --bg: var(--paper);
+  --text: var(--ink);
+  --text-muted: #4a507f;
 
   --font-display: "Bricolage Grotesque", "Plus Jakarta Sans", system-ui, sans-serif;
   --font: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
 
-  --radius-sm: 10px;
-  --radius-md: 16px;
-  --radius-lg: 28px;
   --gutter: clamp(16px, 4vw, 40px);
-  --maxw: 1180px;
-  color-scheme: dark;
+  --maxw: 1200px;
+  --ease: cubic-bezier(.2, .8, .2, 1);
+  --sy: 0;
+  color-scheme: light;
 }

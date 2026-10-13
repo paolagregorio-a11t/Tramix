@@ -1,29 +1,26 @@
 # Tramix · Guía de marca
 
-**Nombre:** Tramix (de "tramo"). Pendiente: confirmar dominios (.app/.io/.es) y buscar en el localizador de la OEPM y TMview antes de registrar.
+**Nombre:** Tramix (de "tramo"). Pendiente: confirmar dominios (.app/.io/.es) y buscar en OEPM y TMview antes de registrar.
 
 ## Logo
-Tres peldaños ascendentes; el último, en ámbar, es "donde tienes que estar".
-Ficheros en `brand/`: `tramix-icon-*.svg` (solo icono) y `tramix-logo-*.svg` (horizontal), en versión `light` y `dark`.
+Tres peldaños ascendentes; el más alto, en amarillo, es "donde tienes que estar".
+Componente `src/components/Logo.tsx` (tono `dark` o `light`).
 
-## Color
+## Color (tokens en `src/styles/tokens.css`)
 | Token | Valor | Uso |
 |---|---|---|
-| `--teal-700` | #0F766E | Primario (claro) |
-| `--teal-500` | #2DD4BF | Primario (oscuro) |
-| `--ink-900` | #0B2E33 | Texto / fondo oscuro |
-| `--mint-50` | #F4FAF9 | Fondo claro |
-| `--amber-500` / `--amber-400` | #F59E0B / #FBBF24 | Alertas y acción principal |
-
-Todos los tokens están en `src/styles/tokens.css`, con modo oscuro automático.
+| `--cobalt` | #2A3BFF | Color de marca, fondos de impacto |
+| `--sun` | #FFD60A | Acción principal, destacados |
+| `--pink` | #FF4F8B | Alertas y avisos |
+| `--mint` | #19E3A1 | Confirmaciones |
+| `--ink` | #0A0E2E | Texto y fondos oscuros |
+| `--paper` | #F3F4FF | Fondo claro |
 
 ## Tipografía
-Plus Jakarta Sans (400–800), de Google Fonts.
+Bricolage Grotesque 800 para titulares (interletraje muy cerrado) y Plus Jakarta Sans para el texto.
 
 ## Tono
-Cercano y tranquilizador. El usuario teme una reclamación: dar calma sin ser infantil. Proyecciones siempre como rangos, con aviso de que es orientativo.
+Cercano, directo y con energía. El usuario teme una reclamación: darle calma con humor, sin infantilizar. Proyecciones siempre en rango y con aviso de que es orientativo.
 
 ## Pendiente
-- Interfaz de la app (panel mensual, proyección, alertas).
-- Motor de cálculo con tablas de tramos versionadas por año.
-- Textos legales (aviso legal, privacidad, cookies).
+- Pantallas reales de la app, motor de cálculo con tablas de tramos por año, textos legales.
