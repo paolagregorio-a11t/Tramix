@@ -62,7 +62,12 @@ export function recomendar(actual: number, p: Proyeccion, t: TramosTable): Recom
   return { accion: objetivo > actual ? "subir" : "bajar", objetivo, ahorro: Math.round(Math.abs(dif)) };
 }
 
-/** The six yearly windows to change contribution base. Requests are due by the last day of the previous month. */
+/**
+ * The six yearly windows to change contribution base. Art. 45 of the Reglamento de inscripción (as amended by
+ * RDL 13/2022): a request made between the 1st of one window's first month and its last day takes effect on the
+ * 1st of the following month, i.e. effective Mar 1 (by end Feb), May 1 (Apr 30), Jul 1 (Jun 30), Sep 1 (Aug 31),
+ * Nov 1 (Oct 31) and Jan 1 (Dec 31). Verified against the BOE text on 2026-10-13.
+ */
 export type Ventana = { efecto: Date; limite: Date };
 export function ventanas(year: number): Ventana[] {
   const meses = [0, 2, 4, 6, 8, 10]; // Jan, Mar, May, Jul, Sep, Nov (effective on day 1)

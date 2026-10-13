@@ -3,7 +3,8 @@ import { json, preflight } from "./_lib";
 /**
  * POST /api/ask  { question, context }
  * Answers questions about the user's own numbers with a free-tier LLM.
- * Works with any OpenAI-compatible endpoint (Groq, Google Gemini, OpenRouter, ...).
+ * Defaults to Google Gemini Flash-Lite (free tier). Works with any OpenAI-compatible endpoint (Groq, OpenRouter, ...).
+ * Use a "-latest" alias: pinned model names get retired and start returning 404.
  * Only aggregate figures are sent to the model: never an email or any identity.
  */
 const SYSTEM = `Eres el asistente de Tramix, una app que ayuda a autónomos en España a elegir su tramo de cotización (RETA) y a no llevarse sorpresas en la regularización.
@@ -54,8 +55,8 @@ export async function POST(request: Request): Promise<Response> {
   const q = typeof data.question === "string" ? data.question.trim() : "";
   if (q.length < 3 || q.length > 400) return json({ error: "Escribe una pregunta de entre 3 y 400 caracteres." }, 400);
 
-  const base = (process.env.AI_BASE_URL ?? "https://api.groq.com/openai/v1").replace(/\/$/, "");
-  const model = process.env.AI_MODEL ?? "llama-3.3-70b-versatile";
+  const base = (process.env.AI_BASE_URL ?? "https://generativelanguage.googleapis.com/v1beta/openai").replace(/\/$/, "");
+  const model = process.env.AI_MODEL ?? "gemini-flash-lite-latest";
   try {
     const res = await fetch(`${base}/chat/completions`, {
       method: "POST",

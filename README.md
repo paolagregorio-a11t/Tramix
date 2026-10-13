@@ -14,4 +14,4 @@ npm run dev
 npm test
 ```
 
-> Las cifras de los tramos son **ilustrativas** hasta que se verifiquen con el BOE/TGSS. Los cálculos son orientativos.
+> Tabla de tramos 2026 verificada con la Orden PJC/297/2026 (BOE). Los cálculos son orientativos y hay que actualizar la tabla cada año.

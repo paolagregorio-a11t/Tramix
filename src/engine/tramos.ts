@@ -24,12 +24,11 @@ export type TramosTable = {
 };
 
 /**
- * 2026: Orden PJC/297/2026, de 30 de marzo (BOE-A-2026-7296).
+ * 2026: Orden PJC/297/2026, de 30 de marzo (BOE-A-2026-7296), art. 18.
  * Tramos 1-3 are the "tabla reducida"; 4-15 are the 12 tramos of the "tabla general".
- * Figures come from several secondary sources that agree with each other and with the
- * published minimum quotas (205,88 € at tramo 1, 607,35 € at tramo 15 with a 31,5 % rate).
- * The BOE text itself could not be opened when this was written: confirm and then set
- * estado to "verificada-boe".
+ * Checked line by line against the BOE text on 2026-10-13.
+ * Rate 31,50 % = 28,30 contingencias comunes + 1,30 profesionales + 0,90 MEI (art. 18.2)
+ *                + 0,90 cese de actividad + 0,10 formación profesional (art. 37.5-6).
  */
 const rows: [number, number][] = [
   [670, 653.59], [900, 718.95], [1166.7, 849.67],
@@ -39,8 +38,8 @@ const rows: [number, number][] = [
 
 export const TABLA_2026: TramosTable = {
   year: 2026,
-  estado: "contrastada",
-  source: "Orden PJC/297/2026 (BOE-A-2026-7296), contrastada entre fuentes; pendiente de confirmar con el texto del BOE",
+  estado: "verificada-boe",
+  source: "Orden PJC/297/2026, de 30 de marzo (BOE-A-2026-7296)",
   rate: 0.315,
   tramos: rows.map(([hasta, baseMin], i) => ({ n: i + 1, hasta, baseMin })),
 };
