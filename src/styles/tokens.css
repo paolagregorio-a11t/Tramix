@@ -1,20 +1,21 @@
-/* Tramix tokens. Loud on purpose: electric cobalt, sun yellow, hot pink, with ink for weight. */
+/* Tramix tokens. Serious and calm: midnight navy, cool greys, one gold signal. */
 :root {
-  --cobalt: #2a3bff;
-  --cobalt-deep: #131c9e;
-  --cobalt-soft: #7b88ff;
-  --ink: #0a0e2e;
-  --ink-2: #151a4a;
-  --paper: #f3f4ff;
-  --sun: #ffd60a;
-  --pink: #ff4f8b;
-  --mint: #19e3a1;
+  --navy: #0b1220;
+  --navy-2: #121c33;
+  --steel: #2e4c86;
+  --steel-soft: #8fa6d8;
+  --gold: #e9b44c;
+  --coral: #e0705f;
+  --sage: #5cc8a1;
+  --ink: #0b1220;
+  --paper: #f5f7fa;
+  --line: #e1e6ee;
 
   --bg: var(--paper);
   --text: var(--ink);
-  --text-muted: #4a507f;
+  --text-muted: #5a6478;
 
-  --font-display: "Bricolage Grotesque", "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-display: "Manrope", system-ui, sans-serif;
   --font: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
 
   --gutter: clamp(16px, 4vw, 40px);

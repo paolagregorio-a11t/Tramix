@@ -1,4 +1,5 @@
 import { useClock, ease, prog } from "../lib";
+import { Bell } from "./Icons";
 
 /** Looping app demo inside a phone. Sample data; one clock drives every frame. */
 const TOTAL = 12000;
@@ -42,7 +43,7 @@ export function PhoneDemo() {
         </div>
         <div className="ph-card">Ingresos de este mes <b className="num">{INCOME[Math.max(0, shown - 1)].toLocaleString("es-ES")} €</b></div>
         <div className="ph-notif" style={{ opacity: alertP, transform: `translateY(${(1 - alertP) * -30}px) scale(${0.95 + alertP * 0.05})` }}>
-          <span className="bell">🔔</span>
+          <span className="bell"><Bell size={22} /></span>
           <p><b>Tramix</b> Cambia a <u>tramo 9</u> antes del 31 dic y evitas ~<b>1.100 €</b></p>
         </div>
         <div className="ph-done" style={{ opacity: doneP, transform: `scale(${0.8 + doneP * 0.2})` }}>✓ Hecho. Sin sorpresas.</div>

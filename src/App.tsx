@@ -3,6 +3,7 @@ import { Logo } from "./components/Logo";
 import { PhoneDemo } from "./components/PhoneDemo";
 import { Film } from "./components/Film";
 import { Waitlist } from "./components/Waitlist";
+import { Bell } from "./components/Icons";
 import { Count, Reveal, useInView } from "./lib";
 import "./styles/global.css";
 import "./styles/landing.css";
@@ -68,7 +69,7 @@ export default function App() {
               <div className="stage__inner">
                 <PhoneDemo />
                 <div className="float f1"><b>−1.100 €</b> evitados</div>
-                <div className="float f2">🔔 Plazo en 12 días</div>
+                <div className="float f2"><Bell size={16} /> Plazo en 12 días</div>
                 <div className="float f3">Tramo 9 ✓</div>
               </div>
             </div>
@@ -77,8 +78,7 @@ export default function App() {
 
         {/* TICKERS */}
         <div className="tickers" aria-hidden="true">
-          <div className="tick tick--sun"><div>{[...PAINS, ...PAINS, ...PAINS].map((p, i) => <span key={i}>{p}</span>)}</div></div>
-          <div className="tick tick--pink"><div>{[...PAINS, ...PAINS, ...PAINS].reverse().map((p, i) => <span key={i}>{p}</span>)}</div></div>
+          <div className="tick"><div>{[...PAINS, ...PAINS, ...PAINS].map((p, i) => <span key={i}>{p}</span>)}</div></div>
         </div>
 
         {/* EL CORTO */}
@@ -106,7 +106,7 @@ export default function App() {
                 <p>Sigue tus ingresos reales, proyecta el año y te avisa justo cuando toca moverse.</p>
                 <svg viewBox="0 0 240 90" aria-hidden="true">
                   <path className={`draw ${lineSeen ? "go" : ""}`} d="M6 78 C 50 74, 70 58, 110 50 S 170 24, 220 12" pathLength="1" />
-                  <circle cx="220" cy="12" r="8" fill="var(--sun)" style={{ opacity: lineSeen ? 1 : 0, transition: "opacity .3s 1.5s" }} />
+                  <circle cx="220" cy="12" r="8" fill="var(--gold)" style={{ opacity: lineSeen ? 1 : 0, transition: "opacity .3s 1.5s" }} />
                 </svg>
               </Reveal>
             </div>
@@ -119,10 +119,10 @@ export default function App() {
             <Reveal><span className="kicker kicker--ink">Qué hace por ti</span></Reveal>
             <Reveal delay={0.05}><h2>Todo lo que te quita el miedo al <em>31 de octubre.</em></h2></Reveal>
             <div className="feat__grid">
-              <Reveal className="fc fc--big fc--cobalt"><div className="viz viz--bars" aria-hidden="true">{[40, 62, 48, 80, 70, 95].map((h, i) => <i key={i} style={{ ["--h" as string]: `${h}%`, ["--i" as string]: i }} />)}</div><h3>Seguimiento mensual</h3><p>Apuntas ingresos y gastos en 30 segundos. Tramix hace el resto.</p></Reveal>
+              <Reveal className="fc fc--big fc--navy"><div className="viz viz--bars" aria-hidden="true">{[40, 62, 48, 80, 70, 95].map((h, i) => <i key={i} style={{ ["--h" as string]: `${h}%`, ["--i" as string]: i }} />)}</div><h3>Seguimiento mensual</h3><p>Apuntas ingresos y gastos en 30 segundos. Tramix hace el resto.</p></Reveal>
               <Reveal className="fc fc--big fc--paper" delay={0.08}><div className="viz viz--toggle" aria-hidden="true"><span><i /></span> Tú decides</div><h3>Tú tienes el control</h3><p>Tramix no hace el trámite por ti ni te pide tu certificado digital.</p></Reveal>
-              <Reveal className="fc fc--sun" delay={0.08}><div className="viz viz--bell" aria-hidden="true"><span>🔔</span><i /><i /></div><h3>Avisos antes de cada ventana</h3><p>Hasta 6 cambios de base al año, cada uno con su fecha límite.</p></Reveal>
-              <Reveal className="fc fc--pink" delay={0.16}><div className="viz viz--line" aria-hidden="true"><svg viewBox="0 0 200 80"><path d="M4 70 C 40 66, 60 40, 100 34 S 160 12, 196 6" pathLength="1" /></svg></div><h3>Proyección en rango</h3><p>Ves entre qué tramos cierras el año, con el cálculo desglosado.</p></Reveal>
+              <Reveal className="fc fc--gold" delay={0.08}><div className="viz viz--bell" aria-hidden="true"><span><Bell size={64} /></span><i /><i /></div><h3>Avisos antes de cada ventana</h3><p>Hasta 6 cambios de base al año, cada uno con su fecha límite.</p></Reveal>
+              <Reveal className="fc fc--coral" delay={0.16}><div className="viz viz--line" aria-hidden="true"><svg viewBox="0 0 200 80"><path d="M4 70 C 40 66, 60 40, 100 34 S 160 12, 196 6" pathLength="1" /></svg></div><h3>Proyección en rango</h3><p>Ves entre qué tramos cierras el año, con el cálculo desglosado.</p></Reveal>
               <Reveal className="fc fc--ink" delay={0.08}><div className="viz viz--check" aria-hidden="true">{["Elige tramo", "Entra en Import@ss", "Confirma"].map((x, i) => <span key={x} style={{ ["--i" as string]: i }}><i>✓</i>{x}</span>)}</div><h3>Guía paso a paso</h3><p>Te decimos qué tramo elegir y cómo cambiarlo, sin perderte.</p></Reveal>
             </div>
           </div>

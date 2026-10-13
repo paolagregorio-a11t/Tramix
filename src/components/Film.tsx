@@ -1,4 +1,5 @@
 import { useClock, ease, prog, fmt } from "../lib";
+import { Bell } from "./Icons";
 
 /**
  * "El corto": a 32 s animated film made in code. Every layer is a pure function of
@@ -24,8 +25,7 @@ export function Film({ active }: { active: boolean }) {
 
   // S0
   const w0 = win(t, 0, 6000);
-  const stamp = ease(prog(t, 3300, 3600));
-  const shake = t > 3300 && t < 3700 ? Math.sin(t * .09) * 6 : 0;
+  const due = ease(prog(t, 3300, 3800));
   // S1
   const w1 = win(t, 6000, 11000);
   const rewind = prog(t, 7800, 10400);
@@ -45,7 +45,7 @@ export function Film({ active }: { active: boolean }) {
 
   return (
     <div className="film" role="region" aria-label="Cortometraje animado de Tramix, con datos de ejemplo">
-      <div className="film__stage" style={{ transform: `translate(${shake}px, ${-shake * .6}px)` }}>
+      <div className="film__stage">
         {/* S0: la carta */}
         <div className="layer" style={{ opacity: w0 }}>
           <div className="k-big" style={{ transform: `translateY(${(1 - ease(prog(t, 200, 900))) * 60}px)`, opacity: ease(prog(t, 200, 700)) }}>Es 31 de <em>octubre.</em></div>
@@ -53,7 +53,7 @@ export function Film({ active }: { active: boolean }) {
             <small>SEGURIDAD SOCIAL · REGULARIZACIÓN DE CUOTAS</small>
             <p>Importe a ingresar</p>
             <strong className="num">{fmt(Math.round(ease(prog(t, 2300, 3300)) * 1100))},00 €</strong>
-            <span className="stamp" style={{ opacity: stamp, transform: `scale(${3 - stamp * 2}) rotate(-12deg)` }}>RECLAMADO</span>
+            <span className="due" style={{ opacity: due, transform: `translateY(${(1 - due) * 8}px)` }}>Pendiente de pago</span>
           </div>
         </div>
 
@@ -61,7 +61,7 @@ export function Film({ active }: { active: boolean }) {
         <div className="layer" style={{ opacity: w1 }}>
           <div className="k-big" style={{ transform: `translateY(${(1 - ease(prog(t, 6200, 6900))) * 60}px)`, opacity: ease(prog(t, 6200, 6700)) }}>¿Y si lo hubieras <em>visto venir?</em></div>
           <div className="cal" style={{ opacity: ease(prog(t, 7400, 7900)) }}>
-            <span className="cal__rw">⏪</span>
+            
             <b key={mIdx}>{MONTHS[mIdx]}</b>
           </div>
         </div>
@@ -69,7 +69,7 @@ export function Film({ active }: { active: boolean }) {
         {/* S2: la app */}
         <div className="layer" style={{ opacity: w2 }}>
           <div className="s2-head" style={{ opacity: ease(prog(s2, 0, 500)), transform: `scale(${0.6 + ease(prog(s2, 0, 700)) * 0.4})` }}>
-            <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="36" width="14" height="20" rx="4" fill="#7b88ff" /><rect x="25" y="22" width="14" height="34" rx="4" fill="#fff" /><rect x="44" y="8" width="14" height="48" rx="4" fill="#ffd60a" /></svg>
+            <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="36" width="14" height="20" rx="4" fill="#8fa6d8" /><rect x="25" y="22" width="14" height="34" rx="4" fill="#fff" /><rect x="44" y="8" width="14" height="48" rx="4" fill="#e9b44c" /></svg>
             <span>tramix</span>
           </div>
           <div className="s2-chart">
@@ -90,7 +90,7 @@ export function Film({ active }: { active: boolean }) {
         {/* S3: el aviso */}
         <div className="layer" style={{ opacity: w3 }}>
           <div className="notif-xl" style={{ transform: `translateY(${(1 - ease(prog(s3, 300, 1000))) * -160}px)`, opacity: ease(prog(s3, 300, 800)) }}>
-            <span className="bell" style={{ animation: s3 > 1000 ? "ring .6s ease-in-out 3" : "none" }}>🔔</span>
+            <span className="bell" style={{ animation: s3 > 1000 ? "ring .6s ease-in-out 3" : "none" }}><Bell size={64} /></span>
             <div><small>TRAMIX · AHORA</small><p>Plazo en <b>12 días</b>. Cambia a <u>tramo 9</u> y evitas unos <b>1.100 €</b>.</p></div>
           </div>
           <ul className="todo">
@@ -105,7 +105,7 @@ export function Film({ active }: { active: boolean }) {
         {/* S4: final */}
         <div className="layer layer--end" style={{ opacity: w4 }}>
           <div className="stairs-xl" aria-hidden="true">
-            {[0.34, 0.6, 1].map((h, i) => <i key={i} style={{ height: `${ease(prog(s4, 200 + i * 350, 900 + i * 350)) * h * 100}%`, background: i === 2 ? "var(--sun)" : i === 1 ? "#fff" : "var(--cobalt-soft)" }} />)}
+            {[0.34, 0.6, 1].map((h, i) => <i key={i} style={{ height: `${ease(prog(s4, 200 + i * 350, 900 + i * 350)) * h * 100}%`, background: i === 2 ? "var(--gold)" : i === 1 ? "#fff" : "var(--steel-soft)" }} />)}
           </div>
           <div className="end-copy">
             <div className="k-big" style={{ opacity: ease(prog(s4, 1300, 1900)), transform: `translateY(${(1 - ease(prog(s4, 1300, 2000))) * 50}px)` }}>Tramo 9.<br /><em>Sin sorpresas.</em></div>
