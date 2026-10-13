@@ -5,6 +5,9 @@ import { Film } from "./components/Film";
 import { Waitlist } from "./components/Waitlist";
 import { Bell } from "./components/Icons";
 import { Count, Reveal, useInView } from "./lib";
+import { useRoute } from "./useRoute";
+import { DemoApp } from "./demo/DemoApp";
+import { LegalPage } from "./legal/LegalPage";
 import "./styles/global.css";
 import "./styles/landing.css";
 
@@ -15,6 +18,13 @@ function Words({ text, base = 0 }: { text: string; base?: number }) {
 }
 
 export default function App() {
+  const route = useRoute();
+  if (route === "demo") return <DemoApp />;
+  if (route !== "home") return <LegalPage page={route} />;
+  return <Home />;
+}
+
+function Home() {
   const hero = useRef<HTMLDivElement>(null);
   const [filmRef, filmSeen] = useInView<HTMLDivElement>(0.2);
   const [lineRef, lineSeen] = useInView<HTMLDivElement>(0.4);
@@ -41,6 +51,7 @@ export default function App() {
           <a href="/" aria-label="Tramix, inicio"><Logo tone={scrolled ? "dark" : "light"} /></a>
           <nav>
             <a href="#corto">El corto</a>
+            <a href="#demo">Probar la demo</a>
             <a href="#como">Cómo funciona</a>
             <a className="btn btn--ink" href="#lista">Lista de espera</a>
           </nav>
@@ -63,7 +74,8 @@ export default function App() {
               </h1>
               <p className="hero__lead">Tramix sigue tus ingresos, proyecta cómo cierras el año y te avisa <b>antes</b> de cada plazo para cambiar de tramo.</p>
               <Waitlist id="wl-hero" />
-              <p className="hero__fine">✓ Sin tarjeta &nbsp; ✓ Cancelas cuando quieras &nbsp; ✓ Te avisamos al abrir</p>
+              <a className="hero__demo" href="#demo">Probar la demo interactiva →</a>
+              <p className="hero__fine">Sin tarjeta · Sin spam · Te das de baja cuando quieras</p>
             </div>
             <div className="stage" ref={hero}>
               <div className="stage__inner">
@@ -138,6 +150,34 @@ export default function App() {
           </div>
         </section>
 
+        {/* CÓMO CALCULAMOS */}
+        <section className="how" aria-labelledby="how2-title">
+          <div className="container">
+            <Reveal><span className="kicker kicker--ink">Transparencia</span></Reveal>
+            <Reveal delay={0.05}><h2 id="how2-title" style={{ marginTop: 16 }}>Ves <em>cómo</em> sale cada número.</h2></Reveal>
+            <div className="how__grid">
+              <Reveal className="how__c"><b>1</b><h3>Rendimiento neto</h3><p>Ingresos menos gastos de cada mes, con la deducción genérica del 7 % (3 % si eres societario).</p></Reveal>
+              <Reveal className="how__c" delay={0.08}><b>2</b><h3>Proyección en rango</h3><p>Estimamos el resto del año con tus últimos meses y un margen de ±15 %. Nunca una cifra exacta.</p></Reveal>
+              <Reveal className="how__c" delay={0.16}><b>3</b><h3>Tramo y plazo</h3><p>Comparamos con la tabla de tramos del año y te avisamos antes de cada ventana de cambio.</p></Reveal>
+            </div>
+            <p className="how__note">Las tablas de tramos son datos configurables por año, no cifras escritas en el código. Cada cálculo es orientativo y no sustituye el consejo de un profesional.</p>
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section className="faq" aria-labelledby="faq-title">
+          <div className="container">
+            <Reveal><h2 id="faq-title">Preguntas <em>frecuentes</em></h2></Reveal>
+            <div className="faq__list">
+              <details><summary>¿Tramix presenta los trámites por mí?</summary><p>No. Te decimos qué tramo conviene y cómo cambiarlo paso a paso en Import@ss, pero el trámite lo haces tú. Por eso no necesitamos tu certificado digital.</p></details>
+              <details><summary>¿Los cálculos son oficiales?</summary><p>Son orientativos. Se basan en lo que introduces y en las tablas de tramos de cada año, y no sustituyen el consejo de un gestor ni la información de la Seguridad Social.</p></details>
+              <details><summary>¿Qué hacéis con mis datos?</summary><p>De momento solo guardamos tu email si te apuntas a la lista de espera, con tu consentimiento y para avisarte del lanzamiento. Los datos de la demo se quedan en tu navegador. Puedes leer los detalles en la <a href="#privacidad">política de privacidad</a>.</p></details>
+              <details><summary>¿Cuándo estará disponible?</summary><p>Estamos preparando la primera versión. Quien se apunte a la lista recibirá un aviso antes que nadie, sin enviarte nada más mientras tanto.</p></details>
+              <details><summary>¿Habrá app para móvil?</summary><p>Sí, la idea es tenerla en iPhone y Android. La demo ya funciona desde el navegador del móvil.</p></details>
+            </div>
+          </div>
+        </section>
+
         {/* CTA */}
         <section className="cta" id="lista">
           <div className="hero__bg" aria-hidden="true"><i style={{ ["--h" as string]: "30%" }} /><i style={{ ["--h" as string]: "55%" }} /><i style={{ ["--h" as string]: "80%" }} /></div>
@@ -152,7 +192,8 @@ export default function App() {
       <footer className="footer">
         <div className="container footer__in">
           <Logo size={26} tone="light" />
-          <p>Tramix ofrece cálculos orientativos y no constituye asesoramiento fiscal. © {new Date().getFullYear()} Tramix</p>
+          <nav className="footer__links" aria-label="Legal"><a href="#aviso-legal">Aviso legal</a><a href="#privacidad">Privacidad</a><a href="#cookies">Cookies</a></nav>
+          <p>Cálculos orientativos; no es asesoramiento fiscal. © {new Date().getFullYear()} Tramix</p>
         </div>
       </footer>
     </>

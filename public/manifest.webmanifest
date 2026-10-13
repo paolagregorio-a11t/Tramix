@@ -1,0 +1,17 @@
+{
+  "name": "Tramix",
+  "short_name": "Tramix",
+  "description": "Seguimiento de ingresos, proyección y avisos para cambiar de tramo de autónomo a tiempo.",
+  "lang": "es",
+  "start_url": "/#demo",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b1220",
+  "theme_color": "#0b1220",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

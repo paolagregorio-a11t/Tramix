@@ -1,0 +1,13 @@
+.legal { min-height: 100vh; background: var(--paper); color: var(--ink); }
+.legal__top { display: flex; align-items: center; justify-content: space-between; padding-block: 24px; }
+.legal__top a { text-decoration: none; }
+.legal__back { font-weight: 700; color: var(--steel); }
+.legal__main { max-width: 760px; padding-bottom: 96px; }
+.legal__main h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); margin-bottom: 8px; }
+.legal__main h2 { font-size: 1.3rem; margin: 36px 0 10px; letter-spacing: -.02em; }
+.legal__main p, .legal__main li { color: #2f3a52; }
+.legal__main ul { padding-left: 20px; display: grid; gap: 8px; }
+.legal__date { color: var(--text-muted); font-size: .88rem; margin-bottom: 12px; }
+.legal__nav { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--line); font-weight: 700; }
+.legal__nav a { color: var(--steel); }
+.legal__nav a[aria-current] { color: var(--ink); text-decoration: none; }
