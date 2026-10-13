@@ -1,0 +1,53 @@
+/* Tramix design tokens. Single source of truth for brand colour, type, spacing. */
+:root {
+  /* Brand */
+  --teal-700: #0f766e;
+  --teal-500: #2dd4bf;
+  --teal-300: #5eaaa3;
+  --teal-800: #1b7f78;
+  --ink-900: #0b2e33;
+  --mint-50: #f4faf9;
+  --amber-500: #f59e0b;
+  --amber-400: #fbbf24;
+
+  /* Semantic */
+  --bg: var(--mint-50);
+  --surface: #ffffff;
+  --text: var(--ink-900);
+  --text-muted: #4b6a6e;
+  --border: #d7e6e4;
+  --primary: var(--teal-700);
+  --primary-contrast: #ffffff;
+  --accent: var(--amber-500);
+  --accent-soft: #fef3d6;
+  --success: #059669;
+  --danger: #dc2626;
+  --focus: #0f766e;
+
+  /* Type */
+  --font: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Shape & space */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --shadow: 0 1px 2px rgba(11, 46, 51, 0.06), 0 8px 24px rgba(11, 46, 51, 0.08);
+  --gutter: clamp(16px, 4vw, 32px);
+  --maxw: 1080px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: var(--ink-900);
+    --surface: #123b41;
+    --text: var(--mint-50);
+    --text-muted: #9cc2c0;
+    --border: #1f4d54;
+    --primary: var(--teal-500);
+    --primary-contrast: var(--ink-900);
+    --accent: var(--amber-400);
+    --accent-soft: #3a2f10;
+    --focus: var(--teal-500);
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.3);
+  }
+}

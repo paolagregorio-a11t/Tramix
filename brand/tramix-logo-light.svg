@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 224 64" role="img" aria-label="Tramix">
+  <rect x="6" y="36" width="14" height="20" rx="4" fill="#5EAAA3"/>
+  <rect x="25" y="22" width="14" height="34" rx="4" fill="#0F766E"/>
+  <rect x="44" y="8" width="14" height="48" rx="4" fill="#F59E0B"/>
+  <text x="74" y="46" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="38" font-weight="700" letter-spacing="-1.2" fill="#0B2E33">tramix</text>
+</svg>
