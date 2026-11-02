@@ -3,7 +3,7 @@ import { href } from "../router";
 import { Logo } from "../components/Logo";
 import { Bell, IconArrow, IconCheck, IconClose, IconDownload, IconGear, IconHome, IconList, IconPlus, IconSpark, IconUpload } from "../components/Icons";
 import { InstallSheet } from "../components/InstallSheet";
-import { cuotaMinima, proximaVentana, proyectar, recomendar, rendimientoMes, tramoPara, ventanas } from "../engine/calc";
+import { cuotaMinima, proximaVentana, proyectar, recomendar, rendimientoMes, tramoPara, ventanasDelAno } from "../engine/calc";
 import { tablaDe } from "../engine/tramos";
 import { fmt, useCountUp } from "../lib";
 import { useInstall } from "../install";
@@ -157,7 +157,7 @@ export function DemoApp() {
               {tab === "avisos" && (<section className="card">
                 <div className="card__h"><h2>Ventanas de cambio</h2><small>Hasta 6 al año</small></div>
                 <ul className="wins">
-                  {ventanas(hoy.getFullYear()).map((v, i) => {
+                  {ventanasDelAno(hoy.getFullYear()).map((v, i) => {
                     const pasada = v.limite < new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
                     const es = !pasada && v.limite.getTime() === prox.ventana.limite.getTime();
                     return (<li key={i} className={pasada ? "past" : es ? "next" : ""}>

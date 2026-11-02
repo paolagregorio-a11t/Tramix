@@ -96,6 +96,11 @@ export function ventanas(year: number): Ventana[] {
   return meses.map((m) => ({ efecto: new Date(year, m, 1), limite: new Date(year, m, 0) }));
 }
 
+/** The six windows whose request deadline falls within `year` (28 Feb … 31 Dec): what people mean by "this year's dates". */
+export function ventanasDelAno(year: number): Ventana[] {
+  return [...ventanas(year), ...ventanas(year + 1)].filter((v) => v.limite.getFullYear() === year);
+}
+
 export function proximaVentana(hoy: Date): { ventana: Ventana; dias: number } {
   const dia = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
   const todas = [...ventanas(hoy.getFullYear()), ...ventanas(hoy.getFullYear() + 1)];

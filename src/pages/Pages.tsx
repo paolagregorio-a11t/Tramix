@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { cuotaMaxima, cuotaMinima, proximaVentana, regularizacion, tablaOficial, tramoPara, ventanas } from "../engine/calc";
+import { cuotaMaxima, cuotaMinima, proximaVentana, regularizacion, tablaOficial, tramoPara, ventanasDelAno } from "../engine/calc";
 import { TABLA_2026 } from "../engine/tramos";
 import { href } from "../router";
 import { IMPORTES, cuotaXPath, type RouteDef } from "../routes";
@@ -212,7 +212,7 @@ export function CambioBasePage({ route }: { route: RouteDef }) {
           <h2 id="fechas">Plazos de {year}</h2>
           <div className="tt__wrap"><table className="tt">
             <thead><tr><th scope="col">Si lo pides entre…</th><th scope="col">Tiene efecto el</th></tr></thead>
-            <tbody>{ventanas(year).map((v, i) => { const ini = new Date(v.limite.getFullYear(), v.limite.getMonth() - 1, 1); return (
+            <tbody>{ventanasDelAno(year).map((v, i) => { const ini = new Date(v.limite.getFullYear(), v.limite.getMonth() - 1, 1); return (
               <tr key={i} className={prox && v.limite.getTime() === prox.ventana.limite.getTime() ? "hl" : ""}><td>1 de {MESES[ini.getMonth()]} y {fecha(v.limite)}</td><td>1 de {MESES[v.efecto.getMonth()]}{v.efecto.getFullYear() !== v.limite.getFullYear() ? ` de ${v.efecto.getFullYear()}` : ""}</td></tr>); })}</tbody>
           </table></div>
           <p className="sp__src">Art. 45 del Reglamento general de inscripción, modificado por el Real Decreto-ley 13/2022.</p>

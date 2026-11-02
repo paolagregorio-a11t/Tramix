@@ -5,3 +5,4 @@ dist
 emails/preview/
 dist-ssr
 marketing/*.zip
+marketing/video/*.mp4

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { TABLA_2026 } from "./tramos";
-import { cuotaMaxima, regularizacion, tablaOficial, cuotaMinima, proximaVentana, proyectar, recomendar, rendimientoMes, tramoPara, ventanas } from "./calc";
+import { ventanasDelAno, cuotaMaxima, regularizacion, tablaOficial, cuotaMinima, proximaVentana, proyectar, recomendar, rendimientoMes, tramoPara, ventanas } from "./calc";
 
 describe("rendimientoMes", () => {
   it("applies the 7% generic deduction to income minus expenses", () => {
@@ -146,5 +146,19 @@ describe("regularizacion", () => {
   });
   it("is zero inside the real tramo's band", () => {
     expect(regularizacion(1500, 2100, TABLA_2026)).toEqual({ tramoReal: 9, resultado: "nada", importe: 0 });
+  });
+});
+
+describe("ventanasDelAno", () => {
+  it("lists the six deadlines inside the year, from 28 Feb to 31 Dec", () => {
+    const v = ventanasDelAno(2026);
+    expect(v.map((x) => [x.limite.getMonth(), x.limite.getDate()])).toEqual([[1, 28], [3, 30], [5, 30], [7, 31], [9, 31], [11, 31]]);
+    expect(v[5].efecto).toEqual(new Date(2027, 0, 1));
+  });
+  it("always contains the next deadline", () => {
+    for (const d of [new Date(2026, 10, 2), new Date(2026, 11, 31), new Date(2026, 0, 10)]) {
+      const { ventana } = proximaVentana(d);
+      expect(ventanasDelAno(d.getFullYear()).some((v) => +v.limite === +ventana.limite)).toBe(true);
+    }
   });
 });
