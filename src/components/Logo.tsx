@@ -1,6 +1,6 @@
 type Props = { size?: number; withWordmark?: boolean; tone?: "dark" | "light" };
 
-/** Tramix mark: three rising steps; the tallest, in yellow, is "where you need to be". */
+/** Cuotio mark: three rising steps; the tallest, in yellow, is "where you need to be". */
 export function Logo({ size = 34, withWordmark = true, tone = "dark" }: Props) {
   const c = tone === "light"
     ? { a: "#8fa6d8", b: "#ffffff", t: "#ffffff" }
@@ -12,7 +12,7 @@ export function Logo({ size = 34, withWordmark = true, tone = "dark" }: Props) {
         <rect x="25" y="22" width="14" height="34" rx="4" fill={c.b} />
         <rect x="44" y="8" width="14" height="48" rx="4" fill="#e9b44c" />
       </svg>
-      {withWordmark && <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: size * 0.85, letterSpacing: "-0.05em", color: c.t }}>tramix</span>}
+      {withWordmark && <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: size * 0.85, letterSpacing: "-0.05em", color: c.t }}>cuotio</span>}
     </span>
   );
 }

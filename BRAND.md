@@ -1,6 +1,6 @@
-# Tramix · Guía de marca
+# Cuotio · Guía de marca
 
-**Nombre:** Tramix (de "tramo"). Pendiente: confirmar dominios (.app/.io/.es) y buscar en OEPM y TMview antes de registrar.
+**Nombre:** Cuotio (de "cuota"). Dominio: `cuotio.es`. Marca aún sin registrar; ver [MARCA.md](MARCA.md).
 
 ## Logo
 Tres peldaños ascendentes; el más alto, en dorado, es "donde tienes que estar". Componente `src/components/Logo.tsx`.

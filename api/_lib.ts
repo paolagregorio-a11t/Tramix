@@ -6,12 +6,12 @@ export function config() {
   return {
     apiKey: process.env.RESEND_API_KEY ?? "",
     audienceId: process.env.RESEND_AUDIENCE_ID ?? "",
-    from: process.env.EMAIL_FROM ?? "",              // e.g. "Tramix <hola@tu-dominio.com>"
+    from: process.env.EMAIL_FROM ?? "",              // e.g. "Cuotio <hola@tu-dominio.com>"
     replyTo: process.env.EMAIL_REPLY_TO ?? "",
     secret: process.env.UNSUBSCRIBE_SECRET ?? "",
     site,
     contactEmail: process.env.CONTACT_EMAIL ?? "",
-    senderName: process.env.EMAIL_SENDER_NAME ?? "El equipo de Tramix",
+    senderName: process.env.EMAIL_SENDER_NAME ?? "El equipo de Cuotio",
   };
 }
 export type Config = ReturnType<typeof config>;

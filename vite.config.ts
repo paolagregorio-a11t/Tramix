@@ -8,7 +8,7 @@ import react from "@vitejs/plugin-react";
 function seo(site: string): Plugin {
   const url = site.replace(/\/$/, "");
   return {
-    name: "tramix-seo",
+    name: "cuotio-seo",
     transformIndexHtml(html) {
       const out = html.replaceAll("%SITE_URL%", url);
       if (!url) return out;

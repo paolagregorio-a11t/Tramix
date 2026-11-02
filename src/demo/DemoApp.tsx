@@ -64,7 +64,7 @@ export function DemoApp() {
       <div className="dm__stage container">
         <aside className="dm__side">
           <Logo size={30} tone="light" />
-          <h1>Así se ve Tramix por dentro.</h1>
+          <h1>Así se ve Cuotio por dentro.</h1>
           <p>Toca el gráfico, mueve el simulador, edita un mes o pregunta al asistente. Todo se calcula al momento, en tu navegador.</p>
           <ul>
             <li><IconCheck /> Proyección siempre en rango, nunca una cifra inventada</li>
@@ -80,7 +80,7 @@ export function DemoApp() {
 
         <div className="device">
           <div className="device__island" aria-hidden="true" />
-          <div className="app" role="application" aria-label="Demo de la app Tramix">
+          <div className="app" role="application" aria-label="Demo de la app Cuotio">
             <div className="statusbar" aria-hidden="true"><b>9:41</b><span><i className="sb-sig" /><i className="sb-wifi" /><i className="sb-bat" /></span></div>
             <header className="app__head">
               <Logo size={22} tone="dark" />
@@ -206,7 +206,7 @@ export function DemoApp() {
                     <li>Rendimiento medio previsto: {eur(proy.bajo)} – {eur(proy.alto)} al mes → tramo {heroRange}.</li>
                     <li>Cuota del tramo {s.tramoActual}: ≈ {eur(cuotaActual)}. Cuota del tramo {tramoPara(proy.medio, tabla)}: ≈ {eur(cuotaMinima(tramoPara(proy.medio, tabla), tabla))}. Diferencia por 12 meses.</li>
                   </ol>
-                  <p className="muted small">Cálculo orientativo. Tramix no hace el trámite por ti: el cambio se pide en Import@ss.</p>
+                  <p className="muted small">Cálculo orientativo. Cuotio no hace el trámite por ti: el cambio se pide en Import@ss.</p>
                   <button className="btn" onClick={() => setSheet(null)}>Entendido</button>
                 </div>
               </div>)}

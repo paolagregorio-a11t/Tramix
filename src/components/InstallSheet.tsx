@@ -1,7 +1,7 @@
 import { useInstall } from "../install";
 import { IconClose, IconDownload, IconShare } from "./Icons";
 
-/** Explains, per platform, how to put Tramix on the home screen. No app store needed. */
+/** Explains, per platform, how to put Cuotio on the home screen. No app store needed. */
 export function InstallSheet({ onClose }: { onClose: () => void }) {
   const { platform, canPrompt, prompt, standalone } = useInstall();
   return (
@@ -9,7 +9,7 @@ export function InstallSheet({ onClose }: { onClose: () => void }) {
       <button className="isheet__bg" aria-label="Cerrar" onClick={onClose} />
       <div className="isheet__p">
         <button className="isheet__x" aria-label="Cerrar" onClick={onClose}><IconClose /></button>
-        <h2 id="inst-t">Instala Tramix en tu móvil</h2>
+        <h2 id="inst-t">Instala Cuotio en tu móvil</h2>
         <p className="isheet__lead">Se abre como una app, a pantalla completa y con su icono. Sin tiendas ni descargas.</p>
         {standalone && <p className="isheet__ok">Ya la estás usando como app.</p>}
         {canPrompt && <button className="btn isheet__go" onClick={async () => { if (await prompt()) onClose(); }}><IconDownload /> Instalar ahora</button>}

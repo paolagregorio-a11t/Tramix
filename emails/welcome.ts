@@ -7,8 +7,8 @@ const li = (t: string) => `<tr><td valign="top" style="padding:0 12px 10px 0;fon
 /** Sent right after joining the waitlist. */
 export function welcomeEmail(b: Brand): Rendered {
   const body =
-    h1("Ya estás en la lista de Tramix") +
-    p("Gracias por apuntarte. Tramix sigue tus ingresos durante el año, proyecta cómo vas a cerrarlo y te avisa <b>antes</b> de cada plazo para cambiar de tramo, para que la regularización no te pille por sorpresa.") +
+    h1("Ya estás en la lista de Cuotio") +
+    p("Gracias por apuntarte. Cuotio sigue tus ingresos durante el año, proyecta cómo vas a cerrarlo y te avisa <b>antes</b> de cada plazo para cambiar de tramo, para que la regularización no te pille por sorpresa.") +
     `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:4px 0 20px">` +
     li("<b>Apuntas</b> tus ingresos y gastos cada mes.") +
     li("<b>Ves</b> entre qué tramos vas a cerrar el año.") +
@@ -18,9 +18,9 @@ export function welcomeEmail(b: Brand): Rendered {
     button("Probar la demo", `${b.site}/#demo`) +
     p(`<span style="color:${color.muted};font-size:14px">No hace falta que hagas nada más. Te escribiremos cuando abramos, y solo entonces.</span>`);
   return {
-    subject: "Estás en la lista de Tramix",
-    html: layout({ body, brand: b, preheader: "Te avisaremos antes del lanzamiento. Mientras tanto, prueba la demo.", why: "Recibes este correo porque te apuntaste a la lista de espera de Tramix y aceptaste recibir avisos." }),
-    text: `Ya estás en la lista de Tramix\n\nGracias por apuntarte. Tramix sigue tus ingresos durante el año, proyecta cómo vas a cerrarlo y te avisa antes de cada plazo para cambiar de tramo.\n\n- Apuntas tus ingresos y gastos cada mes.\n- Ves entre qué tramos vas a cerrar el año.\n- Recibes un aviso con el tramo recomendado antes de cada plazo.\n\nPrueba la demo: ${b.site}/#demo\n\nNo hace falta que hagas nada más. Te escribiremos cuando abramos, y solo entonces.\n\nUn saludo,\n${b.senderName}\n\n--\nDarme de baja: ${b.unsubscribeUrl}\nPrivacidad: ${b.site}/#privacidad\nTramix ofrece cálculos orientativos y no constituye asesoramiento fiscal.`,
+    subject: "Estás en la lista de Cuotio",
+    html: layout({ body, brand: b, preheader: "Te avisaremos antes del lanzamiento. Mientras tanto, prueba la demo.", why: "Recibes este correo porque te apuntaste a la lista de espera de Cuotio y aceptaste recibir avisos." }),
+    text: `Ya estás en la lista de Cuotio\n\nGracias por apuntarte. Cuotio sigue tus ingresos durante el año, proyecta cómo vas a cerrarlo y te avisa antes de cada plazo para cambiar de tramo.\n\n- Apuntas tus ingresos y gastos cada mes.\n- Ves entre qué tramos vas a cerrar el año.\n- Recibes un aviso con el tramo recomendado antes de cada plazo.\n\nPrueba la demo: ${b.site}/#demo\n\nNo hace falta que hagas nada más. Te escribiremos cuando abramos, y solo entonces.\n\nUn saludo,\n${b.senderName}\n\n--\nDarme de baja: ${b.unsubscribeUrl}\nPrivacidad: ${b.site}/#privacidad\nCuotio ofrece cálculos orientativos y no constituye asesoramiento fiscal.`,
   };
 }
 

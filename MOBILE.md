@@ -1,6 +1,6 @@
 # Apps para iOS y Android
 
-Hay cuatro formas de llevar Tramix al móvil, de la más rápida a la más completa. Las dos primeras no necesitan tiendas, Mac ni Android Studio.
+Hay cuatro formas de llevar Cuotio al móvil, de la más rápida a la más completa. Las dos primeras no necesitan tiendas, Mac ni Android Studio.
 
 ## 1. Instalarla desde el navegador (PWA) · gratis · hoy mismo
 Es la opción recomendada para la demo. La web ya es una PWA: icono propio, pantalla completa y funcionamiento sin conexión.
@@ -16,7 +16,7 @@ Un APK es el archivo de instalación de Android: puedes pasarlo por WhatsApp o e
 
 1. Sube el repositorio a GitHub y, en **Settings → Secrets and variables → Actions → Variables**, crea `SITE_URL` con la dirección de tu web (`https://tu-dominio.com`).
 2. Ve a **Actions → Android APK → Run workflow**.
-3. Cuando termine (unos 5–10 minutos), descarga `tramix-debug-apk` desde la ejecución.
+3. Cuando termine (unos 5–10 minutos), descarga `cuotio-debug-apk` desde la ejecución.
 
 Es un APK de pruebas, válido para enseñarlo y probarlo, no para Google Play. El flujo está escrito pero **todavía no lo he podido ejecutar**: si un paso falla, el registro de GitHub dice cuál.
 

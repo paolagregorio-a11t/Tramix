@@ -48,7 +48,7 @@ async function handle(request: Request): Promise<Response> {
     method: "POST",
     body: JSON.stringify({
       from: c.from, to: [email], subject: mail.subject, html: mail.html, text: mail.text,
-      attachments: [{ filename: "logo.png", content: LOGO_BASE64, content_type: "image/png", content_id: "tramix-logo" }],
+      attachments: [{ filename: "logo.png", content: LOGO_BASE64, content_type: "image/png", content_id: "cuotio-logo" }],
       ...(c.replyTo ? { reply_to: c.replyTo } : {}),
       headers: { "List-Unsubscribe": `<${unsub}>`, "List-Unsubscribe-Post": "List-Unsubscribe=One-Click" },
     }),

@@ -3,7 +3,7 @@ import { POST as joinPost } from "./waitlist";
 import { GET as unsubGet, POST as unsubPost } from "./unsubscribe";
 import { sign } from "./_lib";
 
-const ENV = { RESEND_API_KEY: "re_test", RESEND_AUDIENCE_ID: "aud_1", EMAIL_FROM: "Tramix <hola@example.com>", UNSUBSCRIBE_SECRET: "s3cret", SITE_URL: "https://tramix.example", CONTACT_EMAIL: "hola@example.com" };
+const ENV = { RESEND_API_KEY: "re_test", RESEND_AUDIENCE_ID: "aud_1", EMAIL_FROM: "Cuotio <hola@example.com>", UNSUBSCRIBE_SECRET: "s3cret", SITE_URL: "https://cuotio.example", CONTACT_EMAIL: "hola@example.com" };
 const req = (body: unknown) => new Request("https://x/api/waitlist", { method: "POST", body: JSON.stringify(body) });
 let calls: { url: string; init?: RequestInit }[];
 
@@ -29,9 +29,9 @@ describe("POST /api/waitlist", () => {
     const body = JSON.parse(String(send.init!.body));
     expect(body.to).toEqual(["ana@example.com"]);
     expect(body.from).toBe(ENV.EMAIL_FROM);
-    expect(body.html).toContain("Ya estás en la lista de Tramix");
-    expect(body.html).toContain("cid:tramix-logo");
-    expect(body.attachments[0].content_id).toBe("tramix-logo");
+    expect(body.html).toContain("Ya estás en la lista de Cuotio");
+    expect(body.html).toContain("cid:cuotio-logo");
+    expect(body.attachments[0].content_id).toBe("cuotio-logo");
     expect(body.headers["List-Unsubscribe"]).toContain("/api/unsubscribe?email=ana%40example.com&t=");
   });
   it("does not email an address that is already on the list", async () => {

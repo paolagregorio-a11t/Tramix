@@ -7,7 +7,7 @@ export const TITULAR = {
   nif: "72852409R",           // NIF
   domicilio: "",     // Domicilio
   email: "paolagregoriio@gmail.com",         // Email de contacto
-  dominio: "",       // p. ej. tramix.app
+  dominio: "cuotio.es",
 };
 export const pend = (v: string) => v || "[pendiente de completar]";
 export const FECHA_LEGAL = "13 de octubre de 2026";

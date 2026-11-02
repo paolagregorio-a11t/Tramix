@@ -10,15 +10,15 @@ async function unsubscribe(request: Request): Promise<{ ok: boolean; status: num
   return { ok: res.ok || res.status === 404, status: res.ok ? 200 : res.status === 404 ? 200 : 502 };
 }
 
-const page = (title: string, msg: string, site: string) => `<!doctype html><html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tramix</title>
+const page = (title: string, msg: string, site: string) => `<!doctype html><html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cuotio</title>
 <body style="margin:0;font-family:system-ui,sans-serif;background:#0b1220;color:#fff;display:grid;place-items:center;min-height:100vh;text-align:center;padding:24px">
-<main style="max-width:420px"><h1 style="font-size:1.8rem;margin:0 0 12px">${title}</h1><p style="color:#9fb0cf;line-height:1.6">${msg}</p><p><a href="${site || "/"}" style="color:#e9b44c">Volver a Tramix</a></p></main></body></html>`;
+<main style="max-width:420px"><h1 style="font-size:1.8rem;margin:0 0 12px">${title}</h1><p style="color:#9fb0cf;line-height:1.6">${msg}</p><p><a href="${site || "/"}" style="color:#e9b44c">Volver a Cuotio</a></p></main></body></html>`;
 
 /** Link in the email footer. */
 export async function GET(request: Request): Promise<Response> {
   const r = await unsubscribe(request);
   const site = config().site;
-  const html = r.ok ? page("Te has dado de baja", "No volverás a recibir correos de Tramix. Si ha sido un error, puedes volver a apuntarte desde la web.", site)
+  const html = r.ok ? page("Te has dado de baja", "No volverás a recibir correos de Cuotio. Si ha sido un error, puedes volver a apuntarte desde la web.", site)
     : page("Enlace no válido", "No hemos podido procesar la baja. Escríbenos y la hacemos a mano.", site);
   return new Response(html, { status: r.ok ? 200 : 400, headers: { "content-type": "text/html; charset=utf-8" } });
 }

@@ -29,10 +29,10 @@ export function alertaEmail(b: Brand, d: AlertaData): Rendered {
     `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:6px 0 20px">` +
     fila("Pides el cambio antes del", esc(d.limite)) + fila("Tiene efecto el", esc(d.efecto)) + fila("Tu tramo ahora", String(d.tramoActual)) + fila("Cierre previsto", esc(d.rangoTexto)) + `</table>` +
     button("Ver el cálculo completo", d.appUrl) +
-    p(`<span style="color:${color.muted};font-size:14px">Tramix no hace el trámite por ti: el cambio se solicita en Import@ss. Cálculo orientativo.</span>`);
+    p(`<span style="color:${color.muted};font-size:14px">Cuotio no hace el trámite por ti: el cambio se solicita en Import@ss. Cálculo orientativo.</span>`);
   return {
     subject: `Plazo en ${d.dias} días: ${titulo.toLowerCase()}`,
-    html: layout({ body, brand: b, preheader: `Pide el cambio antes del ${d.limite}. ${titulo}.`, why: "Recibes este aviso porque activaste las alertas de cambio de tramo en Tramix." }),
-    text: `Plazo en ${d.dias} días\n\n${titulo}\n${frase.replace(/<[^>]+>/g, "")}\n\nPides el cambio antes del ${d.limite} (efecto: ${d.efecto}).\nTu tramo ahora: ${d.tramoActual}. Cierre previsto: ${d.rangoTexto}.\n\nCálculo completo: ${d.appUrl}\n\nTramix no hace el trámite por ti: el cambio se solicita en Import@ss. Cálculo orientativo.\n\n--\nDarme de baja: ${b.unsubscribeUrl}`,
+    html: layout({ body, brand: b, preheader: `Pide el cambio antes del ${d.limite}. ${titulo}.`, why: "Recibes este aviso porque activaste las alertas de cambio de tramo en Cuotio." }),
+    text: `Plazo en ${d.dias} días\n\n${titulo}\n${frase.replace(/<[^>]+>/g, "")}\n\nPides el cambio antes del ${d.limite} (efecto: ${d.efecto}).\nTu tramo ahora: ${d.tramoActual}. Cierre previsto: ${d.rangoTexto}.\n\nCálculo completo: ${d.appUrl}\n\nCuotio no hace el trámite por ti: el cambio se solicita en Import@ss. Cálculo orientativo.\n\n--\nDarme de baja: ${b.unsubscribeUrl}`,
   };
 }

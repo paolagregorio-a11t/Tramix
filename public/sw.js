@@ -1,5 +1,5 @@
 // Minimal offline support: the app shell works without a connection once visited.
-const CACHE = "tramix-v1";
+const CACHE = "cuotio-v1";
 self.addEventListener("install", (e) => { self.skipWaiting(); });
 self.addEventListener("activate", (e) => {
   e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim()));

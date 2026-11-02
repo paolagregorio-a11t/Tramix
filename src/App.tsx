@@ -53,7 +53,7 @@ function Home() {
     <>
       <header className={`nav ${scrolled ? "nav--solid" : ""}`}>
         <div className="container nav__in">
-          <a href="/" aria-label="Tramix, inicio"><Logo tone={scrolled ? "dark" : "light"} /></a>
+          <a href="/" aria-label="Cuotio, inicio"><Logo tone={scrolled ? "dark" : "light"} /></a>
           <nav>
             <a href="#corto">El corto</a>
             <a href="#demo">Probar la demo</a>
@@ -78,7 +78,7 @@ function Home() {
                 <Words text="Elige tu tramo" /><br />
                 <span className="hl"><Words text="a tiempo." base={0.35} /></span>
               </h1>
-              <p className="hero__lead">Tramix sigue tus ingresos, proyecta cómo cierras el año y te avisa <b>antes</b> de cada plazo para cambiar de tramo.</p>
+              <p className="hero__lead">Cuotio sigue tus ingresos, proyecta cómo cierras el año y te avisa <b>antes</b> de cada plazo para cambiar de tramo.</p>
               <Waitlist id="wl-hero" />
               <a className="hero__demo" href="#demo">Probar la demo interactiva →</a>
               <p className="hero__fine">Sin tarjeta · Sin spam · Te das de baja cuando quieras</p>
@@ -112,7 +112,7 @@ function Home() {
         {/* FOTO vs PELÍCULA */}
         <section className="versus">
           <div className="container">
-            <Reveal><h2>Una calculadora te da una <span className="strike">foto</span>.<br />Tramix te da <em>la película.</em></h2></Reveal>
+            <Reveal><h2>Una calculadora te da una <span className="strike">foto</span>.<br />Cuotio te da <em>la película.</em></h2></Reveal>
             <div className="vs-grid" ref={lineRef}>
               <Reveal className="vs vs--old">
                 <h3>Calculadora de cuota</h3>
@@ -120,7 +120,7 @@ function Home() {
                 <svg viewBox="0 0 240 90" aria-hidden="true"><circle cx="120" cy="45" r="8" fill="currentColor" /></svg>
               </Reveal>
               <Reveal className="vs vs--new" delay={0.12}>
-                <h3>Tramix</h3>
+                <h3>Cuotio</h3>
                 <p>Sigue tus ingresos reales, proyecta el año y te avisa justo cuando toca moverse.</p>
                 <svg viewBox="0 0 240 90" aria-hidden="true">
                   <path className={`draw ${lineSeen ? "go" : ""}`} d="M6 78 C 50 74, 70 58, 110 50 S 170 24, 220 12" pathLength="1" />
@@ -137,8 +137,8 @@ function Home() {
             <Reveal><span className="kicker kicker--ink">Qué hace por ti</span></Reveal>
             <Reveal delay={0.05}><h2>Todo lo que te quita el miedo al <em>31 de octubre.</em></h2></Reveal>
             <div className="feat__grid">
-              <Reveal className="fc fc--big fc--navy"><div className="viz viz--bars" aria-hidden="true">{[40, 62, 48, 80, 70, 95].map((h, i) => <i key={i} style={{ ["--h" as string]: `${h}%`, ["--i" as string]: i }} />)}</div><h3>Seguimiento mensual</h3><p>Apuntas ingresos y gastos en 30 segundos. Tramix hace el resto.</p></Reveal>
-              <Reveal className="fc fc--big fc--paper" delay={0.08}><div className="viz viz--toggle" aria-hidden="true"><span><i /></span> Tú decides</div><h3>Tú tienes el control</h3><p>Tramix no hace el trámite por ti ni te pide tu certificado digital.</p></Reveal>
+              <Reveal className="fc fc--big fc--navy"><div className="viz viz--bars" aria-hidden="true">{[40, 62, 48, 80, 70, 95].map((h, i) => <i key={i} style={{ ["--h" as string]: `${h}%`, ["--i" as string]: i }} />)}</div><h3>Seguimiento mensual</h3><p>Apuntas ingresos y gastos en 30 segundos. Cuotio hace el resto.</p></Reveal>
+              <Reveal className="fc fc--big fc--paper" delay={0.08}><div className="viz viz--toggle" aria-hidden="true"><span><i /></span> Tú decides</div><h3>Tú tienes el control</h3><p>Cuotio no hace el trámite por ti ni te pide tu certificado digital.</p></Reveal>
               <Reveal className="fc fc--gold" delay={0.08}><div className="viz viz--bell" aria-hidden="true"><span><Bell size={64} /></span><i /><i /></div><h3>Avisos antes de cada ventana</h3><p>Hasta 6 cambios de base al año, cada uno con su fecha límite.</p></Reveal>
               <Reveal className="fc fc--coral" delay={0.16}><div className="viz viz--line" aria-hidden="true"><svg viewBox="0 0 200 80"><path d="M4 70 C 40 66, 60 40, 100 34 S 160 12, 196 6" pathLength="1" /></svg></div><h3>Proyección en rango</h3><p>Ves entre qué tramos cierras el año, con el cálculo desglosado.</p></Reveal>
               <Reveal className="fc fc--ink" delay={0.08}><div className="viz viz--check" aria-hidden="true">{["Elige tramo", "Entra en Import@ss", "Confirma"].map((x, i) => <span key={x} style={{ ["--i" as string]: i }}><i>✓</i>{x}</span>)}</div><h3>Guía paso a paso</h3><p>Te decimos qué tramo elegir y cómo cambiarlo, sin perderte.</p></Reveal>
@@ -176,7 +176,7 @@ function Home() {
             <div>
               <Reveal><span className="kicker">Beta abierta</span></Reveal>
               <Reveal delay={0.05}><h2 id="beta-title" style={{ marginTop: 16 }}>Buscamos autónomos que quieran <em>probarlo</em>.</h2></Reveal>
-              <Reveal delay={0.1}><p className="beta__lead">Estamos construyendo Tramix con quienes lo van a usar. Prueba la demo, cuéntanos qué cambiarías y te avisamos en cuanto puedas usarlo con tus datos.</p></Reveal>
+              <Reveal delay={0.1}><p className="beta__lead">Estamos construyendo Cuotio con quienes lo van a usar. Prueba la demo, cuéntanos qué cambiarías y te avisamos en cuanto puedas usarlo con tus datos.</p></Reveal>
             </div>
             <Reveal delay={0.12} className="beta__steps">
               <ol>
@@ -194,7 +194,7 @@ function Home() {
           <div className="container">
             <Reveal><h2 id="faq-title">Preguntas <em>frecuentes</em></h2></Reveal>
             <div className="faq__list">
-              <details><summary>¿Tramix presenta los trámites por mí?</summary><p>No. Te decimos qué tramo conviene y cómo cambiarlo paso a paso en Import@ss, pero el trámite lo haces tú. Por eso no necesitamos tu certificado digital.</p></details>
+              <details><summary>¿Cuotio presenta los trámites por mí?</summary><p>No. Te decimos qué tramo conviene y cómo cambiarlo paso a paso en Import@ss, pero el trámite lo haces tú. Por eso no necesitamos tu certificado digital.</p></details>
               <details><summary>¿Los cálculos son oficiales?</summary><p>Son orientativos. Se basan en lo que introduces y en las tablas de tramos de cada año, y no sustituyen el consejo de un gestor ni la información de la Seguridad Social.</p></details>
               <details><summary>¿Qué hacéis con mis datos?</summary><p>De momento solo guardamos tu email si te apuntas a la lista de espera, con tu consentimiento y para avisarte del lanzamiento. Los datos de la demo se quedan en tu navegador. Puedes leer los detalles en la <a href="#privacidad">política de privacidad</a>.</p></details>
               <details><summary>¿Cuándo estará disponible?</summary><p>Estamos preparando la primera versión. Quien se apunte a la lista recibirá un aviso antes que nadie, sin enviarte nada más mientras tanto.</p></details>
@@ -230,7 +230,7 @@ function Home() {
         <div className="container footer__in">
           <Logo size={26} tone="light" />
           <nav className="footer__links" aria-label="Legal"><a href="#aviso-legal">Aviso legal</a><a href="#privacidad">Privacidad</a><a href="#cookies">Cookies</a><a href="#contacto">Contacto</a><button type="button" onClick={() => setInst(true)}>Instalar en el móvil</button></nav>
-          <p>Cálculos orientativos; no es asesoramiento fiscal. © {new Date().getFullYear()} Tramix</p>
+          <p>Cálculos orientativos; no es asesoramiento fiscal. © {new Date().getFullYear()} Cuotio</p>
         </div>
       </footer>
       {inst && <InstallSheet onClose={() => setInst(false)} />}

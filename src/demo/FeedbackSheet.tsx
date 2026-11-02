@@ -27,7 +27,7 @@ export function FeedbackSheet({ onClose }: { onClose: () => void }) {
       <div className="sheet__p">
         <div className="sheet__h"><h2>{st === "done" ? "¡Gracias!" : "¿Qué te parece?"}</h2><button className="iconbtn" aria-label="Cerrar" onClick={onClose}><IconClose /></button></div>
         {st === "done" ? (<>
-          <p className="muted">{PREVIEW ? "Vista previa: en la web publicada, tu opinión nos llegaría por correo." : "Tu opinión nos ha llegado. Nos ayuda muchísimo a mejorar Tramix."}</p>
+          <p className="muted">{PREVIEW ? "Vista previa: en la web publicada, tu opinión nos llegaría por correo." : "Tu opinión nos ha llegado. Nos ayuda muchísimo a mejorar Cuotio."}</p>
           <button className="btn" onClick={onClose}><IconCheck /> Volver a la demo</button>
         </>) : (<>
           <div className="fb__faces" role="radiogroup" aria-label="Valoración de 1 a 5">

@@ -20,7 +20,7 @@ function Reveal({ text, onDone }: { text: string; onDone: () => void }) {
 }
 
 export function Assistant({ data, context }: { data: AssistantData; context: Record<string, unknown> }) {
-  const [msgs, setMsgs] = useState<Msg[]>([{ role: "bot", text: "Hola, soy el asistente de Tramix. Te explico tus números con tus propios datos. ¿Qué quieres saber?" }]);
+  const [msgs, setMsgs] = useState<Msg[]>([{ role: "bot", text: "Hola, soy el asistente de Cuotio. Te explico tus números con tus propios datos. ¿Qué quieres saber?" }]);
   const [busy, setBusy] = useState(false);
   const end = useRef<HTMLDivElement>(null);
   useEffect(() => { end.current?.scrollIntoView({ block: "end", behavior: "smooth" }); }, [msgs, busy]);

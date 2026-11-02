@@ -2,14 +2,14 @@ import { describe, expect, it } from "vitest";
 import { alertaEmail } from "./alerta";
 import { welcomeEmail } from "./welcome";
 
-const brand = { site: "https://tramix.example", unsubscribeUrl: "https://tramix.example/api/unsubscribe?x=1", contactEmail: "hola@tramix.example", senderName: "El equipo de Tramix" };
-const data = { dias: 18, limite: "31 de octubre", efecto: "1 de noviembre", tramoActual: 7, tramoObjetivo: 10, rangoTexto: "tramo 9–10", importe: 1100, accion: "subir" as const, appUrl: "https://tramix.example/#demo" };
+const brand = { site: "https://cuotio.example", unsubscribeUrl: "https://cuotio.example/api/unsubscribe?x=1", contactEmail: "hola@cuotio.example", senderName: "El equipo de Cuotio" };
+const data = { dias: 18, limite: "31 de octubre", efecto: "1 de noviembre", tramoActual: 7, tramoObjetivo: 10, rangoTexto: "tramo 9–10", importe: 1100, accion: "subir" as const, appUrl: "https://cuotio.example/#demo" };
 
 describe("emails", () => {
   it("welcome has subject, brand logo, unsubscribe link and a plain-text part", () => {
     const m = welcomeEmail(brand);
-    expect(m.subject).toBe("Estás en la lista de Tramix");
-    expect(m.html).toContain("https://tramix.example/email/logo.png");
+    expect(m.subject).toBe("Estás en la lista de Cuotio");
+    expect(m.html).toContain("https://cuotio.example/email/logo.png");
     expect(m.html).toContain(brand.unsubscribeUrl);
     expect(m.text).toContain(brand.unsubscribeUrl);
     expect(m.html).not.toMatch(/undefined|\[object/);

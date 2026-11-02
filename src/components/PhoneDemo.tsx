@@ -17,7 +17,7 @@ export function PhoneDemo() {
   const total = INCOME.slice(0, shown).reduce((a, b) => a + b, 0);
 
   return (
-    <div className="phone" aria-label="Demostración animada de la app Tramix, con datos de ejemplo" role="img">
+    <div className="phone" aria-label="Demostración animada de la app Cuotio, con datos de ejemplo" role="img">
       <div className="phone__notch" />
       <div className="phone__screen">
         <div className="ph-top">
@@ -44,7 +44,7 @@ export function PhoneDemo() {
         <div className="ph-card">Ingresos de este mes <b className="num">{INCOME[Math.max(0, shown - 1)].toLocaleString("es-ES")} €</b></div>
         <div className="ph-notif" style={{ opacity: alertP, transform: `translateY(${(1 - alertP) * -30}px) scale(${0.95 + alertP * 0.05})` }}>
           <span className="bell"><Bell size={22} /></span>
-          <p><b>Tramix</b> Cambia a <u>tramo 9</u> antes del 31 dic y evitas ~<b>1.100 €</b></p>
+          <p><b>Cuotio</b> Cambia a <u>tramo 9</u> antes del 31 dic y evitas ~<b>1.100 €</b></p>
         </div>
         <div className="ph-done" style={{ opacity: doneP, transform: `scale(${0.8 + doneP * 0.2})` }}>✓ Hecho. Sin sorpresas.</div>
       </div>

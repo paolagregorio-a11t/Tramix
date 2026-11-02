@@ -22,7 +22,7 @@ const rango = (p: Proyeccion) => (p.tramoBajo === p.tramoAlto ? `tramo ${p.tramo
 export function respuestaLocal(k: (typeof SUGERENCIAS)[number]["k"], d: AssistantData): string {
   const { proy, rec } = d;
   if (k === "when") return `El próximo plazo termina el ${d.limite}. Quedan ${d.dias} días, y el cambio tendría efecto el ${d.efecto}. Hay seis ventanas al año, así que si lo dejas pasar, la siguiente llega en dos meses.`;
-  if (k === "how") return "El cambio lo pides tú desde Import@ss, el portal de la Seguridad Social: entras con certificado digital o Cl@ve, vas a la opción de cambio de base de cotización del RETA, eliges la nueva base dentro de tu tramo y confirmas. Tramix no lo hace por ti ni te pide tus claves. Los nombres exactos del menú pueden cambiar.";
+  if (k === "how") return "El cambio lo pides tú desde Import@ss, el portal de la Seguridad Social: entras con certificado digital o Cl@ve, vas a la opción de cambio de base de cotización del RETA, eliges la nueva base dentro de tu tramo y confirmas. Cuotio no lo hace por ti ni te pide tus claves. Los nombres exactos del menú pueden cambiar.";
   if (!proy || !rec) return "Añade al menos un mes en la pestaña Meses y podré calcularlo con tus datos.";
   if (k === "why") {
     const base = `Con tus ${d.meses} meses registrados, tu rendimiento medio previsto para este año es de ${eur(proy.bajo)} a ${eur(proy.alto)} al mes, lo que encaja en ${rango(proy)}. Hoy pagas el tramo ${d.tramoActual}.`;

@@ -10,7 +10,7 @@ const mark = (s = "#8fa6d8", m = "#fff") =>
 const jobs = [
   // Email header logo: light wordmark for the navy header (rendered at 2x, shown at ~140px wide)
   { file: "email/logo.png", w: 560, h: 136, transparent: true,
-    html: `<div style="display:flex;align-items:center;gap:22px;height:136px;font:800 96px Manrope,system-ui;color:#fff;letter-spacing:-5px"><svg width="104" height="104" viewBox="0 0 64 64">${mark()}</svg>tramix</div>` },
+    html: `<div style="display:flex;align-items:center;gap:22px;height:136px;font:800 96px Manrope,system-ui;color:#fff;letter-spacing:-5px"><svg width="104" height="104" viewBox="0 0 64 64">${mark()}</svg>cuotio</div>` },
   // App icons: navy tile with the steps
   ...[[512, "icons/icon-512.png"], [192, "icons/icon-192.png"], [180, "icons/apple-touch-icon.png"]].map(([n, f]) => ({
     file: f, w: n, h: n,
@@ -20,7 +20,7 @@ const jobs = [
     html: `<svg width="512" height="512" viewBox="0 0 64 64"><rect width="64" height="64" fill="#0b1220"/><g transform="translate(12.8 12.8) scale(.6)">${mark()}</g></svg>` },
   // Social share image
   { file: "og-image.png", w: 1200, h: 630,
-    html: `<div style="width:1200px;height:630px;background:radial-gradient(120% 120% at 15% 0%,#1d3160,#0b1220 60%);color:#fff;font-family:Manrope,system-ui;display:flex;flex-direction:column;justify-content:center;padding:0 90px;box-sizing:border-box;gap:30px"><div style="display:flex;align-items:center;gap:20px;font:800 56px Manrope;letter-spacing:-3px"><svg width="64" height="64" viewBox="0 0 64 64">${mark()}</svg>tramix</div><div style="font:800 96px/1 Manrope;letter-spacing:-4px">Elige tu tramo<br><span style="color:#e9b44c">a tiempo.</span></div><div style="font:500 30px Manrope;color:#9fb0cf;max-width:800px">Seguimiento, proyección y avisos antes de cada plazo de cambio de base.</div></div>` },
+    html: `<div style="width:1200px;height:630px;background:radial-gradient(120% 120% at 15% 0%,#1d3160,#0b1220 60%);color:#fff;font-family:Manrope,system-ui;display:flex;flex-direction:column;justify-content:center;padding:0 90px;box-sizing:border-box;gap:30px"><div style="display:flex;align-items:center;gap:20px;font:800 56px Manrope;letter-spacing:-3px"><svg width="64" height="64" viewBox="0 0 64 64">${mark()}</svg>cuotio</div><div style="font:800 96px/1 Manrope;letter-spacing:-4px">Elige tu tramo<br><span style="color:#e9b44c">a tiempo.</span></div><div style="font:500 30px Manrope;color:#9fb0cf;max-width:800px">Seguimiento, proyección y avisos antes de cada plazo de cambio de base.</div></div>` },
 ];
 
 (async () => {

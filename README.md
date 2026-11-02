@@ -1,4 +1,4 @@
-# Tramix
+# Cuotio
 
 Seguimiento de ingresos, proyección y avisos antes de cada plazo para cambiar de tramo de autónomo.
 
@@ -6,7 +6,7 @@ Seguimiento de ingresos, proyección y avisos antes de cada plazo para cambiar d
 - **Motor de cálculo:** `src/engine/` (puro y con tests). Las tablas de tramos viven en `src/engine/tramos.ts`, versionadas por año.
 - **Lista de espera y emails:** `api/` (funciones serverless) + `emails/` (plantillas con la marca), con Resend.
 - **Apps móviles:** PWA incluida; iOS/Android con Capacitor (ver [MOBILE.md](MOBILE.md)).
-- **Puesta en marcha:** [DEPLOY.md](DEPLOY.md). **Marca:** [BRAND.md](BRAND.md).
+- **Puesta en marcha:** [DEPLOY.md](DEPLOY.md) y [DNS.md](DNS.md). **Marca:** [BRAND.md](BRAND.md), [MARCA.md](MARCA.md).
 
 ```
 npm install

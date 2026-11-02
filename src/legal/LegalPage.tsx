@@ -19,9 +19,9 @@ const pages: Record<LegalKey, { title: string; body: ReactNode }> = {
           <li><b>Email:</b> {pend(TITULAR.email)}</li>
         </ul>
         <h2>Naturaleza del servicio</h2>
-        <p>Tramix ofrece herramientas de cálculo y avisos <b>orientativos</b> sobre la base de cotización de trabajadores autónomos. La información no constituye asesoramiento fiscal, laboral ni jurídico. Las cifras dependen de los datos que introduce el usuario y de las tablas oficiales vigentes, que pueden cambiar. Antes de tomar una decisión conviene contrastarla con la Seguridad Social o con un profesional.</p>
+        <p>Cuotio ofrece herramientas de cálculo y avisos <b>orientativos</b> sobre la base de cotización de trabajadores autónomos. La información no constituye asesoramiento fiscal, laboral ni jurídico. Las cifras dependen de los datos que introduce el usuario y de las tablas oficiales vigentes, que pueden cambiar. Antes de tomar una decisión conviene contrastarla con la Seguridad Social o con un profesional.</p>
         <h2>Propiedad intelectual</h2>
-        <p>Los contenidos, el diseño, el nombre y el logotipo de Tramix pertenecen al titular. Queda prohibida su reproducción sin autorización.</p>
+        <p>Los contenidos, el diseño, el nombre y el logotipo de Cuotio pertenecen al titular. Queda prohibida su reproducción sin autorización.</p>
         <h2>Limitación de responsabilidad</h2>
         <p>El titular no responde de las decisiones adoptadas a partir de los cálculos mostrados ni de posibles errores u omisiones en la información, que se ofrece tal cual y con fines informativos.</p>
       </>
@@ -35,7 +35,7 @@ const pages: Record<LegalKey, { title: string; body: ReactNode }> = {
         <p>{pend(TITULAR.nombre)} · NIF {pend(TITULAR.nif)} · {pend(TITULAR.domicilio)} · {pend(TITULAR.email)}</p>
         <h2>Qué datos tratamos y para qué</h2>
         <ul>
-          <li><b>Email de la lista de espera.</b> Para avisarte del lanzamiento de Tramix y enviarte el correo de bienvenida. Base jurídica: tu consentimiento (art. 6.1.a RGPD).</li>
+          <li><b>Email de la lista de espera.</b> Para avisarte del lanzamiento de Cuotio y enviarte el correo de bienvenida. Base jurídica: tu consentimiento (art. 6.1.a RGPD).</li>
           <li><b>Datos introducidos en la demo.</b> Se guardan únicamente en tu navegador (almacenamiento local) y no se envían a ningún servidor.</li>
           <li><b>Preguntas al asistente.</b> Si escribes una pregunta libre, se envía junto con unas cifras agregadas (tramo, rendimiento mensual previsto, plazo) a un proveedor de modelos de inteligencia artificial para generar la respuesta. No enviamos tu email ni datos que te identifiquen; no escribas datos personales en la pregunta. Base jurídica: tu iniciativa al usar la función.</li>
         </ul>
@@ -68,7 +68,7 @@ export function LegalPage({ page }: { page: LegalKey }) {
   return (
     <div className="legal">
       <header className="container legal__top">
-        <a href="#" aria-label="Tramix, inicio"><Logo tone="dark" /></a>
+        <a href="#" aria-label="Cuotio, inicio"><Logo tone="dark" /></a>
         <a href="#" className="legal__back">← Volver</a>
       </header>
       <main className="container legal__main">

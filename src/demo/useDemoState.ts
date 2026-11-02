@@ -15,7 +15,7 @@ export const EJEMPLO: DemoState = {
   avisos: [true, true, true, true, true, true],
 };
 
-const KEY = "tramix-demo-v1";
+const KEY = "cuotio-demo-v1";
 
 export function useDemoState() {
   const [state, setState] = useState<DemoState>(() => {

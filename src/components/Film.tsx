@@ -9,7 +9,7 @@ const TOTAL = 32000;
 const SC = [
   { at: 0, name: "El aviso", sub: "31 de octubre. Llega la carta." },
   { at: 6000, name: "El giro", sub: "¿Y si lo hubieras visto venir?" },
-  { at: 11000, name: "Tramix", sub: "Apuntas, y la proyección aparece sola." },
+  { at: 11000, name: "Cuotio", sub: "Apuntas, y la proyección aparece sola." },
   { at: 19000, name: "El aviso bueno", sub: "Te avisamos antes del plazo." },
   { at: 25000, name: "Final", sub: "Tramo 9. Sin sorpresas." },
 ] as const;
@@ -44,7 +44,7 @@ export function Film({ active }: { active: boolean }) {
   const s4 = t - 25000;
 
   return (
-    <div className="film" role="region" aria-label="Cortometraje animado de Tramix, con datos de ejemplo">
+    <div className="film" role="region" aria-label="Cortometraje animado de Cuotio, con datos de ejemplo">
       <div className="film__stage">
         {/* S0: la carta */}
         <div className="layer" style={{ opacity: w0 }}>
@@ -70,7 +70,7 @@ export function Film({ active }: { active: boolean }) {
         <div className="layer" style={{ opacity: w2 }}>
           <div className="s2-head" style={{ opacity: ease(prog(s2, 0, 500)), transform: `scale(${0.6 + ease(prog(s2, 0, 700)) * 0.4})` }}>
             <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="36" width="14" height="20" rx="4" fill="#8fa6d8" /><rect x="25" y="22" width="14" height="34" rx="4" fill="#fff" /><rect x="44" y="8" width="14" height="48" rx="4" fill="#e9b44c" /></svg>
-            <span>tramix</span>
+            <span>cuotio</span>
           </div>
           <div className="s2-chart">
             {MONTHS.map((m, i) => {
@@ -91,7 +91,7 @@ export function Film({ active }: { active: boolean }) {
         <div className="layer" style={{ opacity: w3 }}>
           <div className="notif-xl" style={{ transform: `translateY(${(1 - ease(prog(s3, 300, 1000))) * -160}px)`, opacity: ease(prog(s3, 300, 800)) }}>
             <span className="bell" style={{ animation: s3 > 1000 ? "ring .6s ease-in-out 3" : "none" }}><Bell size={64} /></span>
-            <div><small>TRAMIX · AHORA</small><p>Plazo en <b>12 días</b>. Cambia a <u>tramo 9</u> y evitas unos <b>1.100 €</b>.</p></div>
+            <div><small>CUOTIO · AHORA</small><p>Plazo en <b>12 días</b>. Cambia a <u>tramo 9</u> y evitas unos <b>1.100 €</b>.</p></div>
           </div>
           <ul className="todo">
             {["Elige el tramo 9", "Entra en Import@ss", "Confirma el cambio"].map((x, i) => (

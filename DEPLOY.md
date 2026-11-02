@@ -3,12 +3,12 @@
 Todo lo que necesita cuentas tuyas. Tiempo estimado: 30–40 minutos.
 
 ## 1. Dominio
-Compra el dominio elegido (por ejemplo `tramix.app`) **después** de comprobarlo en el localizador de la OEPM y en TMview.
+`cuotio.es` ya está comprado. Los registros DNS que hay que añadir están en [DNS.md](DNS.md).
 
 ## 2. Resend (envío de emails)
 1. Crea una cuenta en [resend.com](https://resend.com) (el plan gratuito cubre 3.000 emails/mes).
-2. **Domains → Add Domain**, y añade en tu DNS los registros SPF, DKIM y DMARC que te indica. Espera a que aparezca como *Verified*. Sin esto, los correos no llegan a otras personas.
-3. **Audiences → Create Audience** ("Lista de espera"). Copia su ID.
+2. `cuotio.es` ya está dado de alta en Resend (región UE). Añade en tu DNS los registros de [DNS.md](DNS.md) y pulsa *Verify*. Sin esto, los correos no llegan a otras personas.
+3. La *Audience* "General" ya existe y es la que usa la lista de espera.
 4. **API Keys → Create** con permiso **Full access**. Una clave de solo envío (*Sending access*) no sirve: la lista de espera necesita gestionar contactos y daría error. Copia la clave.
 
 ## 3. Vercel (alojamiento)
