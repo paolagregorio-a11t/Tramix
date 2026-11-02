@@ -1,4 +1,4 @@
-.legal { min-height: 100vh; background: var(--paper); color: var(--ink); }
+.legal { min-height: 100vh; border-top: env(safe-area-inset-top, 0px) solid var(--navy); background: var(--paper); color: var(--ink); }
 .legal__top { display: flex; align-items: center; justify-content: space-between; padding-block: 24px; }
 .legal__top a { text-decoration: none; }
 .legal__back { font-weight: 700; color: var(--steel); }

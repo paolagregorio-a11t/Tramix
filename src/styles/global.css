@@ -26,3 +26,8 @@ a { color: inherit; }
 .reveal.in { transform: none; }
 
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } .reveal { transform: none; } }
+/* Keep the gentle ambient loops (ticker, floating phone) even with reduced motion: slow, small, no entrance effects. */
+@media (prefers-reduced-motion: reduce) {
+  .tick > div { animation: scroll 90s linear infinite !important; }
+  .phone { animation: bob 8s ease-in-out infinite !important; }
+}
