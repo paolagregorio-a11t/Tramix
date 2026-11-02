@@ -2,31 +2,36 @@
 
 Las imágenes están en esta misma carpeta. Todas las cifras salen de la tabla oficial de 2026 (Orden PJC/297/2026, BOE).
 
-## Instagram · perfil
-- **Usuario:** @cuotio (o @cuotio.es / @cuotio_app si está cogido)
-- **Nombre:** Cuotio · Cuota de autónomo
-- **Foto:** `perfil-instagram-1080.png`
-- **Biografía:**
+## Instagram · perfil (@cuotio.es)
+- **Nombre** (sale en búsquedas, máx. 30): `Cuotio · Cuota de autónomo`
+- **Biografía** (133/150 caracteres):
   > Tu cuota de autónomo, sin sorpresas 📊
-  > Calcula tu tramo y evita la regularización
-  > Avisos antes de cada plazo 🔔
-  > 👇 Prueba la demo gratis
-- **Enlace:** https://cuotio.es
+  > Calcula tu tramo y evita sustos en la regularización
+  > 🔔 Avisos antes de cada plazo
+  > 👇 Demo gratis
+- **Enlace:** https://cuotio.es/demo
+- **Categoría:** Software (o "Producto/servicio" o "Finanzas")
+- **Foto:** `perfil-instagram-1080.png`
+- **Destacadas sugeridas:** "Tramos", "Regularización", "Plazos", "Demo"
 
-## LinkedIn · página de empresa
-- **Nombre:** Cuotio
-- **URL:** linkedin.com/company/cuotio
-- **Sitio web:** https://cuotio.es
-- **Sector:** Desarrollo de software (o Servicios financieros)
-- **Tamaño:** 0-1 empleados · **Tipo:** Empresa privada (o Autónomo)
+## LinkedIn · página de empresa (linkedin.com/company/cuotio)
+- **Eslogan** (107/120): Elige tu tramo de autónomo a tiempo. Seguimiento de ingresos, proyección y avisos para autónomos en España.
+- **Sitio web:** https://cuotio.es · **Sector:** Servicios financieros · **Tipo:** De financiación privada · **Tamaño:** 0-1 empleados
 - **Logo:** `linkedin-logo-400.png` · **Portada:** `linkedin-banner-1128x191.png`
-- **Eslogan:** Elige tu tramo de autónomo a tiempo.
-- **Descripción ("Acerca de"):**
-  > Cuotio ayuda a los autónomos en España a pagar la cuota justa. Sigue tus ingresos durante el año, calcula entre qué tramos de cotización vas a cerrar y te avisa antes de cada plazo para cambiar tu base, para que la regularización de la Seguridad Social no te pille por sorpresa.
+- **Botón personalizado:** "Visitar sitio web" → https://cuotio.es/demo
+- **Acerca de:**
+  > Cuotio ayuda a los autónomos en España a pagar la cuota justa a la Seguridad Social.
   >
-  > Además, ofrecemos calculadoras gratuitas de cuota, tramos y regularización con la tabla oficial del BOE.
+  > Desde 2023 se cotiza por ingresos reales: eliges un tramo según lo que crees que vas a ganar y, al final, la Seguridad Social regulariza. Si te quedaste corto, te reclama la diferencia de golpe; si te pasaste, has pagado de más todo el año.
   >
-  > Estamos en beta abierta: prueba la demo en cuotio.es/demo y cuéntanos qué te parece.
+  > Cuotio sigue tus ingresos mes a mes, te dice entre qué tramos vas a cerrar el año y te avisa antes de cada uno de los seis plazos para cambiar tu base de cotización. Puedes subir el extracto del banco o tus facturas y se rellena solo, y un asistente te explica tus números con tus propios datos.
+  >
+  > En cuotio.es también encontrarás calculadoras gratuitas de cuota, tramos 2026 y regularización, con la tabla oficial del BOE.
+  >
+  > Estamos en beta abierta. Prueba la demo en cuotio.es/demo y cuéntanos qué te parece.
+  >
+  > Cálculos orientativos; Cuotio no sustituye el asesoramiento de un profesional.
+- **Especialidades:** cuota de autónomos, tramos de cotización, regularización RETA, cambio de base de cotización, autónomos, fintech
 
 ### Primer post en LinkedIn (desde tu perfil personal, y compártelo desde la página)
 > Llevo semanas construyendo algo que me habría gustado tener: **Cuotio** 🚀
