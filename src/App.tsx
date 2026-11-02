@@ -3,7 +3,8 @@ import { Logo } from "./components/Logo";
 import { PhoneDemo } from "./components/PhoneDemo";
 import { Film } from "./components/Film";
 import { Waitlist } from "./components/Waitlist";
-import { Bell, IconDownload } from "./components/Icons";
+import { Bell, IconDownload, IconInstagram, IconLinkedIn } from "./components/Icons";
+import { SOCIAL } from "./social";
 import { InstallSheet } from "./components/InstallSheet";
 import { ContactForm } from "./components/ContactForm";
 import { useMeta } from "./seo";
@@ -257,7 +258,7 @@ function Home() {
 
       <footer className="footer">
         <div className="container footer__in">
-          <Logo size={26} tone="light" />
+          <div className="footer__brand"><Logo size={26} tone="light" /><span className="social"><a href={SOCIAL.linkedin} target="_blank" rel="noopener" aria-label="Cuotio en LinkedIn"><IconLinkedIn /></a><a href={SOCIAL.instagram} target="_blank" rel="noopener" aria-label="Cuotio en Instagram"><IconInstagram /></a></span></div>
           <nav className="footer__links" aria-label="Legal"><a href={href("/cuota-autonomo")}>Calculadora de cuota</a><a href={href("/tramos-autonomos-2026")}>Tramos 2026</a><a href={href("/regularizacion-cuota-autonomos")}>Regularización</a><a href={href("/cambio-base-cotizacion")}>Cambio de base</a><a href={href("/aviso-legal")}>Aviso legal</a><a href={href("/privacidad")}>Privacidad</a><a href={href("/cookies")}>Cookies</a><a href="#contacto">Contacto</a><button type="button" onClick={() => setInst(true)}>Instalar en el móvil</button></nav>
           <p>Cálculos orientativos; no es asesoramiento fiscal. © {new Date().getFullYear()} Cuotio</p>
         </div>

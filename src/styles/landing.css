@@ -294,3 +294,9 @@ main { overflow-x: clip; }
 .consent--dark { color: var(--ink); opacity: .8; } .consent--dark a { color: var(--steel); }
 .cform__err { color: #c2503f; font-weight: 600; }
 .cform__ok { display: flex; align-items: center; gap: 12px; padding: 18px 20px; border-radius: 18px; background: #e8f6f0; color: #1d6b4f; font-weight: 700; }
+
+.footer__brand { display: flex; align-items: center; gap: 18px; }
+.social { display: inline-flex; gap: 10px; margin-top: 4px; }
+.social a { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,.08); color: #fff; transition: background .2s; }
+.social a:hover { background: var(--gold); color: #1a1405; }
+.social a:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }

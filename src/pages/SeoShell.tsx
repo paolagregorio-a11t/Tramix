@@ -5,6 +5,8 @@ import type { RouteDef } from "../routes";
 import { cuotaXPath } from "../routes";
 import type { QA } from "./faq";
 import { num0 } from "./format";
+import { SOCIAL } from "../social";
+import { IconInstagram, IconLinkedIn } from "../components/Icons";
 import "../styles/pages.css";
 
 export function SeoShell({ route, children }: { route: RouteDef; children: ReactNode }) {
@@ -29,7 +31,7 @@ export function SeoShell({ route, children }: { route: RouteDef; children: React
       <Promo />
       <footer className="sp__foot">
         <div className="container sp__foot-in">
-          <div><Logo tone="light" size={26} /><p>Cálculos orientativos con la tabla oficial del BOE. No es asesoramiento fiscal.</p></div>
+          <div><Logo tone="light" size={26} /><p>Cálculos orientativos con la tabla oficial del BOE. No es asesoramiento fiscal.</p><span className="social"><a href={SOCIAL.linkedin} target="_blank" rel="noopener" aria-label="Cuotio en LinkedIn"><IconLinkedIn /></a><a href={SOCIAL.instagram} target="_blank" rel="noopener" aria-label="Cuotio en Instagram"><IconInstagram /></a></span></div>
           <nav aria-label="Herramientas">
             <b>Herramientas</b>
             <a href={href("/cuota-autonomo")}>Calculadora de cuota</a>
