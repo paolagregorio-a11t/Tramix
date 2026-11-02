@@ -30,8 +30,8 @@ describe("POST /api/waitlist", () => {
     expect(body.to).toEqual(["ana@example.com"]);
     expect(body.from).toBe(ENV.EMAIL_FROM);
     expect(body.html).toContain("Ya estás en la lista de Cuotio");
-    expect(body.html).toContain("cid:cuotio-logo");
-    expect(body.attachments[0].content_id).toBe("cuotio-logo");
+    expect(body.html).toContain("https://cuotio.example/email/logo.png"); // hosted logo: no attachments on a new sending domain
+    expect(body.attachments).toBeUndefined();
     expect(body.headers["List-Unsubscribe"]).toContain("/api/unsubscribe?email=ana%40example.com&t=");
   });
   it("does not email an address that is already on the list", async () => {

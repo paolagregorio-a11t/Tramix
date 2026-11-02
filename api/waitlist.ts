@@ -1,4 +1,3 @@
-import { LOGO_BASE64 } from "../emails/logo.js";
 import { welcomeEmail } from "../emails/welcome.js";
 import { EMAIL_RE, config, json, preflight, missing, normalize, resend, unsubscribeUrl } from "./_lib.js";
 
@@ -43,12 +42,11 @@ async function handle(request: Request): Promise<Response> {
   }
 
   const unsub = unsubscribeUrl(c, email);
-  const mail = welcomeEmail({ site: c.site, unsubscribeUrl: unsub, contactEmail: c.contactEmail, senderName: c.senderName, logoCid: true });
+  const mail = welcomeEmail({ site: c.site, unsubscribeUrl: unsub, contactEmail: c.contactEmail, senderName: c.senderName });
   const sent = await resend(c, "/emails", {
     method: "POST",
     body: JSON.stringify({
       from: c.from, to: [email], subject: mail.subject, html: mail.html, text: mail.text,
-      attachments: [{ filename: "logo.png", content: LOGO_BASE64, content_type: "image/png", content_id: "cuotio-logo" }],
       ...(c.replyTo ? { reply_to: c.replyTo } : {}),
       headers: { "List-Unsubscribe": `<${unsub}>`, "List-Unsubscribe-Post": "List-Unsubscribe=One-Click" },
     }),
