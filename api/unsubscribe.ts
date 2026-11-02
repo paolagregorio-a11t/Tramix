@@ -1,4 +1,4 @@
-import { config, json, normalize, resend, verify } from "./_lib";
+import { config, json, normalize, resend, verify } from "./_lib.js";
 
 async function unsubscribe(request: Request): Promise<{ ok: boolean; status: number }> {
   const c = config();

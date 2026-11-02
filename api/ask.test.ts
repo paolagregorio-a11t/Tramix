@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { POST, _resetLimiter, sanitizeContext } from "./ask";
+import { POST, _resetLimiter, sanitizeContext } from "./ask.js";
 
 const req = (body: unknown, ip = "1.1.1.1") => new Request("https://x/api/ask", { method: "POST", headers: { "x-forwarded-for": ip }, body: JSON.stringify(body) });
 const ctx = { tramoActual: 5, tramoBajo: 8, tramoAlto: 9, accion: "subir", objetivo: 8, ahorro: 1100, dias: 18, limite: "31 oct" };

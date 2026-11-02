@@ -1,4 +1,4 @@
-import { json, preflight } from "./_lib";
+import { json, preflight } from "./_lib.js";
 
 /**
  * POST /api/ask  { question, context }

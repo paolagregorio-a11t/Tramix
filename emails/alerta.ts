@@ -1,5 +1,5 @@
-import { type Brand, button, color, esc, h1, layout, p } from "./layout";
-import type { Rendered } from "./welcome";
+import { type Brand, button, color, esc, h1, layout, p } from "./layout.js";
+import type { Rendered } from "./welcome.js";
 
 export type AlertaData = {
   dias: number;

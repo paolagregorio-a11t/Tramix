@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { alertaEmail } from "./alerta";
-import { welcomeEmail } from "./welcome";
+import { alertaEmail } from "./alerta.js";
+import { welcomeEmail } from "./welcome.js";
 
 const brand = { site: "https://cuotio.example", unsubscribeUrl: "https://cuotio.example/api/unsubscribe?x=1", contactEmail: "hola@cuotio.example", senderName: "El equipo de Cuotio" };
 const data = { dias: 18, limite: "31 de octubre", efecto: "1 de noviembre", tramoActual: 7, tramoObjetivo: 10, rangoTexto: "tramo 9–10", importe: 1100, accion: "subir" as const, appUrl: "https://cuotio.example/#demo" };

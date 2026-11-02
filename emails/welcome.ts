@@ -1,4 +1,4 @@
-import { type Brand, button, color, esc, h1, layout, p } from "./layout";
+import { type Brand, button, color, esc, h1, layout, p } from "./layout.js";
 
 export type Rendered = { subject: string; html: string; text: string };
 

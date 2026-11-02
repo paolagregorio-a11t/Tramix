@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { POST, _resetLimiter } from "./contact";
+import { POST, _resetLimiter } from "./contact.js";
 
 const ENV = { RESEND_API_KEY: "re_test", EMAIL_FROM: "Cuotio <hola@example.com>", CONTACT_EMAIL: "yo@example.com" };
 const req = (body: unknown, ip = "1.1.1.1") => new Request("https://x/api/contact", { method: "POST", headers: { "x-forwarded-for": ip }, body: JSON.stringify(body) });

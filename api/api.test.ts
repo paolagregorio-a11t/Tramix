@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { POST as joinPost } from "./waitlist";
-import { GET as unsubGet, POST as unsubPost } from "./unsubscribe";
-import { sign } from "./_lib";
+import { POST as joinPost } from "./waitlist.js";
+import { GET as unsubGet, POST as unsubPost } from "./unsubscribe.js";
+import { sign } from "./_lib.js";
 
 const ENV = { RESEND_API_KEY: "re_test", RESEND_AUDIENCE_ID: "aud_1", EMAIL_FROM: "Cuotio <hola@example.com>", UNSUBSCRIBE_SECRET: "s3cret", SITE_URL: "https://cuotio.example", CONTACT_EMAIL: "hola@example.com" };
 const req = (body: unknown) => new Request("https://x/api/waitlist", { method: "POST", body: JSON.stringify(body) });

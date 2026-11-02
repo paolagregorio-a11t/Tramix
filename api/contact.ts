@@ -1,5 +1,5 @@
-import { EMAIL_RE, config, json, normalize, preflight, resend } from "./_lib";
-import { esc } from "../emails/layout";
+import { EMAIL_RE, config, json, normalize, preflight, resend } from "./_lib.js";
+import { esc } from "../emails/layout.js";
 
 /**
  * POST /api/contact  { kind: "contacto" | "opinion", name?, email?, message, rating?, usaria?, website }

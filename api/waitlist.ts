@@ -1,6 +1,6 @@
-import { LOGO_BASE64 } from "../emails/logo";
-import { welcomeEmail } from "../emails/welcome";
-import { EMAIL_RE, config, json, preflight, missing, normalize, resend, unsubscribeUrl } from "./_lib";
+import { LOGO_BASE64 } from "../emails/logo.js";
+import { welcomeEmail } from "../emails/welcome.js";
+import { EMAIL_RE, config, json, preflight, missing, normalize, resend, unsubscribeUrl } from "./_lib.js";
 
 /**
  * POST /api/waitlist  { email, consent, website }

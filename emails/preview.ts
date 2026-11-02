@@ -1,7 +1,7 @@
 // Writes HTML previews of every email to emails/preview/. Run: npm run email:preview
 import { mkdirSync, writeFileSync } from "node:fs";
-import { alertaEmail } from "./alerta";
-import { welcomeEmail } from "./welcome";
+import { alertaEmail } from "./alerta.js";
+import { welcomeEmail } from "./welcome.js";
 
 const site = process.env.PREVIEW_SITE ?? "file://" + process.cwd() + "/public";
 const brand = { site, unsubscribeUrl: site + "/#baja", contactEmail: "hola@cuotio.es", senderName: "El equipo de Cuotio" };
