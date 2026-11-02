@@ -132,3 +132,31 @@ Las imágenes están en esta misma carpeta. Todas las cifras salen de la tabla o
 - Fija en tu perfil (**Fijar en el perfil**) el 01, el 02 y el 03.
 - En stories, comparte cada post nuevo con una encuesta: *"¿Sabes en qué tramo estás?" Sí / Ni idea*.
 - **Revisa las cifras cada enero:** cambian con la nueva Orden de cotización.
+
+---
+
+## Post de presentación (carrusel 9 imágenes) · `presentacion/presentacion-1..9.png`
+
+Súbelas en orden (1 → 9): la escalera dorada sigue de una imagen a la siguiente.
+
+**Caption:**
+
+Hola 👋 Somos Cuotio.
+
+Si eres autónomo, conoces la escena: llega enero, eliges un tramo de cotización… y cruzas los dedos. Y meses después llega la carta de la regularización.
+
+Hemos creado Cuotio para que eso no te pase:
+📈 Sigues tus ingresos mes a mes y ves en qué tramo vas a cerrar el año
+📄 Subes tu extracto del banco o tus facturas y se rellena solo
+🔔 Te avisamos antes de cada uno de los 6 plazos para cambiar tu base
+💬 Le preguntas lo que quieras sobre tu cuota, con tus propios números
+
+Con la tabla oficial de 2026 del BOE. El extracto se lee en tu móvil, no lo subimos a ningún sitio.
+
+Estamos en beta abierta y es gratis 👉 cuotio.es/demo (enlace en la bio)
+
+Pruébalo y cuéntanos qué te parece. Cada comentario nos ayuda a mejorarla 🙌
+
+#autonomos #autónomos #cuotaautonomos #RETA #tramosautonomos #seguridadsocial #regularizacion #freelance #emprendedores #finanzaspersonales #fiscalidad #pymes #startup #españa
+
+**Primer comentario (fijarlo):** ¿Qué tramo elegiste este año, y sabes si te va a tocar regularizar? 👇
