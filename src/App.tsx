@@ -8,7 +8,10 @@ import { InstallSheet } from "./components/InstallSheet";
 import { ContactForm } from "./components/ContactForm";
 import { useMeta } from "./seo";
 import { Count, Reveal, useInView } from "./lib";
-import { useRoute } from "./useRoute";
+import { href, usePath } from "./router";
+import { routeFor } from "./routes";
+import { CambioBasePage, CuotaPage, CuotaXPage, RegularizacionPage, TramosPage } from "./pages/Pages";
+import { CuotaCalculator } from "./pages/CuotaCalculator";
 import { DemoApp } from "./demo/DemoApp";
 import { LegalPage } from "./legal/LegalPage";
 import "./styles/global.css";
@@ -20,12 +23,20 @@ function Words({ text, base = 0 }: { text: string; base?: number }) {
   return <>{text.split(" ").map((w, i) => <span className="w" key={i}><span style={{ ["--d" as string]: `${base + i * 0.09}s` }}>{w}&nbsp;</span></span>)}</>;
 }
 
-export default function App() {
-  const route = useRoute();
+export default function App({ path: initial }: { path?: string }) {
+  const path = usePath(initial);
+  const route = routeFor(path);
   useMeta(route);
-  if (route === "demo") return <DemoApp />;
-  if (route !== "home") return <LegalPage page={route} />;
-  return <Home />;
+  switch (route.kind) {
+    case "demo": return <DemoApp />;
+    case "legal": return <LegalPage page={route.path.slice(1) as "privacidad" | "aviso-legal" | "cookies"} />;
+    case "cuota": return <CuotaPage route={route} />;
+    case "cuota-x": return <CuotaXPage route={route} />;
+    case "tramos": return <TramosPage route={route} />;
+    case "regularizacion": return <RegularizacionPage route={route} />;
+    case "cambio-base": return <CambioBasePage route={route} />;
+    default: return <Home />;
+  }
 }
 
 function Home() {
@@ -53,10 +64,11 @@ function Home() {
     <>
       <header className={`nav ${scrolled ? "nav--solid" : ""}`}>
         <div className="container nav__in">
-          <a href="/" aria-label="Cuotio, inicio"><Logo tone={scrolled ? "dark" : "light"} /></a>
+          <a href={href("/")} aria-label="Cuotio, inicio"><Logo tone={scrolled ? "dark" : "light"} /></a>
           <nav>
+            <a href={href("/cuota-autonomo")}>Calculadora</a>
             <a href="#corto">El corto</a>
-            <a href="#demo">Probar la demo</a>
+            <a href={href("/demo")}>Probar la demo</a>
             <button type="button" className="nav__inst" onClick={() => setInst(true)}><IconDownload size={15} /> Instalar</button>
             <a href="#como">Cómo funciona</a>
             <a className="btn btn--ink" href="#lista">Lista de espera</a>
@@ -80,7 +92,7 @@ function Home() {
               </h1>
               <p className="hero__lead">Cuotio sigue tus ingresos, proyecta cómo cierras el año y te avisa <b>antes</b> de cada plazo para cambiar de tramo.</p>
               <Waitlist id="wl-hero" />
-              <a className="hero__demo" href="#demo">Probar la demo interactiva →</a>
+              <a className="hero__demo" href={href("/demo")}>Probar la demo interactiva →</a>
               <p className="hero__fine">Sin tarjeta · Sin spam · Te das de baja cuando quieras</p>
             </div>
             <div className="stage" ref={hero}>
@@ -98,6 +110,23 @@ function Home() {
         <div className="tickers" aria-hidden="true">
           <div className="tick"><div>{[...PAINS, ...PAINS, ...PAINS].map((p, i) => <span key={i}>{p}</span>)}</div></div>
         </div>
+
+        {/* CALCULADORA RÁPIDA */}
+        <section className="quick" aria-labelledby="quick-title">
+          <div className="container quick__in">
+            <div>
+              <Reveal><span className="kicker kicker--ink">Gratis · sin registro</span></Reveal>
+              <Reveal delay={0.05}><h2 id="quick-title" style={{ marginTop: 16 }}>Calcula tu tramo en <em>5 segundos</em>.</h2></Reveal>
+              <Reveal delay={0.1}><p className="quick__lead">Con la tabla oficial de 2026 publicada en el BOE. Y si quieres que no se te pase ningún plazo, Cuotio te avisa.</p></Reveal>
+              <div className="quick__links">
+                <a href={href("/tramos-autonomos-2026")}>Tabla de tramos 2026</a>
+                <a href={href("/regularizacion-cuota-autonomos")}>Calculadora de regularización</a>
+                <a href={href("/cambio-base-cotizacion")}>Fechas para cambiar de base</a>
+              </div>
+            </div>
+            <Reveal delay={0.12}><CuotaCalculator id="calc-home" /></Reveal>
+          </div>
+        </section>
 
         {/* EL CORTO */}
         <section className="film-sec" id="corto" ref={filmRef}>
@@ -184,7 +213,7 @@ function Home() {
                 <li><b>Danos tu opinión</b><span>Desde el botón de la propia demo.</span></li>
                 <li><b>Apúntate a la lista</b><span>Te avisamos antes que a nadie.</span></li>
               </ol>
-              <a className="btn btn--navy" href="#demo">Probar la demo</a>
+              <a className="btn btn--navy" href={href("/demo")}>Probar la demo</a>
             </Reveal>
           </div>
         </section>
@@ -196,7 +225,7 @@ function Home() {
             <div className="faq__list">
               <details><summary>¿Cuotio presenta los trámites por mí?</summary><p>No. Te decimos qué tramo conviene y cómo cambiarlo paso a paso en Import@ss, pero el trámite lo haces tú. Por eso no necesitamos tu certificado digital.</p></details>
               <details><summary>¿Los cálculos son oficiales?</summary><p>Son orientativos. Se basan en lo que introduces y en las tablas de tramos de cada año, y no sustituyen el consejo de un gestor ni la información de la Seguridad Social.</p></details>
-              <details><summary>¿Qué hacéis con mis datos?</summary><p>De momento solo guardamos tu email si te apuntas a la lista de espera, con tu consentimiento y para avisarte del lanzamiento. Los datos de la demo se quedan en tu navegador. Puedes leer los detalles en la <a href="#privacidad">política de privacidad</a>.</p></details>
+              <details><summary>¿Qué hacéis con mis datos?</summary><p>De momento solo guardamos tu email si te apuntas a la lista de espera, con tu consentimiento y para avisarte del lanzamiento. Los datos de la demo se quedan en tu navegador. Puedes leer los detalles en la <a href={href("/privacidad")}>política de privacidad</a>.</p></details>
               <details><summary>¿Cuándo estará disponible?</summary><p>Estamos preparando la primera versión. Quien se apunte a la lista recibirá un aviso antes que nadie, sin enviarte nada más mientras tanto.</p></details>
               <details><summary>¿Habrá app para móvil?</summary><p>Ya puedes instalarla en tu iPhone o Android desde el navegador, sin tiendas: se abre a pantalla completa y con su icono. Después llegará también a App Store y Google Play. <button type="button" className="faq__link" onClick={() => setInst(true)}>Cómo instalarla</button></p></details>
             </div>
@@ -229,7 +258,7 @@ function Home() {
       <footer className="footer">
         <div className="container footer__in">
           <Logo size={26} tone="light" />
-          <nav className="footer__links" aria-label="Legal"><a href="#aviso-legal">Aviso legal</a><a href="#privacidad">Privacidad</a><a href="#cookies">Cookies</a><a href="#contacto">Contacto</a><button type="button" onClick={() => setInst(true)}>Instalar en el móvil</button></nav>
+          <nav className="footer__links" aria-label="Legal"><a href={href("/cuota-autonomo")}>Calculadora de cuota</a><a href={href("/tramos-autonomos-2026")}>Tramos 2026</a><a href={href("/regularizacion-cuota-autonomos")}>Regularización</a><a href={href("/cambio-base-cotizacion")}>Cambio de base</a><a href={href("/aviso-legal")}>Aviso legal</a><a href={href("/privacidad")}>Privacidad</a><a href={href("/cookies")}>Cookies</a><a href="#contacto">Contacto</a><button type="button" onClick={() => setInst(true)}>Instalar en el móvil</button></nav>
           <p>Cálculos orientativos; no es asesoramiento fiscal. © {new Date().getFullYear()} Cuotio</p>
         </div>
       </footer>

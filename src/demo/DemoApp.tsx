@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { href } from "../router";
 import { Logo } from "../components/Logo";
 import { Bell, IconArrow, IconCheck, IconClose, IconDownload, IconGear, IconHome, IconList, IconPlus, IconSpark } from "../components/Icons";
 import { InstallSheet } from "../components/InstallSheet";
@@ -54,7 +55,7 @@ export function DemoApp() {
   return (
     <div className="dm">
       <div className="dm__top container">
-        <a href="#" className="dm__back"><IconArrow /> Volver a la web</a>
+        <a href={href("/")} className="dm__back"><IconArrow /> Volver a la web</a>
         <div className="dm__top-r">
           <span className="dm__badge">Demo · datos de ejemplo</span>
           <button className="dm__fb" onClick={() => setSheet("fb")}>Danos tu opinión</button>

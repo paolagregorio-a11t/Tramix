@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react";
+import { href } from "../router";
 import { IconCheck } from "./Icons";
 
 type Status = "idle" | "sending" | "done" | "preview" | "error";
@@ -42,7 +43,7 @@ export function Waitlist({ id }: { id: string }) {
       <input name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hp" />
       <label className="consent">
         <input type="checkbox" name="consent" required />
-        <span>Acepto recibir avisos de Cuotio y la <a href="#privacidad">política de privacidad</a>.</span>
+        <span>Acepto recibir avisos de Cuotio y la <a href={href("/privacidad")}>política de privacidad</a>.</span>
       </label>
       {status === "error" && <p role="alert" className="wl-err">{msg}</p>}
     </form>

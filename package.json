@@ -5,12 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && vite build --ssr src/entry-server.tsx --outDir dist-ssr && node scripts/prerender.mjs",
     "preview": "vite preview",
     "test": "vitest run",
     "typecheck": "tsc -b && tsc -p tsconfig.server.json",
     "cap:sync": "npm run build && cap sync",
-    "email:preview": "tsx emails/preview.ts"
+    "email:preview": "tsx emails/preview.ts",
+    "build:spa": "tsc -b && vite build"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.3",

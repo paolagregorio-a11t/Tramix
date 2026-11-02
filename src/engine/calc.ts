@@ -18,8 +18,30 @@ export function tramoPara(rendimientoMensual: number, t: TramosTable): number {
   return t.tramos.find((x) => y <= x.hasta)!.n;
 }
 
+const cents = (n: number) => Math.round(n * 100) / 100;
 export function cuotaMinima(tramo: number, t: TramosTable): number {
-  return Math.round(t.tramos[tramo - 1].baseMin * t.rate * 100) / 100;
+  return cents(t.tramos[tramo - 1].baseMin * t.rate);
+}
+export function cuotaMaxima(tramo: number, t: TramosTable): number {
+  return cents(t.tramos[tramo - 1].baseMax * t.rate);
+}
+/** "Tabla reducida" (tramos 1-3) or "tabla general" (4-15), and the tramo number inside that table, as the BOE names them. */
+export function tablaOficial(tramo: number): { tabla: "reducida" | "general"; n: number } {
+  return tramo <= 3 ? { tabla: "reducida", n: tramo } : { tabla: "general", n: tramo - 3 };
+}
+
+export type Regularizacion = { tramoReal: number; resultado: "pagar" | "devolver" | "nada"; importe: number };
+/**
+ * Year-end regularisation for a full year at a constant base: if the base you paid is below the minimum base of
+ * the tramo your real yield falls in, you pay the difference; if it is above that tramo's maximum, you get it back.
+ * (Real cases prorate by months and by each base actually paid; this is the orientative yearly figure.)
+ */
+export function regularizacion(basePagada: number, rendimientoMensualReal: number, t: TramosTable, meses = 12): Regularizacion {
+  const tramoReal = tramoPara(rendimientoMensualReal, t);
+  const { baseMin, baseMax } = t.tramos[tramoReal - 1];
+  if (basePagada < baseMin) return { tramoReal, resultado: "pagar", importe: cents((baseMin - basePagada) * t.rate * meses) };
+  if (basePagada > baseMax) return { tramoReal, resultado: "devolver", importe: cents((basePagada - baseMax) * t.rate * meses) };
+  return { tramoReal, resultado: "nada", importe: 0 };
 }
 
 export type Proyeccion = {

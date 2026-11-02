@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { TABLA_2026 } from "./tramos";
-import { cuotaMinima, proximaVentana, proyectar, recomendar, rendimientoMes, tramoPara, ventanas } from "./calc";
+import { cuotaMaxima, regularizacion, tablaOficial, cuotaMinima, proximaVentana, proyectar, recomendar, rendimientoMes, tramoPara, ventanas } from "./calc";
 
 describe("rendimientoMes", () => {
   it("applies the 7% generic deduction to income minus expenses", () => {
@@ -115,5 +115,36 @@ describe("ventanas", () => {
     expect(ventana.limite.getMonth()).toBe(11);
     const next = proximaVentana(new Date(2027, 0, 5));
     expect(next.ventana.limite.getMonth()).toBe(1);
+  });
+});
+
+describe("bases máximas y tabla oficial", () => {
+  it("matches the BOE maximum bases", () => {
+    expect(TABLA_2026.tramos[0].baseMax).toBe(718.94);
+    expect(TABLA_2026.tramos[13].baseMax).toBe(5101.2);
+    expect(TABLA_2026.tramos[14].baseMax).toBe(5101.2);
+    TABLA_2026.tramos.forEach((x) => expect(x.baseMax).toBeGreaterThan(x.baseMin));
+  });
+  it("cuota máxima del tramo 15 es 5.101,20 x 31,5 %", () => expect(cuotaMaxima(15, TABLA_2026)).toBe(1606.88));
+  it("names tramos as the BOE does", () => {
+    expect(tablaOficial(3)).toEqual({ tabla: "reducida", n: 3 });
+    expect(tablaOficial(4)).toEqual({ tabla: "general", n: 1 });
+    expect(tablaOficial(15)).toEqual({ tabla: "general", n: 12 });
+  });
+});
+
+describe("regularizacion", () => {
+  it("charges the gap up to the real tramo minimum base", () => {
+    // real 2.100 €/mes -> tramo 9 (min 1.274,51); paid 960,78 -> owe (1274.51-960.78)*0.315*12
+    const r = regularizacion(960.78, 2100, TABLA_2026);
+    expect(r).toEqual({ tramoReal: 9, resultado: "pagar", importe: Math.round((1274.51 - 960.78) * 0.315 * 12 * 100) / 100 });
+  });
+  it("refunds what exceeds the real tramo maximum base", () => {
+    const r = regularizacion(2000, 1000, TABLA_2026); // tramo 3, max 1.166,70
+    expect(r.resultado).toBe("devolver");
+    expect(r.importe).toBeCloseTo((2000 - 1166.7) * 0.315 * 12, 2);
+  });
+  it("is zero inside the real tramo's band", () => {
+    expect(regularizacion(1500, 2100, TABLA_2026)).toEqual({ tramoReal: 9, resultado: "nada", importe: 0 });
   });
 });

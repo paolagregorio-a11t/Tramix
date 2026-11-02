@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react";
+import { href } from "../router";
 import { PREVIEW, postJSON } from "../api";
 import { IconCheck } from "./Icons";
 
@@ -25,7 +26,7 @@ export function ContactForm() {
       </div>
       <div className="cform__f"><label htmlFor="c-msg">Mensaje</label><textarea id="c-msg" name="message" required minLength={5} maxLength={3000} rows={5} placeholder="Cuéntanos qué necesitas o qué te ha parecido la demo" /></div>
       <input name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hp" />
-      <label className="consent consent--dark"><input type="checkbox" name="consent" required /><span>Acepto la <a href="#privacidad">política de privacidad</a>. Solo usaremos tu email para responderte.</span></label>
+      <label className="consent consent--dark"><input type="checkbox" name="consent" required /><span>Acepto la <a href={href("/privacidad")}>política de privacidad</a>. Solo usaremos tu email para responderte.</span></label>
       {st === "error" && <p role="alert" className="cform__err">{err}</p>}
       <button className="btn btn--navy" type="submit" disabled={st === "sending"}>{st === "sending" ? "Enviando…" : "Enviar mensaje"}</button>
     </form>

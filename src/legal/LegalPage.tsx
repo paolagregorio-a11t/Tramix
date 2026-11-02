@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { href } from "../router";
 import { Logo } from "../components/Logo";
 import { FECHA_LEGAL, TITULAR, pend } from "./config";
 import "../styles/legal.css";
@@ -68,15 +69,15 @@ export function LegalPage({ page }: { page: LegalKey }) {
   return (
     <div className="legal">
       <header className="container legal__top">
-        <a href="#" aria-label="Cuotio, inicio"><Logo tone="dark" /></a>
-        <a href="#" className="legal__back">← Volver</a>
+        <a href={href("/")} aria-label="Cuotio, inicio"><Logo tone="dark" /></a>
+        <a href={href("/")} className="legal__back">← Volver</a>
       </header>
       <main className="container legal__main">
         <h1>{p.title}</h1>
         <p className="legal__date">Última actualización: {FECHA_LEGAL}</p>
         {p.body}
         <nav className="legal__nav" aria-label="Documentos legales">
-          {(Object.keys(pages) as LegalKey[]).map((k) => <a key={k} href={`#${k}`} aria-current={k === page ? "page" : undefined}>{pages[k].title}</a>)}
+          {(Object.keys(pages) as LegalKey[]).map((k) => <a key={k} href={href(`/${k}`)} aria-current={k === page ? "page" : undefined}>{pages[k].title}</a>)}
         </nav>
       </main>
     </div>
