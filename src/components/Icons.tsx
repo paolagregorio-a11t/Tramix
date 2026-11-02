@@ -19,3 +19,4 @@ export const IconSend = ({ size = 18 }: { size?: number }) => <svg width={size} 
 export const IconDownload = ({ size = 18 }: { size?: number }) => <svg width={size} height={size} viewBox="0 0 24 24" {...base} aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5" /><path d="M5 21h14" /></svg>;
 export const IconClose = ({ size = 18 }: { size?: number }) => <svg width={size} height={size} viewBox="0 0 24 24" {...base} aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>;
 export const IconShare = ({ size = 18 }: { size?: number }) => <svg width={size} height={size} viewBox="0 0 24 24" {...base} aria-hidden="true"><path d="M12 15V3M8 7l4-4 4 4" /><path d="M5 12v8h14v-8" /></svg>;
+export const IconUpload = ({ size = 18 }: { size?: number }) => <svg width={size} height={size} viewBox="0 0 24 24" {...base} aria-hidden="true"><path d="M12 15V3M7 8l5-5 5 5" /><path d="M5 21h14" /></svg>;

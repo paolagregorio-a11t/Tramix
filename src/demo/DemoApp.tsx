@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { href } from "../router";
 import { Logo } from "../components/Logo";
-import { Bell, IconArrow, IconCheck, IconClose, IconDownload, IconGear, IconHome, IconList, IconPlus, IconSpark } from "../components/Icons";
+import { Bell, IconArrow, IconCheck, IconClose, IconDownload, IconGear, IconHome, IconList, IconPlus, IconSpark, IconUpload } from "../components/Icons";
 import { InstallSheet } from "../components/InstallSheet";
 import { cuotaMinima, proximaVentana, proyectar, recomendar, rendimientoMes, tramoPara, ventanas } from "../engine/calc";
 import { tablaDe } from "../engine/tramos";
@@ -9,6 +9,7 @@ import { fmt, useCountUp } from "../lib";
 import { useInstall } from "../install";
 import { Assistant } from "./Assistant";
 import { FeedbackSheet } from "./FeedbackSheet";
+import { ImportSheet } from "./ImportSheet";
 import type { AssistantData } from "./assistant";
 import { Ladder } from "./Ladder";
 import { MonthSheet } from "./MonthSheet";
@@ -28,7 +29,7 @@ export function DemoApp() {
   const [s, setS, reset] = useDemoState();
   const [tab, setTab] = useState<Tab>("resumen");
   const [edit, setEdit] = useState<number | null>(null);
-  const [sheet, setSheet] = useState<"rec" | "install" | "fb" | null>(null);
+  const [sheet, setSheet] = useState<"rec" | "install" | "fb" | "import" | null>(null);
   const [esc, setEsc] = useState<number | null>(null);
   const install = useInstall();
   const hoy = useMemo(() => new Date(), []);
@@ -140,6 +141,7 @@ export function DemoApp() {
 
               {tab === "meses" && (<section className="card">
                 <div className="card__h"><h2>Tus meses</h2><small>Toca uno para editarlo</small></div>
+                <button className="btn imp__go" onClick={() => setSheet("import")}><IconUpload /> Subir extracto o factura</button>
                 <ul className="mlist">
                   {s.meses.map((m, i) => { const v = valores[i]; const mx = Math.max(...valores, 1); return (
                     <li key={i}><button onClick={() => setEdit(i)}>
@@ -191,6 +193,7 @@ export function DemoApp() {
               onSave={(m) => saveMes(edit, m)} onDelete={() => { setS({ ...s, meses: s.meses.slice(0, -1) }); setEdit(null); }} onClose={() => setEdit(null)} />}
 
             {sheet === "fb" && <FeedbackSheet onClose={() => setSheet(null)} />}
+            {sheet === "import" && <ImportSheet meses={s.meses} year={hoy.getFullYear()} onApply={(m) => { setS({ ...s, meses: m }); setEsc(null); buzz(); }} onClose={() => setSheet(null)} />}
 
             {sheet === "rec" && proy && rec && (
               <div className="sheet" role="dialog" aria-modal="true" aria-label="Recomendación">

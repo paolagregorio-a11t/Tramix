@@ -38,6 +38,8 @@ const pages: Record<LegalKey, { title: string; body: ReactNode }> = {
         <ul>
           <li><b>Email de la lista de espera.</b> Para avisarte del lanzamiento de Cuotio y enviarte el correo de bienvenida. Base jurídica: tu consentimiento (art. 6.1.a RGPD).</li>
           <li><b>Datos introducidos en la demo.</b> Se guardan únicamente en tu navegador (almacenamiento local) y no se envían a ningún servidor.</li>
+          <li><b>Extractos bancarios.</b> Se leen en tu propio dispositivo para calcular tus ingresos y gastos. No se envían a ningún servidor.</li>
+          <li><b>Facturas.</b> Si subes una factura, se envía a Google (Gemini) únicamente para extraer sus datos (fecha, importes, emisor y cliente) y mostrártelos. No la guardamos. Solo se envía si marcas la casilla de aceptación. Base jurídica: tu consentimiento.</li>
           <li><b>Preguntas al asistente.</b> Si escribes una pregunta libre, se envía junto con unas cifras agregadas (tramo, rendimiento mensual previsto, plazo) a un proveedor de modelos de inteligencia artificial para generar la respuesta. No enviamos tu email ni datos que te identifiquen; no escribas datos personales en la pregunta. Base jurídica: tu iniciativa al usar la función.</li>
         </ul>
         <h2>Cuánto tiempo los conservamos</h2>

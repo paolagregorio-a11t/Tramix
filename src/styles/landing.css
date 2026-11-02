@@ -12,7 +12,7 @@ em { font-style: normal; color: var(--gold); }
 @media (max-width: 640px) { .nav nav > a:not(.btn) { display: none; } }
 
 /* HERO */
-.hero { position: relative; background: var(--navy); color: #fff; overflow: hidden; padding: clamp(100px, 11vw, 140px) 0 clamp(70px, 9vw, 120px); }
+.hero { position: relative; background: var(--navy); color: #fff; overflow: clip; padding: clamp(100px, 11vw, 140px) 0 clamp(70px, 9vw, 120px); }
 .hero__bg { position: absolute; inset: 0; pointer-events: none; display: flex; align-items: flex-end; justify-content: flex-end; gap: 2vw; padding-right: 3vw; }
 .hero__bg i { width: clamp(70px, 14vw, 200px); height: var(--h); border-radius: 28px 28px 0 0; background: rgba(255,255,255,.07); transform: translateY(calc(var(--sy) * -.06px)); animation: grow 1.4s var(--ease) both; transform-origin: bottom; }
 .hero__bg i:nth-child(3) { background: rgba(233,180,76,.16); }
@@ -86,7 +86,7 @@ em { font-style: normal; color: var(--gold); }
 
 /* TICKER */
 .tickers { background: var(--navy-2); border-block: 1px solid rgba(255,255,255,.08); color: rgba(255,255,255,.62); }
-.tick { overflow: hidden; padding-block: 18px; font-size: .95rem; font-weight: 600; letter-spacing: .02em; white-space: nowrap; }
+.tick { overflow: clip; padding-block: 18px; font-size: .95rem; font-weight: 600; letter-spacing: .02em; white-space: nowrap; }
 .tick > div { display: inline-flex; gap: 44px; animation: scroll 60s linear infinite; }
 .tick span::after { content: "·"; margin-left: 44px; color: var(--gold); }
 @keyframes scroll { to { transform: translateX(-33.333%); } }
@@ -215,7 +215,7 @@ em { font-style: normal; color: var(--gold); }
 .stats span { font-weight: 600; color: var(--text-muted); max-width: 14em; display: block; margin-top: 8px; }
 
 /* CTA */
-.cta { position: relative; background: var(--navy); color: #fff; overflow: hidden; padding: clamp(90px, 13vw, 180px) 0; }
+.cta { position: relative; background: var(--navy); color: #fff; overflow: clip; padding: clamp(90px, 13vw, 180px) 0; }
 .cta__in { position: relative; display: grid; gap: 28px; justify-items: start; }
 .cta h2 { max-width: 11em; font-size: clamp(2.6rem, 8vw, 6.6rem); }
 .cta p { font-size: 1.2rem; max-width: 30em; }

@@ -34,5 +34,13 @@
     }
   ],
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "functions": {
+    "api/extract.ts": {
+      "maxDuration": 60
+    },
+    "api/ask.ts": {
+      "maxDuration": 30
+    }
+  }
 }

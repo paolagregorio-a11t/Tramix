@@ -1,0 +1,18 @@
+EXTRACTO DE EJEMPLO (datos ficticios)
+Cuenta;ES00 0000 0000 0000 0000 0000
+Fecha;Fecha valor;Concepto;Importe;Saldo
+01/07/2026;01/07/2026;Transferencia recibida Estudio Norte - Factura 2026-031;1.650,00;4.210,00
+04/07/2026;04/07/2026;Adobe Creative Cloud;-60,49;4.149,51
+11/07/2026;11/07/2026;Transferencia recibida Taller Lumen - Factura 2026-032;1.150,00;5.299,51
+15/07/2026;15/07/2026;Coworking La Nave - cuota mensual;-145,20;5.154,31
+31/07/2026;31/07/2026;SEGURIDAD SOCIAL RETA 07/2026;-302,65;4.851,66
+02/08/2026;02/08/2026;Transferencia recibida Estudio Norte - Factura 2026-033;1.900,00;6.751,66
+04/08/2026;04/08/2026;Adobe Creative Cloud;-60,49;6.691,17
+18/08/2026;18/08/2026;Amazon - material de oficina;-38,90;6.652,27
+31/08/2026;31/08/2026;SEGURIDAD SOCIAL RETA 08/2026;-302,65;6.349,62
+01/09/2026;01/09/2026;Transferencia recibida Estudio Norte - Factura 2026-034;1.900,00;8.249,62
+04/09/2026;04/09/2026;Adobe Creative Cloud;-60,49;8.189,13
+09/09/2026;09/09/2026;Transferencia recibida Agencia Brío - Factura 2026-035;1.400,00;9.589,13
+15/09/2026;15/09/2026;Coworking La Nave - cuota mensual;-145,20;9.443,93
+22/09/2026;22/09/2026;Gestoría - cuota trimestral;-90,75;9.353,18
+30/09/2026;30/09/2026;SEGURIDAD SOCIAL RETA 09/2026;-302,65;9.050,53

@@ -11,6 +11,7 @@
 .sp__crumbs li + li::before { content: "›"; margin-right: 6px; }
 .sp__crumbs a { color: var(--steel); }
 .sp__hero { padding-block: clamp(24px, 4vw, 48px) clamp(36px, 5vw, 64px); }
+.sp__hero-in > * { min-width: 0; }
 .sp__hero-in { display: grid; gap: 32px; grid-template-columns: minmax(0, 1fr); align-items: start; }
 @media (min-width: 960px) { .sp__hero-in { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
 .sp__hero h1 { font-size: clamp(2rem, 4.6vw, 3.4rem); line-height: 1.05; }
@@ -23,24 +24,24 @@
 .sp__src { font-size: .82rem; color: var(--text-muted); }
 .steps2 { margin: 0; padding-left: 22px; display: grid; gap: 10px; max-width: 46em; color: #2f3a52; }
 /* calculator */
-.calc { background: #fff; border-radius: 24px; padding: 22px; display: grid; gap: 14px; box-shadow: 0 1px 0 var(--line), 0 20px 40px -28px rgba(11,18,32,.35); }
+.calc { min-width: 0; background: #fff; border-radius: 24px; padding: 22px; display: grid; gap: 14px; box-shadow: 0 1px 0 var(--line), 0 20px 40px -28px rgba(11,18,32,.35); }
 .calc__tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; background: var(--paper); border-radius: 14px; }
 .calc__tabs button { all: unset; cursor: pointer; text-align: center; padding: 10px 6px; border-radius: 10px; font-weight: 700; font-size: .86rem; color: var(--text-muted); }
 .calc__tabs button.on { background: #fff; color: var(--ink); box-shadow: 0 2px 6px rgba(11,18,32,.1); }
 .calc__tabs button:focus-visible { outline: 2px solid var(--steel); }
-.calc__row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.calc__f { display: grid; gap: 6px; } .calc__f label { font-weight: 700; font-size: .88rem; }
-.calc__in { display: flex; align-items: center; border: 1.5px solid #d5dce9; border-radius: 14px; background: var(--paper); padding-right: 14px; }
+.calc__row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
+.calc__f { display: grid; gap: 6px; min-width: 0; } .calc__f label { font-weight: 700; font-size: .88rem; }
+.calc__in { min-width: 0; display: flex; align-items: center; border: 1.5px solid #d5dce9; border-radius: 14px; background: var(--paper); padding-right: 14px; }
 .calc__in:focus-within { border-color: var(--steel); }
-.calc__in input { flex: 1; min-width: 0; font: inherit; font-size: 1.3rem; font-weight: 800; padding: 12px 14px; border: 0; background: transparent; color: var(--ink); outline: none; }
+.calc__in input { flex: 1; width: 100%; min-width: 0; font: inherit; font-size: 1.3rem; font-weight: 800; padding: 12px 14px; border: 0; background: transparent; color: var(--ink); outline: none; }
 .calc__in span { color: var(--text-muted); font-weight: 700; }
-.calc select { font: inherit; padding: 12px; border-radius: 12px; border: 1.5px solid #d5dce9; background: var(--paper); color: var(--ink); }
+.calc select { width: 100%; min-width: 0; font: inherit; padding: 12px; border-radius: 12px; border: 1.5px solid #d5dce9; background: var(--paper); color: var(--ink); }
 .calc__note { font-size: .82rem; color: var(--text-muted); }
 .calc__out { display: grid; gap: 10px; }
 .calc__big { display: grid; gap: 2px; padding: 16px 18px; border-radius: 18px; background: var(--navy); color: #fff; }
 .calc__big small { color: rgba(255,255,255,.7); font-weight: 600; } .calc__big span { color: rgba(255,255,255,.75); font-size: .86rem; }
 .calc__big b { font-family: var(--font-display); font-size: 2rem; letter-spacing: -.04em; line-height: 1.1; }
-.calc__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.calc__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; }
 .calc__grid > div { display: grid; padding: 12px 14px; border-radius: 14px; background: var(--paper); }
 .calc__grid small, .calc__grid span { color: var(--text-muted); font-size: .76rem; font-weight: 600; }
 .calc__grid b { font-family: var(--font-display); font-size: 1.15rem; letter-spacing: -.02em; }
@@ -88,6 +89,7 @@
 .sp__foot p { margin-top: 12px; max-width: 24em; }
 /* Landing quick calculator */
 .quick { background: #fff; padding: clamp(72px, 10vw, 120px) 0; }
+.quick__in > * { min-width: 0; }
 .quick__in { display: grid; gap: 36px; grid-template-columns: minmax(0, 1fr); align-items: center; }
 @media (min-width: 960px) { .quick__in { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); } }
 .quick h2 { max-width: 12em; } .quick em { color: var(--steel); }
