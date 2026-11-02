@@ -5,6 +5,8 @@ import { Film } from "./components/Film";
 import { Waitlist } from "./components/Waitlist";
 import { Bell, IconDownload } from "./components/Icons";
 import { InstallSheet } from "./components/InstallSheet";
+import { ContactForm } from "./components/ContactForm";
+import { useMeta } from "./seo";
 import { Count, Reveal, useInView } from "./lib";
 import { useRoute } from "./useRoute";
 import { DemoApp } from "./demo/DemoApp";
@@ -20,6 +22,7 @@ function Words({ text, base = 0 }: { text: string; base?: number }) {
 
 export default function App() {
   const route = useRoute();
+  useMeta(route);
   if (route === "demo") return <DemoApp />;
   if (route !== "home") return <LegalPage page={route} />;
   return <Home />;
@@ -167,6 +170,25 @@ function Home() {
           </div>
         </section>
 
+        {/* BETA */}
+        <section className="beta" aria-labelledby="beta-title">
+          <div className="container beta__in">
+            <div>
+              <Reveal><span className="kicker">Beta abierta</span></Reveal>
+              <Reveal delay={0.05}><h2 id="beta-title" style={{ marginTop: 16 }}>Buscamos autónomos que quieran <em>probarlo</em>.</h2></Reveal>
+              <Reveal delay={0.1}><p className="beta__lead">Estamos construyendo Tramix con quienes lo van a usar. Prueba la demo, cuéntanos qué cambiarías y te avisamos en cuanto puedas usarlo con tus datos.</p></Reveal>
+            </div>
+            <Reveal delay={0.12} className="beta__steps">
+              <ol>
+                <li><b>Prueba la demo</b><span>Dos minutos, sin registro.</span></li>
+                <li><b>Danos tu opinión</b><span>Desde el botón de la propia demo.</span></li>
+                <li><b>Apúntate a la lista</b><span>Te avisamos antes que a nadie.</span></li>
+              </ol>
+              <a className="btn btn--navy" href="#demo">Probar la demo</a>
+            </Reveal>
+          </div>
+        </section>
+
         {/* FAQ */}
         <section className="faq" aria-labelledby="faq-title">
           <div className="container">
@@ -178,6 +200,18 @@ function Home() {
               <details><summary>¿Cuándo estará disponible?</summary><p>Estamos preparando la primera versión. Quien se apunte a la lista recibirá un aviso antes que nadie, sin enviarte nada más mientras tanto.</p></details>
               <details><summary>¿Habrá app para móvil?</summary><p>Ya puedes instalarla en tu iPhone o Android desde el navegador, sin tiendas: se abre a pantalla completa y con su icono. Después llegará también a App Store y Google Play. <button type="button" className="faq__link" onClick={() => setInst(true)}>Cómo instalarla</button></p></details>
             </div>
+          </div>
+        </section>
+
+        {/* CONTACTO */}
+        <section className="contact" id="contacto" aria-labelledby="contact-title">
+          <div className="container contact__in">
+            <div>
+              <Reveal><span className="kicker kicker--ink">Contacto</span></Reveal>
+              <Reveal delay={0.05}><h2 id="contact-title" style={{ marginTop: 16 }}>¿Hablamos?</h2></Reveal>
+              <Reveal delay={0.1}><p className="contact__lead">Dudas, ideas o ganas de colaborar: escríbenos y te respondemos personalmente.</p></Reveal>
+            </div>
+            <Reveal delay={0.12}><ContactForm /></Reveal>
           </div>
         </section>
 
@@ -195,7 +229,7 @@ function Home() {
       <footer className="footer">
         <div className="container footer__in">
           <Logo size={26} tone="light" />
-          <nav className="footer__links" aria-label="Legal"><a href="#aviso-legal">Aviso legal</a><a href="#privacidad">Privacidad</a><a href="#cookies">Cookies</a><button type="button" onClick={() => setInst(true)}>Instalar en el móvil</button></nav>
+          <nav className="footer__links" aria-label="Legal"><a href="#aviso-legal">Aviso legal</a><a href="#privacidad">Privacidad</a><a href="#cookies">Cookies</a><a href="#contacto">Contacto</a><button type="button" onClick={() => setInst(true)}>Instalar en el móvil</button></nav>
           <p>Cálculos orientativos; no es asesoramiento fiscal. © {new Date().getFullYear()} Tramix</p>
         </div>
       </footer>

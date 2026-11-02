@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="description" content="Tramix te avisa antes de cada plazo para cambiar de tramo de autónomo y evitar sorpresas en la regularización." />
+    <meta name="description" content="Tramix sigue tus ingresos, proyecta cómo cierras el año y te avisa antes de cada plazo para cambiar de tramo de autónomo. Sin sorpresas en la regularización." />
+    <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#0b1220" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
@@ -19,7 +20,17 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <title>Tramix · Elige tu tramo a tiempo</title>
+    <title>Tramix · Elige tu tramo de autónomo a tiempo</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          { "@type": "Organization", "@id": "%SITE_URL%/#org", "name": "Tramix", "url": "%SITE_URL%/", "logo": "%SITE_URL%/icons/icon-512.png", "email": "paolagregoriio@gmail.com", "areaServed": "ES" },
+          { "@type": "WebSite", "@id": "%SITE_URL%/#web", "url": "%SITE_URL%/", "name": "Tramix", "inLanguage": "es-ES", "publisher": { "@id": "%SITE_URL%/#org" } },
+          { "@type": "SoftwareApplication", "name": "Tramix", "url": "%SITE_URL%/", "applicationCategory": "FinanceApplication", "operatingSystem": "Web, iOS, Android", "inLanguage": "es-ES", "description": "Seguimiento de ingresos, proyección del tramo de cotización y avisos antes de cada plazo de cambio de base para autónomos en España.", "publisher": { "@id": "%SITE_URL%/#org" } }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

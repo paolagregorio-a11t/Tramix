@@ -13,7 +13,7 @@
 .dm__side li { display: flex; align-items: center; gap: 10px; }
 .dm__side li svg { color: var(--sage); flex: none; }
 .dm__warn { font-size: .82rem; padding: 14px 16px; border-radius: 14px; background: rgba(255,255,255,.06); box-shadow: inset 0 0 0 1px rgba(255,255,255,.12); }
-@media (max-width: 899px) { .dm__side { display: none; } .dm__top { padding-inline: var(--gutter); } .dm__stage { padding-inline: 0; gap: 0; } }
+@media (max-width: 899px) { .dm__side { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); } .dm__top { padding-inline: var(--gutter); } .dm__stage { padding-inline: 0; gap: 0; } .dm__badge { display: none; } }
 
 /* ===== Device frame (desktop) ===== */
 .device { position: relative; width: 100%; max-width: 410px; margin: 0 auto; padding: 11px; border-radius: 56px; background: linear-gradient(145deg, #1a2338, #05080f); box-shadow: 0 60px 100px -30px rgba(0,0,0,.75), inset 0 0 0 1.5px rgba(255,255,255,.18), 0 0 0 1px rgba(0,0,0,.6); }
@@ -156,3 +156,22 @@ input[type=range]:focus-visible::-webkit-slider-thumb { outline: 3px solid var(-
 .isheet__go { width: 100%; } .isheet__steps { margin: 0; padding-left: 22px; display: grid; gap: 10px; font-size: .95rem; } .isheet__steps svg { vertical-align: -2px; }
 .isheet__fine { font-size: .8rem; color: #8d97ad; }
 .dm__install svg { flex: none; }
+
+.dm__top-r { display: flex; align-items: center; gap: 10px; }
+.dm__fb { all: unset; cursor: pointer; padding: 8px 16px; border-radius: 999px; background: #fff; color: var(--navy); font-weight: 800; font-size: .82rem; }
+.dm__fb:hover { background: var(--gold); } .dm__fb:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.dm__actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.dm .btn--line { background: transparent; color: #fff; box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.4); }
+.dm .btn--line:hover { box-shadow: inset 0 0 0 1.5px #fff; }
+.fb__faces { display: flex; justify-content: space-between; gap: 6px; }
+.fb__faces button { all: unset; cursor: pointer; font-size: 1.9rem; width: 54px; height: 54px; display: grid; place-items: center; border-radius: 16px; background: #f1f4f9; filter: grayscale(.7); transition: transform .15s, filter .15s, background .15s; }
+.fb__faces button.on { filter: none; background: #fff3d6; transform: scale(1.08); box-shadow: inset 0 0 0 2px var(--gold); }
+.fb__faces button:focus-visible { outline: 2px solid var(--steel); }
+.fb__q { font-weight: 700; font-size: .85rem; }
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 4px; border-radius: 14px; background: #f1f4f9; }
+.seg button { all: unset; cursor: pointer; text-align: center; padding: 10px 0; border-radius: 10px; font-weight: 700; font-size: .88rem; color: #5f6b82; }
+.seg button.on { background: #fff; color: var(--ink); box-shadow: 0 2px 6px rgba(11,18,32,.12); } .seg button:focus-visible { outline: 2px solid var(--steel); }
+.app textarea, .app .fld input { width: 100%; font: inherit; padding: 12px; border-radius: 12px; border: 1px solid #dde3ee; background: #f5f7fb; color: var(--ink); resize: vertical; box-sizing: border-box; }
+.app textarea:focus, .app .fld input:focus { outline: 2px solid var(--steel); outline-offset: 0; }
+.fb__err { color: #c2503f; font-weight: 600; font-size: .85rem; }
+.app .btn:disabled { opacity: .5; cursor: default; box-shadow: none; transform: none; }

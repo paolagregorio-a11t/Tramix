@@ -7,6 +7,7 @@ import { tablaDe } from "../engine/tramos";
 import { fmt, useCountUp } from "../lib";
 import { useInstall } from "../install";
 import { Assistant } from "./Assistant";
+import { FeedbackSheet } from "./FeedbackSheet";
 import type { AssistantData } from "./assistant";
 import { Ladder } from "./Ladder";
 import { MonthSheet } from "./MonthSheet";
@@ -26,7 +27,7 @@ export function DemoApp() {
   const [s, setS, reset] = useDemoState();
   const [tab, setTab] = useState<Tab>("resumen");
   const [edit, setEdit] = useState<number | null>(null);
-  const [sheet, setSheet] = useState<"rec" | "install" | null>(null);
+  const [sheet, setSheet] = useState<"rec" | "install" | "fb" | null>(null);
   const [esc, setEsc] = useState<number | null>(null);
   const install = useInstall();
   const hoy = useMemo(() => new Date(), []);
@@ -54,7 +55,10 @@ export function DemoApp() {
     <div className="dm">
       <div className="dm__top container">
         <a href="#" className="dm__back"><IconArrow /> Volver a la web</a>
-        <span className="dm__badge">Demo · datos de ejemplo</span>
+        <div className="dm__top-r">
+          <span className="dm__badge">Demo · datos de ejemplo</span>
+          <button className="dm__fb" onClick={() => setSheet("fb")}>Danos tu opinión</button>
+        </div>
       </div>
 
       <div className="dm__stage container">
@@ -67,7 +71,10 @@ export function DemoApp() {
             <li><IconCheck /> Cálculo desglosado paso a paso</li>
             <li><IconCheck /> Aviso antes de cada plazo de cambio</li>
           </ul>
-          {!install.standalone && <button className="btn dm__install" onClick={() => setSheet("install")}><IconDownload /> Instalar en tu móvil</button>}
+          <div className="dm__actions">
+            <button className="btn" onClick={() => setSheet("fb")}>Danos tu opinión</button>
+            {!install.standalone && <button className="btn btn--line dm__install" onClick={() => setSheet("install")}><IconDownload /> Instalar en tu móvil</button>}
+          </div>
           <p className="dm__warn">{estadoTxt} Este cálculo es orientativo y no es asesoramiento fiscal.</p>
         </aside>
 
@@ -181,6 +188,8 @@ export function DemoApp() {
             {edit !== null && <MonthSheet key={edit} nombre={MESES[edit]} esNuevo={edit >= s.meses.length} esUltimo={edit === s.meses.length - 1}
               inicial={s.meses[edit] ?? s.meses[s.meses.length - 1] ?? { ingresos: 2000, gastos: 300 }} regimen={s.regimen}
               onSave={(m) => saveMes(edit, m)} onDelete={() => { setS({ ...s, meses: s.meses.slice(0, -1) }); setEdit(null); }} onClose={() => setEdit(null)} />}
+
+            {sheet === "fb" && <FeedbackSheet onClose={() => setSheet(null)} />}
 
             {sheet === "rec" && proy && rec && (
               <div className="sheet" role="dialog" aria-modal="true" aria-label="Recomendación">
