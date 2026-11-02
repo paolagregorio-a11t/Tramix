@@ -4,3 +4,4 @@ dist
 *.tsbuildinfo
 emails/preview/
 dist-ssr
+marketing/*.zip
