@@ -70,7 +70,7 @@ La app con cuenta vive en `cuotio.es/app`. Cada persona entra con **Google** (un
    - **Authentication → URL Configuration**: *Site URL* `https://cuotio.es`, y en *Redirect URLs* añade `https://cuotio.es/app` (y, si quieres probar en las vistas previas de Vercel, `https://*-paolagregoriio-1613s-projects.vercel.app/app`).
    - En la app nativa (APK) no se muestra el botón de Google: allí se entra con email y contraseña.
 7. **Claves en Vercel.** En **Project Settings → API** de Supabase copia y añade en Vercel (**Settings → Environment Variables**):
-   - `VITE_SUPABASE_URL` = *Project URL* (pública).
+   - `VITE_SUPABASE_URL` = *Project URL* (pública). La URL y la clave pública del proyecto de Cuotio ya están en `src/cuenta/supabase.ts` (así llegan también a la app instalada y al APK); estas dos variables solo hacen falta si cambias de proyecto.
    - `VITE_SUPABASE_ANON_KEY` = clave *publishable* (`sb_publishable_…`) o la antigua *anon* (pública: lo que protege los datos son las reglas del paso 2).
    - `SUPABASE_SERVICE_ROLE_KEY` = clave *secret* (`sb_secret_…`) o la antigua *service_role*. **Es secreta**: solo aquí, nunca en el código, en un chat ni en la app. Solo la usa `/api/borrar-cuenta` para borrar cuentas.
 8. **Contrato de encargo de tratamiento (RGPD).** Supabase lo incluye en sus condiciones; en **Organization → Legal Documents** puedes descargarlo y guardarlo firmado junto a los de Resend, Vercel y Umami.
