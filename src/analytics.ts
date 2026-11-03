@@ -11,7 +11,7 @@ type Data = Record<string, string | number | boolean>;
 type Umami = { track: (event: string, data?: Data) => void };
 
 /** Public ID from Umami Cloud > Settings > Websites. It is not a secret, so it can live here and reach the web and the apps alike. */
-const DEFAULT_WEBSITE_ID = "";
+const DEFAULT_WEBSITE_ID = "a3de0e78-de0c-4598-bd28-28c30e6525af";
 const WEBSITE_ID = (import.meta.env.VITE_UMAMI_WEBSITE_ID as string | undefined) || DEFAULT_WEBSITE_ID;
 const SCRIPT = (import.meta.env.VITE_UMAMI_SRC as string | undefined) || "https://cloud.umami.is/script.js";
 const OPT_OUT_KEY = "umami.disabled"; // the key Umami's own script checks
