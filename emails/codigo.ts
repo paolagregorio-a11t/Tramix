@@ -10,8 +10,8 @@ export const TOKEN = "{{ .Token }}";
  */
 export function codigoEmail(b: Omit<Brand, "unsubscribeUrl">): { subject: string; html: string } {
   const body =
-    h1("Tu código para entrar en Cuotio") +
-    p("Escribe este código en la pantalla donde pusiste tu email:") +
+    h1("Tu código para recuperar el acceso") +
+    p("Escribe este código en Cuotio para entrar y elegir una contraseña nueva:") +
     `<p style="margin:8px 0 22px;padding:18px 0;border-radius:16px;background:${color.paper};text-align:center;font:800 34px/1 Manrope,Arial,sans-serif;letter-spacing:8px;color:${color.ink}">${TOKEN}</p>` +
     p(`<span style="color:${color.muted};font-size:14px">Caduca en una hora. Si no has pedido entrar en Cuotio, ignora este correo: sin el código nadie puede acceder a tu cuenta.</span>`);
   return {

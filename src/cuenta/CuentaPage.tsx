@@ -8,7 +8,7 @@ import { EJEMPLO, type DemoState } from "../demo/useDemoState";
 import { cuotaMinima } from "../engine/calc";
 import { tablaDe } from "../engine/tramos";
 import { fmt } from "../lib";
-import { track } from "../analytics";
+import { surface, track } from "../analytics";
 import { cargar, exportar, guardar } from "./datos";
 import { cuentasActivas, supabase } from "./supabase";
 import "../styles/demo.css";
@@ -35,6 +35,7 @@ export function CuentaPage() {
   const [sb, setSb] = useState<SupabaseClient | null>(null);
   const [session, setSession] = useState<Session | null | undefined>(undefined);
   const [fallo, setFallo] = useState(false);
+  const [nuevaPass, setNuevaPass] = useState(false);
 
   useEffect(() => {
     if (!cuentasActivas()) return;
@@ -42,7 +43,14 @@ export function CuentaPage() {
     supabase().then((c) => {
       setSb(c);
       c.auth.getSession().then(({ data }) => setSession(data.session));
-      const { data } = c.auth.onAuthStateChange((_e, s) => setSession(s));
+      const { data } = c.auth.onAuthStateChange((evento, s) => {
+        setSession(s);
+        if (evento === "SIGNED_IN") {
+          // Back from Google: count it once and remove ?code= from the address bar.
+          if (location.search.includes("code=")) { track("cuenta_entrada_ok", { metodo: "google" }); history.replaceState(null, "", location.pathname); }
+          try { setNuevaPass(sessionStorage.getItem("cuotio-nueva-pass") === "1"); } catch { /* ignore */ }
+        }
+      });
       off = () => data.subscription.unsubscribe();
     }).catch(() => setFallo(true));
     return () => off();
@@ -55,70 +63,165 @@ export function CuentaPage() {
   if (fallo) return <Pantalla><section className="card"><h2>No hemos podido cargar Cuotio</h2><p className="muted">Revisa tu conexión y vuelve a intentarlo.</p><button className="btn" onClick={() => location.reload()}>Reintentar</button></section></Pantalla>;
   if (!sb || session === undefined) return <Pantalla><p className="cu-cargando" role="status">Cargando…</p></Pantalla>;
   if (!session) return <Entrar sb={sb} />;
+  if (nuevaPass) return <NuevaPassword sb={sb} onListo={() => { try { sessionStorage.removeItem("cuotio-nueva-pass"); } catch { /* ignore */ } setNuevaPass(false); }} />;
   return <MiCuenta key={session.user.id} sb={sb} session={session} />;
 }
 
-/* ---------- Sign in: email, then the code we send. No passwords to keep or leak. ---------- */
+/* ---------- Sign in: Google in one tap, or email and password. A code by email only to recover the password. ---------- */
+
+type Modo = "entrar" | "crear" | "olvido" | "codigo";
+const MIN_PASS = 8;
+const errorAcceso = (msg: string, status?: number) =>
+  status === 429 ? "Demasiados intentos seguidos. Espera un minuto y vuelve a intentarlo."
+    : /invalid login credentials/i.test(msg) ? "El email o la contraseña no son correctos."
+      : /already registered|already exists/i.test(msg) ? "Ya hay una cuenta con este email. Entra con tu contraseña o con Google."
+        : /email not confirmed/i.test(msg) ? "Tienes que confirmar tu email antes de entrar. Revisa tu correo."
+          : /password/i.test(msg) ? `La contraseña debe tener al menos ${MIN_PASS} caracteres y no ser demasiado común.`
+            : "No hemos podido completar la operación. Revisa los datos e inténtalo de nuevo.";
+
+function GoogleLogo() {
+  return (<svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z" /><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z" /><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z" /><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z" /></svg>);
+}
 
 function Entrar({ sb }: { sb: SupabaseClient }) {
+  const [modo, setModo] = useState<Modo>("entrar");
   const [email, setEmail] = useState("");
-  const [paso, setPaso] = useState<"email" | "codigo">("email");
+  const [pass, setPass] = useState("");
   const [enviando, setEnviando] = useState(false);
   const [error, setError] = useState("");
   const [aviso, setAviso] = useState("");
+  // Google sign-in goes through the browser and comes back to cuotio.es/app, so it is not offered inside the native app.
+  const conGoogle = surface() !== "nativa";
+  const limpio = () => email.trim().toLowerCase();
+  const ir = (m: Modo) => { setModo(m); setError(""); setAviso(""); };
+
+  async function google() {
+    setError(""); track("cuenta_google");
+    const { error } = await sb.auth.signInWithOAuth({ provider: "google", options: { redirectTo: `${location.origin}/app` } });
+    if (error) { track("cuenta_entrada_error", { paso: "google" }); setError("No hemos podido abrir Google. Inténtalo de nuevo o entra con tu email."); }
+  }
+
+  async function conPassword(e: FormEvent) {
+    e.preventDefault();
+    setEnviando(true); setError(""); setAviso("");
+    if (modo === "crear") {
+      const { data, error } = await sb.auth.signUp({ email: limpio(), password: pass, options: { emailRedirectTo: `${location.origin}/app` } });
+      setEnviando(false);
+      if (error) { track("cuenta_entrada_error", { paso: "registro" }); setError(errorAcceso(error.message, error.status)); return; }
+      track("cuenta_registro");
+      // Only when the project still asks to confirm the email (DEPLOY.md recommends not to): there is no session yet.
+      if (!data.session) setAviso("Te hemos enviado un correo para confirmar tu email. Después podrás entrar con tu contraseña.");
+      return;
+    }
+    const { error } = await sb.auth.signInWithPassword({ email: limpio(), password: pass });
+    setEnviando(false);
+    if (error) { track("cuenta_entrada_error", { paso: "password" }); setError(errorAcceso(error.message, error.status)); return; }
+    track("cuenta_entrada_ok", { metodo: "password" });
+  }
 
   async function pedirCodigo(e?: FormEvent) {
     e?.preventDefault();
     setEnviando(true); setError(""); setAviso("");
-    const { error } = await sb.auth.signInWithOtp({ email: email.trim().toLowerCase(), options: { shouldCreateUser: true } });
+    const { error } = await sb.auth.signInWithOtp({ email: limpio(), options: { shouldCreateUser: false } });
     setEnviando(false);
-    if (error) {
-      track("cuenta_entrada_error", { paso: "email" });
-      setError(error.status === 429 ? "Has pedido varios códigos seguidos. Espera un minuto y vuelve a intentarlo." : "No hemos podido enviarte el código. Revisa el email e inténtalo de nuevo.");
-      return;
-    }
+    // Same answer whether or not the account exists, so nobody can use this form to find out who has an account.
+    if (error && error.status === 429) { setError(errorAcceso(error.message, 429)); return; }
     track("cuenta_codigo_pedido");
-    if (paso === "codigo") setAviso("Te hemos enviado un código nuevo.");
-    setPaso("codigo");
+    if (modo === "codigo") setAviso("Si hay una cuenta con este email, te hemos enviado un código nuevo.");
+    setModo("codigo");
   }
 
   async function comprobar(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const token = String(new FormData(e.currentTarget).get("codigo") ?? "").replace(/\D/g, "");
     setEnviando(true); setError(""); setAviso("");
-    const { error } = await sb.auth.verifyOtp({ email: email.trim().toLowerCase(), token, type: "email" });
+    // Set before verifying: the sign-in event fires while verifyOtp is still running.
+    const marca = (on: boolean) => { try { if (on) sessionStorage.setItem("cuotio-nueva-pass", "1"); else sessionStorage.removeItem("cuotio-nueva-pass"); } catch { /* ignore */ } };
+    marca(true);
+    const { error } = await sb.auth.verifyOtp({ email: limpio(), token, type: "email" });
     setEnviando(false);
-    if (error) { track("cuenta_entrada_error", { paso: "codigo" }); setError("El código no es correcto o ha caducado. Revísalo o pide uno nuevo."); return; }
-    track("cuenta_entrada_ok");
+    if (error) { marca(false); track("cuenta_entrada_error", { paso: "codigo" }); setError("El código no es correcto o ha caducado. Revísalo o pide uno nuevo."); return; }
+    track("cuenta_entrada_ok", { metodo: "codigo" });
   }
 
-  if (paso === "codigo") return (
-    <Pantalla titulo="Entrar en Cuotio">
-      <form className="card cu-form" onSubmit={comprobar}>
-        <h2>Revisa tu correo</h2>
-        <p className="muted">Te hemos enviado un código a <b>{email}</b>. Escríbelo aquí. Caduca en una hora.</p>
-        <div className="fld"><label htmlFor="codigo">Código</label>
-          <input id="codigo" name="codigo" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9 ]{6,12}" maxLength={12} required autoFocus className="cu-codigo" /></div>
-        <button className="btn" type="submit" disabled={enviando}>{enviando ? "Comprobando…" : "Entrar"}</button>
-        {error && <p role="alert" className="cu-error">{error}</p>}
-        {aviso && <p role="status" className="muted small">{aviso}</p>}
-        <p className="muted small">¿No te llega? Mira en spam o <button type="button" className="linkbtn" disabled={enviando} onClick={() => pedirCodigo()}>pide otro código</button>. <button type="button" className="linkbtn" onClick={() => { setPaso("email"); setError(""); }}>Cambiar email</button></p>
-      </form>
+  if (modo === "olvido" || modo === "codigo") return (
+    <Pantalla titulo="Recuperar el acceso">
+      {modo === "olvido" ? (
+        <form className="card cu-form" onSubmit={pedirCodigo}>
+          <h2>¿Has olvidado la contraseña?</h2>
+          <p className="muted">Te mandamos un código al email para entrar y elegir una nueva.</p>
+          <div className="fld"><label htmlFor="email">Email</label>
+            <input id="email" type="email" autoComplete="email" required placeholder="tu@email.com" value={email} onChange={(e) => setEmail(e.target.value)} /></div>
+          <button className="btn" type="submit" disabled={enviando}>{enviando ? "Enviando…" : "Enviarme el código"}</button>
+          {error && <p role="alert" className="cu-error">{error}</p>}
+          <button type="button" className="linkbtn" onClick={() => ir("entrar")}>Volver</button>
+        </form>
+      ) : (
+        <form className="card cu-form" onSubmit={comprobar}>
+          <h2>Revisa tu correo</h2>
+          <p className="muted">Si hay una cuenta con <b>{email}</b>, te hemos enviado un código. Escríbelo aquí. Caduca en una hora.</p>
+          <div className="fld"><label htmlFor="codigo">Código</label>
+            <input id="codigo" name="codigo" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9 ]{6,12}" maxLength={12} required autoFocus className="cu-codigo" /></div>
+          <button className="btn" type="submit" disabled={enviando}>{enviando ? "Comprobando…" : "Entrar"}</button>
+          {error && <p role="alert" className="cu-error">{error}</p>}
+          {aviso && <p role="status" className="muted small">{aviso}</p>}
+          <p className="muted small">¿No te llega? Mira en spam o <button type="button" className="linkbtn" disabled={enviando} onClick={() => pedirCodigo()}>pide otro código</button>. <button type="button" className="linkbtn" onClick={() => ir("entrar")}>Volver</button></p>
+        </form>
+      )}
     </Pantalla>
   );
 
+  const crear = modo === "crear";
   return (
-    <Pantalla titulo="Entrar en Cuotio">
-      <form className="card cu-form" onSubmit={pedirCodigo}>
-        <h2>Entra o crea tu cuenta</h2>
-        <p className="muted">Te mandamos un código al email. Sin contraseñas.</p>
-        <div className="fld"><label htmlFor="email">Email</label>
-          <input id="email" name="email" type="email" autoComplete="email" required placeholder="tu@email.com" value={email} onChange={(e) => setEmail(e.target.value)} /></div>
-        <label className="cu-consent"><input type="checkbox" required /> <span>He leído la <a href={href("/privacidad")}>política de privacidad</a>. Mis datos se guardan en servidores de la Unión Europea.</span></label>
-        <button className="btn" type="submit" disabled={enviando}>{enviando ? "Enviando…" : "Enviarme el código"}</button>
+    <Pantalla titulo={crear ? "Crear cuenta en Cuotio" : "Entrar en Cuotio"}>
+      <div className="card cu-form">
+        <h2>{crear ? "Crea tu cuenta" : "Entra en Cuotio"}</h2>
+        {conGoogle && <>
+          <button type="button" className="btn cu-google" onClick={google}><GoogleLogo /> Continuar con Google</button>
+          <p className="cu-o"><span>o con tu email</span></p>
+        </>}
+        <form className="cu-form" onSubmit={conPassword}>
+          <div className="fld"><label htmlFor="email">Email</label>
+            <input id="email" type="email" autoComplete="email" required placeholder="tu@email.com" value={email} onChange={(e) => setEmail(e.target.value)} /></div>
+          <div className="fld"><label htmlFor="pass">Contraseña</label>
+            <input id="pass" type="password" autoComplete={crear ? "new-password" : "current-password"} required minLength={crear ? MIN_PASS : undefined} value={pass} onChange={(e) => setPass(e.target.value)} />
+            {crear && <small className="muted">Al menos {MIN_PASS} caracteres.</small>}</div>
+          <button className="btn" type="submit" disabled={enviando}>{enviando ? (crear ? "Creando…" : "Entrando…") : crear ? "Crear cuenta" : "Entrar"}</button>
+        </form>
         {error && <p role="alert" className="cu-error">{error}</p>}
+        {aviso && <p role="status" className="cu-aviso">{aviso}</p>}
+        {!crear && <button type="button" className="linkbtn" onClick={() => ir("olvido")}>He olvidado la contraseña</button>}
+        <p className="muted small">Al {crear ? "crear la cuenta" : "continuar"} aceptas la <a href={href("/privacidad")}>política de privacidad</a>. Tus datos se guardan en servidores de la Unión Europea.</p>
+      </div>
+      <p className="muted small cu-pie">{crear ? <>¿Ya tienes cuenta? <button type="button" className="linkbtn" onClick={() => ir("entrar")}>Entra</button></> : <>¿Es tu primera vez? <button type="button" className="linkbtn" onClick={() => ir("crear")}>Crea tu cuenta</button></>}
+        {" · "}<a href={href("/demo")}>Prueba la demo</a></p>
+    </Pantalla>
+  );
+}
+
+/** After entering with a recovery code: choose a new password, or skip it. */
+function NuevaPassword({ sb, onListo }: { sb: SupabaseClient; onListo: () => void }) {
+  const [pass, setPass] = useState("");
+  const [enviando, setEnviando] = useState(false);
+  const [error, setError] = useState("");
+  async function guardarPass(e: FormEvent) {
+    e.preventDefault(); setEnviando(true); setError("");
+    const { error } = await sb.auth.updateUser({ password: pass });
+    setEnviando(false);
+    if (error) { setError(errorAcceso(error.message, error.status)); return; }
+    track("cuenta_password_cambiada"); onListo();
+  }
+  return (
+    <Pantalla titulo="Nueva contraseña">
+      <form className="card cu-form" onSubmit={guardarPass}>
+        <h2>Elige una contraseña nueva</h2>
+        <div className="fld"><label htmlFor="np">Contraseña nueva</label>
+          <input id="np" type="password" autoComplete="new-password" required minLength={MIN_PASS} value={pass} onChange={(e) => setPass(e.target.value)} autoFocus />
+          <small className="muted">Al menos {MIN_PASS} caracteres.</small></div>
+        <button className="btn" type="submit" disabled={enviando}>{enviando ? "Guardando…" : "Guardar contraseña"}</button>
+        {error && <p role="alert" className="cu-error">{error}</p>}
+        <button type="button" className="linkbtn" onClick={onListo}>Ahora no</button>
       </form>
-      <p className="muted small cu-pie">¿Solo quieres echar un vistazo? <a href={href("/demo")}>Prueba la demo</a> sin registrarte.</p>
     </Pantalla>
   );
 }

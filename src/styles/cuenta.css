@@ -4,12 +4,13 @@
 .app.app--full:not(:has(.tabs)) { grid-template-rows: auto 1fr; }
 @media (min-width: 700px) { .cu { padding: 24px; } .app.app--full { height: calc(100dvh - 48px); border-radius: 32px; box-shadow: 0 60px 100px -30px rgba(0,0,0,.6); } }
 .cu-cargando { text-align: center; color: #5f6b82; padding: 60px 0; }
-.cu-form { gap: 14px; }
+.cu-form { display: grid; gap: 14px; }
+.cu-form > .btn { width: 100%; }
 .cu-form .fld small { font-weight: 500; }
 .cu-codigo { font-size: 1.6rem !important; letter-spacing: .3em; text-align: center; font-weight: 800; }
 .cu-consent { display: flex; gap: 10px; align-items: flex-start; font-size: .85rem; color: #3d475c; }
 .cu-consent input { margin-top: 3px; width: 18px; height: 18px; flex: none; accent-color: var(--steel); }
-.cu-consent a, .cu-pie a { color: var(--steel); font-weight: 700; }
+.cu-consent a, .cu-pie a, .cu-form p a { color: var(--steel); font-weight: 700; }
 .cu-pie { text-align: center; }
 .cu-error { color: #b4412f; font-size: .85rem; font-weight: 600; margin: 0; }
 .cu-ajustes { display: grid; gap: 10px; padding-top: 6px; border-top: 1px solid #e6ebf3; }
@@ -20,3 +21,9 @@
 .app .btn.cu-peligro-lleno { background: #c2412d; color: #fff; }
 .cu-estado { position: fixed; left: 50%; top: calc(env(safe-area-inset-top, 0px) + 14px); transform: translateX(-50%); z-index: 40; padding: 8px 14px; border-radius: 999px; background: var(--navy); color: #fff; font-size: .8rem; font-weight: 700; box-shadow: 0 10px 24px -10px rgba(0,0,0,.5); display: flex; gap: 8px; align-items: center; }
 .cu-estado--error { background: #b4412f; } .cu-estado .linkbtn { color: #fff; }
+.app .btn.cu-google { background: #fff; color: var(--ink); box-shadow: inset 0 0 0 1.5px #dde3ee; display: inline-flex; justify-content: center; gap: 10px; }
+.app .btn.cu-google:hover { box-shadow: inset 0 0 0 1.5px #b9c3d6; }
+.cu-o { display: flex; align-items: center; gap: 12px; margin: 0; color: #8d97ad; font-size: .78rem; font-weight: 700; }
+.cu-o::before, .cu-o::after { content: ""; flex: 1; height: 1px; background: #e1e6ee; }
+.cu-aviso { margin: 0; padding: 12px 14px; border-radius: 14px; background: #eef3fb; color: var(--steel); font-size: .85rem; font-weight: 600; }
+.cu-form .linkbtn { justify-self: start; }

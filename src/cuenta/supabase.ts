@@ -15,6 +15,6 @@ let client: Promise<SupabaseClient> | null = null;
 export function supabase(): Promise<SupabaseClient> {
   if (!cuentasActivas()) return Promise.reject(new Error("Supabase no está configurado"));
   client ??= import("@supabase/supabase-js").then(({ createClient }) =>
-    createClient(URL!, KEY!, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: false, storageKey: "cuotio-sesion" } }));
+    createClient(URL!, KEY!, { auth: { persistSession: true, autoRefreshToken: true, flowType: "pkce", detectSessionInUrl: true, storageKey: "cuotio-sesion" } }));
   return client;
 }
