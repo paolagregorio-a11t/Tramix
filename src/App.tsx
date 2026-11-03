@@ -14,6 +14,7 @@ import { routeFor } from "./routes";
 import { CambioBasePage, CuotaPage, CuotaXPage, RegularizacionPage, TramosPage } from "./pages/Pages";
 import { CuotaCalculator } from "./pages/CuotaCalculator";
 import { DemoApp } from "./demo/DemoApp";
+import { CuentaPage } from "./cuenta/CuentaPage";
 import { LegalPage } from "./legal/LegalPage";
 import { fromDemo, track } from "./analytics";
 import "./styles/global.css";
@@ -31,6 +32,7 @@ export default function App({ path: initial }: { path?: string }) {
   useMeta(route);
   switch (route.kind) {
     case "demo": return <DemoApp />;
+    case "app": return <CuentaPage />;
     case "legal": return <LegalPage page={route.path.slice(1) as "privacidad" | "aviso-legal" | "cookies"} />;
     case "cuota": return <CuotaPage route={route} />;
     case "cuota-x": return <CuotaXPage route={route} />;

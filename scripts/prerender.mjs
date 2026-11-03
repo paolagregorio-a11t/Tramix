@@ -23,6 +23,7 @@ for (const r of routes) {
     .replace(/<link rel="canonical" href="[^"]*"\s*\/?>/, "")
     .replace(/<meta property="og:url" content="[^"]*"\s*\/?>/, "");
   const ld = schema(r.path, site).map((o) => `<script type="application/ld+json">${JSON.stringify(o).replace(/</g, "\\u003c")}</script>`).join("\n    ");
+  if (r.privada) html = html.replace("</head>", `  <meta name="robots" content="noindex" />\n  </head>`);
   html = html.replace("</head>", `  <link rel="canonical" href="${url}" />\n    <meta property="og:url" content="${url}" />\n    ${ld}\n  </head>`);
   html = html.replace('<div id="root"></div>', `<div id="root">${render(r.path)}</div>`);
   const out = r.path === "/" ? join(dist, "index.html") : join(dist, r.path.slice(1), "index.html");
@@ -32,7 +33,7 @@ for (const r of routes) {
 }
 
 const today = new Date().toISOString().slice(0, 10);
-writeFileSync(join(dist, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${routes.map((r) => `  <url><loc>${site}${r.path === "/" ? "/" : r.path}</loc><lastmod>${today}</lastmod><priority>${r.priority.toFixed(1)}</priority></url>`).join("\n")}\n</urlset>\n`);
-writeFileSync(join(dist, "robots.txt"), `User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: ${site}/sitemap.xml\n`);
+writeFileSync(join(dist, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${routes.filter((r) => !r.privada).map((r) => `  <url><loc>${site}${r.path === "/" ? "/" : r.path}</loc><lastmod>${today}</lastmod><priority>${r.priority.toFixed(1)}</priority></url>`).join("\n")}\n</urlset>\n`);
+writeFileSync(join(dist, "robots.txt"), `User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /app\n\nSitemap: ${site}/sitemap.xml\n`);
 rmSync(join(root, "dist-ssr"), { recursive: true, force: true });
 console.log(`prerender: ${n} pages, sitemap.xml and robots.txt for ${site}`);

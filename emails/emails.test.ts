@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { alertaEmail } from "./alerta.js";
 import { welcomeEmail } from "./welcome.js";
+import { codigoEmail } from "./codigo.js";
+import { readFileSync } from "node:fs";
 
 const brand = { site: "https://cuotio.example", unsubscribeUrl: "https://cuotio.example/api/unsubscribe?x=1", contactEmail: "hola@cuotio.example", senderName: "El equipo de Cuotio" };
 const data = { dias: 18, limite: "31 de octubre", efecto: "1 de noviembre", tramoActual: 7, tramoObjetivo: 10, rangoTexto: "tramo 9–10", importe: 1100, accion: "subir" as const, appUrl: "https://cuotio.example/#demo" };
@@ -25,5 +27,11 @@ describe("emails", () => {
   });
   it("escapes injected markup in dynamic fields", () => {
     expect(alertaEmail(brand, { ...data, limite: "<script>x</script>" }).html).not.toContain("<script>x</script>");
+  });
+  it("sign-in code email carries the Supabase code placeholder and no unsubscribe link", () => {
+    const m = codigoEmail(brand);
+    expect(m.html).toContain("{{ .Token }}");
+    expect(m.html).not.toContain("Darme de baja");
+    expect(readFileSync("supabase/templates/codigo.html", "utf8")).toContain("{{ .Token }}");
   });
 });
