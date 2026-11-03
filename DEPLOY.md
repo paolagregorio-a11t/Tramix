@@ -71,8 +71,8 @@ La app con cuenta vive en `cuotio.es/app`. Cada persona entra con **Google** (un
    - En la app nativa (APK) no se muestra el botón de Google: allí se entra con email y contraseña.
 7. **Claves en Vercel.** En **Project Settings → API** de Supabase copia y añade en Vercel (**Settings → Environment Variables**):
    - `VITE_SUPABASE_URL` = *Project URL* (pública).
-   - `VITE_SUPABASE_ANON_KEY` = clave *anon* / *publishable* (pública: lo que protege los datos son las reglas del paso 2).
-   - `SUPABASE_SERVICE_ROLE_KEY` = clave *service_role* / *secret*. **Es secreta**: solo aquí, nunca en el código, en un chat ni en la app. Solo la usa `/api/borrar-cuenta` para borrar cuentas.
+   - `VITE_SUPABASE_ANON_KEY` = clave *publishable* (`sb_publishable_…`) o la antigua *anon* (pública: lo que protege los datos son las reglas del paso 2).
+   - `SUPABASE_SERVICE_ROLE_KEY` = clave *secret* (`sb_secret_…`) o la antigua *service_role*. **Es secreta**: solo aquí, nunca en el código, en un chat ni en la app. Solo la usa `/api/borrar-cuenta` para borrar cuentas.
 8. **Contrato de encargo de tratamiento (RGPD).** Supabase lo incluye en sus condiciones; en **Organization → Legal Documents** puedes descargarlo y guardarlo firmado junto a los de Resend, Vercel y Umami.
 9. Haz un nuevo *Deploy* y prueba: abre `cuotio.es/app`, entra con Google y crea también una cuenta con email y contraseña; elige tu tramo y añade un mes. Prueba *He olvidado la contraseña*. Recarga la página: el mes debe seguir ahí. En otro navegador, con otro email, no deben verse tus datos. Prueba también **Ajustes → Descargar mis datos** y **Borrar mi cuenta**.
 

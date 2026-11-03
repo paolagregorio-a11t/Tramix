@@ -26,6 +26,11 @@ describe("POST /api/borrar-cuenta", () => {
     expect(calls[1].url).toBe(`https://p.supabase.co/auth/v1/admin/users/${ID}`);
     expect(calls[1].init.method).toBe("DELETE");
   });
+  it("con las claves nuevas (sb_secret_) solo manda la cabecera apikey", async () => {
+    vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", "sb_secret_abc");
+    expect((await POST(req("tok"))).status).toBe(200);
+    expect(calls[1].init.headers).toEqual({ apikey: "sb_secret_abc" });
+  });
   it("sin sesión o con sesión caducada no borra nada", async () => {
     expect((await POST(req())).status).toBe(401);
     userOk = false;

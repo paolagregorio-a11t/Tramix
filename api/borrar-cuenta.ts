@@ -25,7 +25,9 @@ export async function POST(request: Request): Promise<Response> {
     const user = (await who.json()) as { id?: string };
     if (!user.id || !/^[0-9a-f-]{36}$/i.test(user.id)) return json({ error: "Tu sesión no es válida." }, 401);
 
-    const del = await fetch(`${url}/auth/v1/admin/users/${user.id}`, { method: "DELETE", headers: { apikey: service, authorization: `Bearer ${service}` } });
+    // New-style secret keys (sb_secret_…) go only in the apikey header; legacy service_role keys are JWTs and also go as Bearer.
+    const admin: Record<string, string> = service.startsWith("sb_secret_") ? { apikey: service } : { apikey: service, authorization: `Bearer ${service}` };
+    const del = await fetch(`${url}/auth/v1/admin/users/${user.id}`, { method: "DELETE", headers: admin });
     if (!del.ok) {
       console.error("borrar-cuenta: delete failed", del.status, await del.text());
       return json({ error: "No hemos podido borrar la cuenta. Inténtalo de nuevo o escríbenos." }, 502);
