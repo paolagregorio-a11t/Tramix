@@ -1,4 +1,5 @@
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import { doNotTrack, optedOut, setOptOut } from "../analytics";
 import { href } from "../router";
 import { Logo } from "../components/Logo";
 import { FECHA_LEGAL, TITULAR, pend } from "./config";
@@ -40,12 +41,13 @@ const pages: Record<LegalKey, { title: string; body: ReactNode }> = {
           <li><b>Datos introducidos en la demo.</b> Se guardan únicamente en tu navegador (almacenamiento local) y no se envían a ningún servidor.</li>
           <li><b>Extractos bancarios.</b> Se leen en tu propio dispositivo para calcular tus ingresos y gastos. No se envían a ningún servidor.</li>
           <li><b>Facturas.</b> Si subes una factura, se envía a Google (Gemini) únicamente para extraer sus datos (fecha, importes, emisor y cliente) y mostrártelos. No la guardamos. Solo se envía si marcas la casilla de aceptación. Base jurídica: tu consentimiento.</li>
+          <li><b>Estadísticas de uso anónimas.</b> Contamos visitas y algunos pasos (por ejemplo, si se usa la calculadora, si se abre la demo o si se completa el formulario de la lista de espera) para saber qué partes de Cuotio cuestan más y mejorarlas. Usamos Umami, una herramienta sin cookies que no guarda nada en tu dispositivo ni tu dirección IP, y que no permite identificarte ni seguirte entre sitios. Nunca enviamos tu email, tus importes ni lo que escribes. Base jurídica: nuestro interés legítimo en mejorar el servicio (art. 6.1.f RGPD). Puedes desactivarlas en la <a href={href("/cookies")}>política de cookies</a>, y respetamos la opción «No rastrear» de tu navegador.</li>
           <li><b>Preguntas al asistente.</b> Si escribes una pregunta libre, se envía junto con unas cifras agregadas (tramo, rendimiento mensual previsto, plazo) a un proveedor de modelos de inteligencia artificial para generar la respuesta. No enviamos tu email ni datos que te identifiquen; no escribas datos personales en la pregunta. Base jurídica: tu iniciativa al usar la función.</li>
         </ul>
         <h2>Cuánto tiempo los conservamos</h2>
         <p>Hasta que retires tu consentimiento o solicites la supresión. Si no hay lanzamiento, se eliminarán a los 24 meses.</p>
         <h2>Destinatarios</h2>
-        <p>Usamos proveedores que tratan datos por nuestra cuenta, con contrato de encargo de tratamiento: un servicio de envío de correo electrónico, la plataforma de alojamiento del sitio y un proveedor de inteligencia artificial para el asistente. No cedemos tus datos a terceros para fines propios.</p>
+        <p>Usamos proveedores que tratan datos por nuestra cuenta, con contrato de encargo de tratamiento: un servicio de envío de correo electrónico, la plataforma de alojamiento del sitio, el servicio de estadísticas anónimas (Umami, con servidores en la Unión Europea) y un proveedor de inteligencia artificial para el asistente. No cedemos tus datos a terceros para fines propios.</p>
         <h2>Tus derechos</h2>
         <p>Puedes acceder, rectificar, suprimir, oponerte, limitar el tratamiento y solicitar la portabilidad de tus datos, y retirar el consentimiento en cualquier momento, escribiendo a {pend(TITULAR.email)}. Si consideras que no hemos atendido tus derechos, puedes reclamar ante la Agencia Española de Protección de Datos (aepd.es).</p>
         <h2>Darse de baja</h2>
@@ -57,14 +59,32 @@ const pages: Record<LegalKey, { title: string; body: ReactNode }> = {
     title: "Política de cookies",
     body: (
       <>
-        <p>Este sitio <b>no utiliza cookies de seguimiento, publicidad ni analítica</b>, por lo que no muestra banner de consentimiento.</p>
+        <p>Este sitio <b>no utiliza cookies</b> de seguimiento, publicidad ni analítica, por lo que no muestra banner de consentimiento.</p>
+        <h2>Estadísticas de uso sin cookies</h2>
+        <p>Para saber qué partes de Cuotio cuestan más, contamos visitas y algunos pasos de forma anónima con Umami. No usa cookies, no guarda nada en tu dispositivo ni tu dirección IP, y no te identifica ni te sigue entre sitios. Si tu navegador tiene activada la opción «No rastrear», no se cuenta nada.</p>
+        <OptOut />
         <h2>Almacenamiento local</h2>
         <p>La demo guarda tus datos de ejemplo en el almacenamiento local de tu navegador para que no los pierdas al recargar. Es un almacenamiento estrictamente necesario para esa función, no se comparte y puedes borrarlo desde los ajustes de tu navegador o con el botón «Restablecer datos de ejemplo».</p>
-        <p>Si en el futuro incorporamos analítica u otras cookies, actualizaremos esta política y te pediremos tu consentimiento antes de activarlas.</p>
+        <p>Si en el futuro incorporamos cookies, actualizaremos esta política y te pediremos tu consentimiento antes de activarlas.</p>
       </>
     ),
   },
 };
+
+/** Lets a visitor switch the anonymous statistics off (or back on) for this browser. */
+function OptOut() {
+  const [off, setOff] = useState<boolean | null>(null);
+  useEffect(() => { setOff(optedOut()); }, []);
+  if (off === null) return null;
+  if (doNotTrack()) return <p>Tu navegador tiene activada la opción «No rastrear», así que no contamos nada de tu visita.</p>;
+  return (
+    <p>
+      {off ? "Las estadísticas están desactivadas en este navegador. " : "Las estadísticas están activadas en este navegador. "}
+      <button type="button" className="legal__opt" onClick={() => { setOptOut(!off); setOff(!off); }}>{off ? "Volver a activarlas" : "Desactivarlas"}</button>
+      {off ? null : " (se guarda una marca en este navegador para recordarlo)."}
+    </p>
+  );
+}
 
 export function LegalPage({ page }: { page: LegalKey }) {
   const p = pages[page];

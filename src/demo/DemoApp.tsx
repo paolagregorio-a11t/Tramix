@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { href } from "../router";
 import { Logo } from "../components/Logo";
 import { Bell, IconArrow, IconCheck, IconClose, IconDownload, IconGear, IconHome, IconList, IconPlus, IconSpark, IconUpload } from "../components/Icons";
@@ -15,6 +15,7 @@ import { Ladder } from "./Ladder";
 import { MonthSheet } from "./MonthSheet";
 import { YieldChart } from "./YieldChart";
 import { useDemoState } from "./useDemoState";
+import { track, trackOnce } from "../analytics";
 import "../styles/demo.css";
 
 type Tab = "resumen" | "meses" | "asistente" | "avisos" | "ajustes";
@@ -32,6 +33,9 @@ export function DemoApp() {
   const [sheet, setSheet] = useState<"rec" | "install" | "fb" | "import" | null>(null);
   const [esc, setEsc] = useState<number | null>(null);
   const install = useInstall();
+  useEffect(() => { track("demo_abierta"); }, []);
+  // Every sheet that opens is a step we want to see in the funnel (recommendation, install, feedback, import).
+  useEffect(() => { if (sheet) track("demo_hoja", { hoja: sheet }); }, [sheet]);
   const hoy = useMemo(() => new Date(), []);
   const tabla = tablaDe(hoy.getFullYear());
   const base = useMemo(() => proyectar(s.meses, tabla, s.regimen), [s.meses, s.regimen, tabla]);
@@ -47,6 +51,7 @@ export function DemoApp() {
 
   function saveMes(i: number, m: { ingresos: number; gastos: number }) {
     setS({ ...s, meses: i >= s.meses.length ? [...s.meses, m] : s.meses.map((x, j) => (j === i ? m : x)) });
+    track("demo_mes_guardado", { nuevo: i >= s.meses.length });
     setEdit(null); buzz();
   }
 
@@ -56,7 +61,7 @@ export function DemoApp() {
   return (
     <div className="dm">
       <div className="dm__top container">
-        <a href={href("/")} className="dm__back"><IconArrow /> Volver a la web</a>
+        <a href={href("/")} className="dm__back" onClick={() => track("demo_volver_web")}><IconArrow /> Volver a la web</a>
         <div className="dm__top-r">
           <span className="dm__badge">Demo · datos de ejemplo</span>
           <button className="dm__fb" onClick={() => setSheet("fb")}>Danos tu opinión</button>
@@ -133,7 +138,7 @@ export function DemoApp() {
                   <div className="card__h"><h2>Simulador</h2>{esc !== null && <button className="linkbtn" onClick={() => setEsc(null)}>Volver a mi tendencia</button>}</div>
                   <p className="muted">¿Y si el resto del año tu rendimiento fuera…?</p>
                   <div className="slider"><div className="slider__top"><label htmlFor="sim">Rendimiento mensual</label><b className="num">{eur(esc ?? proy.restante)}</b></div>
-                    <input id="sim" type="range" min={0} max={7000} step={50} value={Math.round(esc ?? proy.restante)} onChange={(e) => setEsc(Number(e.target.value))} style={{ ["--p" as string]: `${(Math.round(esc ?? proy.restante) / 7000) * 100}%` }} /></div>
+                    <input id="sim" type="range" min={0} max={7000} step={50} value={Math.round(esc ?? proy.restante)} onChange={(e) => { trackOnce("sim", "demo_simulador"); setEsc(Number(e.target.value)); }} style={{ ["--p" as string]: `${(Math.round(esc ?? proy.restante) / 7000) * 100}%` }} /></div>
                   <p className="sim__out">Cerrarías el año en el <b>tramo {heroRange}</b>{rec.accion === "mantener" ? " y tu tramo actual encaja." : <> y te convendría <b>{rec.accion === "subir" ? "subir" : "bajar"} al {rec.objetivo}</b>.</>}</p>
                 </section>
               </>)}
@@ -178,14 +183,14 @@ export function DemoApp() {
                   <select id="rg" value={s.regimen} onChange={(e) => setS({ ...s, regimen: e.target.value as typeof s.regimen })}>
                     <option value="persona-fisica">Persona física (deducción 7 %)</option><option value="societario">Societario (deducción 3 %)</option></select></div>
                 {!install.standalone && <button className="btn btn--soft" onClick={() => setSheet("install")}><IconDownload /> Instalar en tu móvil</button>}
-                <button className="btn btn--ghost" onClick={() => { reset(); setEsc(null); }}>Restablecer datos de ejemplo</button>
+                <button className="btn btn--ghost" onClick={() => { track("demo_restablecer"); reset(); setEsc(null); }}>Restablecer datos de ejemplo</button>
                 <p className="muted small">{estadoTxt} Tus datos se guardan solo en este navegador.</p>
               </section>)}
             </div>
 
             <nav className="tabs" aria-label="Secciones">
               {([["resumen", "Resumen", IconHome], ["meses", "Meses", IconList], ["asistente", "Asistente", IconSpark], ["avisos", "Avisos", () => <Bell size={22} />], ["ajustes", "Ajustes", IconGear]] as const).map(([k, l, Ic]) => (
-                <button key={k} className={tab === k ? "on" : ""} aria-current={tab === k ? "page" : undefined} onClick={() => { setTab(k); buzz(); }}><Ic />{l}</button>))}
+                <button key={k} className={tab === k ? "on" : ""} aria-current={tab === k ? "page" : undefined} onClick={() => { if (k !== tab) track("demo_pestana", { pestana: k }); setTab(k); buzz(); }}><Ic />{l}</button>))}
             </nav>
 
             {edit !== null && <MonthSheet key={edit} nombre={MESES[edit]} esNuevo={edit >= s.meses.length} esUltimo={edit === s.meses.length - 1}
@@ -193,7 +198,7 @@ export function DemoApp() {
               onSave={(m) => saveMes(edit, m)} onDelete={() => { setS({ ...s, meses: s.meses.slice(0, -1) }); setEdit(null); }} onClose={() => setEdit(null)} />}
 
             {sheet === "fb" && <FeedbackSheet onClose={() => setSheet(null)} />}
-            {sheet === "import" && <ImportSheet meses={s.meses} year={hoy.getFullYear()} onApply={(m) => { setS({ ...s, meses: m }); setEsc(null); buzz(); }} onClose={() => setSheet(null)} />}
+            {sheet === "import" && <ImportSheet meses={s.meses} year={hoy.getFullYear()} onApply={(m) => { track("demo_importar", { meses: m.length }); setS({ ...s, meses: m }); setEsc(null); buzz(); }} onClose={() => setSheet(null)} />}
 
             {sheet === "rec" && proy && rec && (
               <div className="sheet" role="dialog" aria-modal="true" aria-label="Recomendación">

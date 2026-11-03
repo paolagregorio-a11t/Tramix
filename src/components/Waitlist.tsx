@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { href } from "../router";
 import { IconCheck } from "./Icons";
+import { fromDemo, track, trackOnce } from "../analytics";
 
 type Status = "idle" | "sending" | "done" | "preview" | "error";
 const API = (import.meta.env.VITE_API_BASE as string | undefined) ?? "";
@@ -14,6 +15,8 @@ export function Waitlist({ id }: { id: string }) {
     e.preventDefault();
     const f = new FormData(e.currentTarget);
     if (PREVIEW) { setStatus("preview"); return; }
+    const ev = { origen: id, desde_demo: fromDemo() };
+    track("lista_espera_enviada", ev);
     setStatus("sending");
     try {
       const res = await fetch(`${API}/api/waitlist`, {
@@ -24,7 +27,9 @@ export function Waitlist({ id }: { id: string }) {
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || "No hemos podido guardar tu email. Inténtalo de nuevo en unos minutos.");
       setStatus("done");
+      track("lista_espera_ok", ev);
     } catch (err) {
+      track("lista_espera_error", ev);
       setMsg(err instanceof Error ? err.message : "Algo ha fallado. Inténtalo de nuevo.");
       setStatus("error");
     }
@@ -37,7 +42,8 @@ export function Waitlist({ id }: { id: string }) {
     <form className="wlf" onSubmit={onSubmit} noValidate={false}>
       <div className="wl">
         <label htmlFor={id} className="sr">Tu email</label>
-        <input id={id} name="email" type="email" required autoComplete="email" placeholder="tu@email.com" />
+        <input id={id} name="email" type="email" required autoComplete="email" placeholder="tu@email.com"
+          onFocus={() => trackOnce(`wl-${id}`, "lista_espera_inicio", { origen: id, desde_demo: fromDemo() })} />
         <button className="btn" type="submit" disabled={status === "sending"}>{status === "sending" ? "Enviando…" : "Avísame"}</button>
       </div>
       <input name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hp" />

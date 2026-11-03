@@ -4,6 +4,7 @@ import { TABLA_2026 } from "../engine/tramos";
 import { href } from "../router";
 import { IMPORTES, cuotaXPath } from "../routes";
 import { eur0, eur2 } from "./format";
+import { trackOnce } from "../analytics";
 
 const T = TABLA_2026;
 const num = (v: string) => Math.max(0, Number(v.replace(/\./g, "").replace(",", ".")) || 0);
@@ -17,6 +18,7 @@ export function CuotaCalculator({ initial = 2000, compact = false, id = "calc" }
   const [reg, setReg] = useState<Regimen>("persona-fisica");
   const rend = modo === "neto" ? num(neto) : rendimientoMes({ ingresos: num(ing), gastos: num(gas) }, reg);
   const n = tramoPara(rend, T), of = tablaOficial(n), tr = T.tramos[n - 1];
+  const used = (campo: string) => trackOnce(`calc-${id}`, "calculo_tramo", { donde: id, campo });
   const cerca = IMPORTES.reduce((a, b) => (Math.abs(b - rend) < Math.abs(a - rend) ? b : a), IMPORTES[0]);
 
   return (
@@ -27,11 +29,11 @@ export function CuotaCalculator({ initial = 2000, compact = false, id = "calc" }
       </div>
       {modo === "neto" ? (
         <div className="calc__f"><label htmlFor={`${id}-neto`}>Rendimiento neto mensual</label>
-          <div className="calc__in"><input id={`${id}-neto`} inputMode="decimal" value={neto} onChange={(e) => setNeto(e.target.value)} /><span>€/mes</span></div></div>
+          <div className="calc__in"><input id={`${id}-neto`} inputMode="decimal" value={neto} onChange={(e) => { used("neto"); setNeto(e.target.value); }} /><span>€/mes</span></div></div>
       ) : (<>
         <div className="calc__row">
-          <div className="calc__f"><label htmlFor={`${id}-ing`}>Ingresos al mes</label><div className="calc__in"><input id={`${id}-ing`} inputMode="decimal" value={ing} onChange={(e) => setIng(e.target.value)} /><span>€</span></div></div>
-          <div className="calc__f"><label htmlFor={`${id}-gas`}>Gastos al mes</label><div className="calc__in"><input id={`${id}-gas`} inputMode="decimal" value={gas} onChange={(e) => setGas(e.target.value)} /><span>€</span></div></div>
+          <div className="calc__f"><label htmlFor={`${id}-ing`}>Ingresos al mes</label><div className="calc__in"><input id={`${id}-ing`} inputMode="decimal" value={ing} onChange={(e) => { used("ingresos"); setIng(e.target.value); }} /><span>€</span></div></div>
+          <div className="calc__f"><label htmlFor={`${id}-gas`}>Gastos al mes</label><div className="calc__in"><input id={`${id}-gas`} inputMode="decimal" value={gas} onChange={(e) => { used("gastos"); setGas(e.target.value); }} /><span>€</span></div></div>
         </div>
         <div className="calc__f"><label htmlFor={`${id}-reg`}>Tipo de autónomo</label>
           <select id={`${id}-reg`} value={reg} onChange={(e) => setReg(e.target.value as Regimen)}><option value="persona-fisica">Persona física (deducción 7 %)</option><option value="societario">Societario (deducción 3 %)</option></select></div>
@@ -46,7 +48,7 @@ export function CuotaCalculator({ initial = 2000, compact = false, id = "calc" }
           <div><small>Al año (base mínima)</small><b>{eur0(cuotaMinima(n, T) * 12)}</b><span>12 cuotas</span></div>
         </div>
       </output>
-      {!compact && <p className="calc__more">Detalle completo: <a href={href(cuotaXPath(cerca))}>cuota de autónomo con {eur0(cerca)} al mes</a> · <a href={href("/regularizacion-cuota-autonomos")}>¿te tocará pagar en la regularización?</a></p>}
+      {!compact && <p className="calc__more">Detalle completo: <a href={href(cuotaXPath(cerca))} onClick={() => trackOnce(`calc-more-${id}`, "calculo_tramo_detalle", { donde: id })}>cuota de autónomo con {eur0(cerca)} al mes</a> · <a href={href("/regularizacion-cuota-autonomos")}>¿te tocará pagar en la regularización?</a></p>}
     </div>
   );
 }

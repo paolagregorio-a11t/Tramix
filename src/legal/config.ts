@@ -10,4 +10,4 @@ export const TITULAR = {
   dominio: "cuotio.es",
 };
 export const pend = (v: string) => v || "[pendiente de completar]";
-export const FECHA_LEGAL = "13 de octubre de 2026";
+export const FECHA_LEGAL = "3 de noviembre de 2026";
