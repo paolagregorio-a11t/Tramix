@@ -21,3 +21,12 @@ export function supabase(): Promise<SupabaseClient> {
     createClient(URL!, KEY!, { auth: { persistSession: true, autoRefreshToken: true, flowType: "pkce", detectSessionInUrl: true, storageKey: "cuotio-sesion" } }));
   return client;
 }
+
+/** Which sign-in providers are switched on in Supabase, so the Google button only shows once Google is set up. */
+export async function proveedores(): Promise<{ google: boolean }> {
+  try {
+    const r = await fetch(`${URL}/auth/v1/settings`, { headers: { apikey: KEY! } });
+    const d = (await r.json()) as { external?: { google?: boolean } };
+    return { google: !!d.external?.google };
+  } catch { return { google: false }; }
+}

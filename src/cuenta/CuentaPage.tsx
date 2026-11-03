@@ -10,7 +10,7 @@ import { tablaDe } from "../engine/tramos";
 import { fmt } from "../lib";
 import { surface, track } from "../analytics";
 import { cargar, exportar, guardar } from "./datos";
-import { cuentasActivas, supabase } from "./supabase";
+import { cuentasActivas, proveedores, supabase } from "./supabase";
 import "../styles/demo.css";
 import "../styles/cuenta.css";
 
@@ -91,7 +91,9 @@ function Entrar({ sb }: { sb: SupabaseClient }) {
   const [error, setError] = useState("");
   const [aviso, setAviso] = useState("");
   // Google sign-in goes through the browser and comes back to cuotio.es/app, so it is not offered inside the native app.
-  const conGoogle = surface() !== "nativa";
+  const [googleActivo, setGoogleActivo] = useState(false);
+  useEffect(() => { if (surface() !== "nativa") proveedores().then((p) => setGoogleActivo(p.google)); }, []);
+  const conGoogle = googleActivo;
   const limpio = () => email.trim().toLowerCase();
   const ir = (m: Modo) => { setModo(m); setError(""); setAviso(""); };
 
