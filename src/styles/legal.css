@@ -11,3 +11,4 @@
 .legal__nav { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--line); font-weight: 700; }
 .legal__nav a { color: var(--steel); }
 .legal__nav a[aria-current] { color: var(--ink); text-decoration: none; }
+.legal__opt { font: inherit; font-weight: 700; color: var(--navy, inherit); text-decoration: underline; background: none; border: 0; padding: 0; cursor: pointer; }

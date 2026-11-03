@@ -15,6 +15,7 @@ import { CambioBasePage, CuotaPage, CuotaXPage, RegularizacionPage, TramosPage }
 import { CuotaCalculator } from "./pages/CuotaCalculator";
 import { DemoApp } from "./demo/DemoApp";
 import { LegalPage } from "./legal/LegalPage";
+import { fromDemo, track } from "./analytics";
 import "./styles/global.css";
 import "./styles/landing.css";
 
@@ -47,6 +48,9 @@ function Home() {
   const [lineRef, lineSeen] = useInView<HTMLDivElement>(0.4);
   const [scrolled, setScrolled] = useState(false);
 
+  // Did the visitor come back from the demo? Counted once per visit to the home page.
+  useEffect(() => { if (fromDemo()) track("web_desde_demo"); }, []);
+
   useEffect(() => {
     let raf = 0;
     const on = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => { document.documentElement.style.setProperty("--sy", String(scrollY)); setScrolled(scrollY > 40); }); };
@@ -69,8 +73,8 @@ function Home() {
           <nav>
             <a href={href("/cuota-autonomo")}>Calculadora</a>
             <a href="#corto">El corto</a>
-            <a href={href("/demo")}>Probar la demo</a>
-            <button type="button" className="nav__inst" onClick={() => setInst(true)}><IconDownload size={15} /> Instalar</button>
+            <a href={href("/demo")} onClick={() => track("ir_a_demo", { donde: "menu" })}>Probar la demo</a>
+            <button type="button" className="nav__inst" onClick={() => { track("instalar_abierto", { donde: "menu" }); setInst(true); }}><IconDownload size={15} /> Instalar</button>
             <a href="#como">Cómo funciona</a>
             <a className="btn btn--ink" href="#lista">Lista de espera</a>
           </nav>
@@ -93,7 +97,7 @@ function Home() {
               </h1>
               <p className="hero__lead">Cuotio sigue tus ingresos, proyecta cómo cierras el año y te avisa <b>antes</b> de cada plazo para cambiar de tramo.</p>
               <Waitlist id="wl-hero" />
-              <a className="hero__demo" href={href("/demo")}>Probar la demo interactiva →</a>
+              <a className="hero__demo" href={href("/demo")} onClick={() => track("ir_a_demo", { donde: "portada" })}>Probar la demo interactiva →</a>
               <p className="hero__fine">Sin tarjeta · Sin spam · Te das de baja cuando quieras</p>
             </div>
             <div className="stage" ref={hero}>
@@ -214,7 +218,7 @@ function Home() {
                 <li><b>Danos tu opinión</b><span>Desde el botón de la propia demo.</span></li>
                 <li><b>Apúntate a la lista</b><span>Te avisamos antes que a nadie.</span></li>
               </ol>
-              <a className="btn btn--navy" href={href("/demo")}>Probar la demo</a>
+              <a className="btn btn--navy" href={href("/demo")} onClick={() => track("ir_a_demo", { donde: "beta" })}>Probar la demo</a>
             </Reveal>
           </div>
         </section>

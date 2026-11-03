@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { PREVIEW, postJSON } from "../api";
 import { IconCheck, IconClose } from "../components/Icons";
+import { track } from "../analytics";
 
 const CARAS = ["😞", "🙁", "😐", "🙂", "😍"];
 const USARIA = [["si", "Sí"], ["quiza", "Quizá"], ["no", "No"]] as const;
@@ -18,7 +19,7 @@ export function FeedbackSheet({ onClose }: { onClose: () => void }) {
     if (PREVIEW) { setSt("done"); return; }
     setSt("sending");
     const r = await postJSON("/api/contact", { kind: "opinion", rating: rating || undefined, usaria: usaria ?? undefined, message: msg, email: email || undefined });
-    if (r.ok) setSt("done"); else { setErr(r.error); setSt("error"); }
+    if (r.ok) { setSt("done"); track("opinion_enviada", { valoracion: rating, usaria: usaria ?? "sin_respuesta", con_texto: msg.trim().length > 0 }); } else { setErr(r.error); setSt("error"); }
   }
 
   return (
