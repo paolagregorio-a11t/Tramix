@@ -157,7 +157,7 @@ function Entrar({ sb }: { sb: SupabaseClient }) {
   if (modo === "olvido" || modo === "codigo") return (
     <Pantalla titulo="Recuperar el acceso">
       {modo === "olvido" ? (
-        <form className="card cu-form" onSubmit={pedirCodigo}>
+        <form key="olvido" className="card cu-form" onSubmit={pedirCodigo}>
           <h2>¿Has olvidado la contraseña?</h2>
           <p className="muted">Te mandamos un código al email para entrar y elegir una nueva.</p>
           <div className="fld"><label htmlFor="email">Email</label>
@@ -167,7 +167,7 @@ function Entrar({ sb }: { sb: SupabaseClient }) {
           <button type="button" className="linkbtn" onClick={() => ir("entrar")}>Volver</button>
         </form>
       ) : (
-        <form className="card cu-form" onSubmit={comprobar}>
+        <form key="codigo" className="card cu-form" onSubmit={comprobar}>
           <h2>Revisa tu correo</h2>
           <p className="muted">Si hay una cuenta con <b>{email}</b>, te hemos enviado un código. Escríbelo aquí. Caduca en una hora.</p>
           <div className="fld"><label htmlFor="codigo">Código</label>
