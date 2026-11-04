@@ -88,6 +88,22 @@ Cada día a las 7:00 (UTC) Vercel llama a `/api/avisos`. Si faltan 7 días o men
 2. Vercel > Environment Variables: añade `CRON_SECRET` (una cadena aleatoria larga, `openssl rand -hex 32`). Comprueba que `SUPABASE_SERVICE_ROLE_KEY`, `RESEND_API_KEY`, `EMAIL_FROM`, `UNSUBSCRIBE_SECRET` y `SITE_URL` estén en Production.
 3. Tras publicar, en Vercel > Settings > Cron Jobs verás `/api/avisos`. Con "Run" lo lanzas a mano; el resultado sale en los Logs.
 
+### 7.2 Suscripciones con Paddle (Cuotio Pro)
+
+Paddle cobra, factura y aplica el IVA como revendedor (Merchant of Record). Primero se prueba todo en el sandbox (sandbox-vendors.paddle.com), sin dinero real.
+
+1. Supabase > SQL Editor: ejecuta `supabase/migrations/20261104010000_suscripciones.sql`.
+2. Paddle > Catalog > Products: crea "Cuotio Pro" con dos precios recurrentes, 3,99 €/mes y 35 €/año, IVA incluido ("tax inclusive") y 14 días de prueba en cada uno. Copia los dos `pri_…`.
+3. Paddle > Developer tools > Authentication: crea un token de cliente (`test_…` en sandbox) y una API key con permisos de lectura de clientes y de suscripciones, y de escritura de sesiones del portal de clientes.
+4. Paddle > Developer tools > Notifications > New destination: URL `https://cuotio.es/api/paddle-webhook` y todos los eventos `subscription.*`. Copia su secret key.
+5. Paddle > Checkout > Checkout settings: pon `cuotio.es` como dominio aprobado y como "Default payment link" `https://cuotio.es/app`.
+6. Vercel: añade las variables de `.env.example` (apartado Paddle) y vuelve a desplegar. Las `VITE_` también en Preview si quieres probar en las vistas previas.
+7. Prueba con la tarjeta de pruebas de Paddle (4242 4242 4242 4242, cualquier fecha futura y CVC 100). En Ajustes debe aparecer "Pro · prueba gratis hasta…".
+
+Cuando Paddle apruebe la cuenta real, repite los pasos 2 a 5 en vendors.paddle.com, cambia `VITE_PADDLE_ENV` a `production` y las claves por las reales.
+
+En cuanto existe `PADDLE_WEBHOOK_SECRET`, los avisos por email solo se envían a cuentas con Pro; y con `VITE_PADDLE_CLIENT_TOKEN`, la app bloquea avisos, asistente e importación para quien no tenga Pro.
+
 ## 8. Antes de hacerlo público
 - Completa `src/legal/config.ts` (nombre, NIF, domicilio, email). Mientras estén vacíos, las páginas legales muestran "[pendiente de completar]".
 - La tabla de tramos 2026 y las seis ventanas de cambio de base **están verificadas con el texto del BOE** (Orden PJC/297/2026, art. 18; Reglamento, art. 45). Cada año hay que actualizar `src/engine/tramos.ts` con la nueva Orden de cotización.

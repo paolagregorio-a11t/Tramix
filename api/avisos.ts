@@ -2,6 +2,7 @@ import { alertaEmail } from "../emails/alerta.js";
 import { proyectar, recomendar, ventanasDelAno, type Month, type Regimen, type Ventana } from "../src/engine/calc.js";
 import { tablaDe } from "../src/engine/tramos.js";
 import { config, json, sign } from "./_lib.js";
+import { ESTADOS_PRO, paddleConfig } from "./_paddle.js";
 import { supabaseAdmin, type SupabaseAdmin } from "./_supabase.js";
 
 /**
@@ -42,8 +43,11 @@ function mesesDe(filas: FilaMes[]): Month[] {
   return out;
 }
 
-/** Who gets an email today and what it says. Pure, so it can be tested without Supabase or Resend. */
-export function planificar(hoy: Date, perfiles: Perfil[], meses: FilaMes[], yaEnviados: Set<string>): Envio[] {
+/**
+ * Who gets an email today and what it says. Pure, so it can be tested without Supabase or Resend.
+ * `pro`: accounts with Cuotio Pro, or null while subscriptions are not switched on (then everyone with the alert on gets it).
+ */
+export function planificar(hoy: Date, perfiles: Perfil[], meses: FilaMes[], yaEnviados: Set<string>, pro: Set<string> | null = null): Envio[] {
   const v = ventanaParaAvisar(hoy);
   if (!v) return [];
   const tabla = tablaDe(hoy.getFullYear());
@@ -53,6 +57,7 @@ export function planificar(hoy: Date, perfiles: Perfil[], meses: FilaMes[], yaEn
   for (const p of perfiles) {
     if (!Array.isArray(p.avisos) || p.avisos[v.indice] !== true) continue;
     if (yaEnviados.has(p.user_id)) continue;
+    if (pro && !pro.has(p.user_id)) continue;
     const proy = proyectar(mesesDe(porUsuario.get(p.user_id) ?? []), tabla, p.regimen);
     if (!proy) continue; // no months yet: nothing to recommend
     const rec = recomendar(p.tramo_actual, proy, tabla);
@@ -88,7 +93,11 @@ export async function GET(request: Request): Promise<Response> {
     const perfiles = await leer<Perfil>(sb, "perfiles?select=user_id,tramo_actual,regimen,avisos");
     const meses = await leer<FilaMes>(sb, `meses?select=user_id,mes,ingresos,gastos&anio=eq.${hoy.getFullYear()}`);
     const enviados = await leer<{ user_id: string }>(sb, `avisos_enviados?select=user_id&limite=eq.${limite}`);
-    const plan = planificar(hoy, perfiles, meses, new Set(enviados.map((e) => e.user_id)));
+    // Alerts are part of Cuotio Pro once subscriptions are on (the Paddle webhook is configured).
+    const pro = paddleConfig().webhookSecret
+      ? new Set((await leer<{ user_id: string }>(sb, `suscripciones?select=user_id&estado=in.(${ESTADOS_PRO.join(",")})`)).map((r) => r.user_id))
+      : null;
+    const plan = planificar(hoy, perfiles, meses, new Set(enviados.map((e) => e.user_id)), pro);
 
     let ok = 0, fallos = 0;
     for (const e of plan) {

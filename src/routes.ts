@@ -55,6 +55,8 @@ export const ROUTES: RouteDef[] = [
     title: "Política de privacidad · Cuotio", description: "Qué datos trata Cuotio, para qué, cuánto tiempo y cómo ejercer tus derechos." },
   { path: "/aviso-legal", kind: "legal", priority: 0.2, crumbs: [HOME, { name: "Aviso legal", path: "/aviso-legal" }],
     title: "Aviso legal · Cuotio", description: "Titular del sitio, naturaleza orientativa del servicio y condiciones de uso de Cuotio." },
+  { path: "/condiciones", kind: "legal", priority: 0.2, crumbs: [HOME, { name: "Condiciones", path: "/condiciones" }],
+    title: "Condiciones de contratación · Cuotio", description: "Planes y precios de Cuotio, prueba gratuita de 14 días, renovación, cancelación y reembolsos." },
   { path: "/cookies", kind: "legal", priority: 0.2, crumbs: [HOME, { name: "Cookies", path: "/cookies" }],
     title: "Política de cookies · Cuotio", description: "Cuotio no usa cookies de seguimiento ni publicidad. Detalle del almacenamiento local de la demo." },
 ];

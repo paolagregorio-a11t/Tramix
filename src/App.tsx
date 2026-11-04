@@ -15,7 +15,7 @@ import { CambioBasePage, CuotaPage, CuotaXPage, RegularizacionPage, TramosPage }
 import { CuotaCalculator } from "./pages/CuotaCalculator";
 import { DemoApp } from "./demo/DemoApp";
 import { CuentaPage } from "./cuenta/CuentaPage";
-import { LegalPage } from "./legal/LegalPage";
+import { LegalPage, type LegalKey } from "./legal/LegalPage";
 import { fromDemo, track } from "./analytics";
 import "./styles/global.css";
 import "./styles/landing.css";
@@ -33,7 +33,7 @@ export default function App({ path: initial }: { path?: string }) {
   switch (route.kind) {
     case "demo": return <DemoApp />;
     case "app": return <CuentaPage />;
-    case "legal": return <LegalPage page={route.path.slice(1) as "privacidad" | "aviso-legal" | "cookies"} />;
+    case "legal": return <LegalPage page={route.path.slice(1) as LegalKey} />;
     case "cuota": return <CuotaPage route={route} />;
     case "cuota-x": return <CuotaXPage route={route} />;
     case "tramos": return <TramosPage route={route} />;
@@ -267,7 +267,7 @@ function Home() {
       <footer className="footer">
         <div className="container footer__in">
           <div className="footer__brand"><Logo size={26} tone="light" /><span className="social"><a href={SOCIAL.linkedin} target="_blank" rel="noopener" aria-label="Cuotio en LinkedIn"><IconLinkedIn /></a><a href={SOCIAL.instagram} target="_blank" rel="noopener" aria-label="Cuotio en Instagram"><IconInstagram /></a></span></div>
-          <nav className="footer__links" aria-label="Legal"><a href={href("/cuota-autonomo")}>Calculadora de cuota</a><a href={href("/tramos-autonomos-2026")}>Tramos 2026</a><a href={href("/regularizacion-cuota-autonomos")}>Regularización</a><a href={href("/cambio-base-cotizacion")}>Cambio de base</a><a href={href("/aviso-legal")}>Aviso legal</a><a href={href("/privacidad")}>Privacidad</a><a href={href("/cookies")}>Cookies</a><a href="#contacto">Contacto</a><button type="button" onClick={() => setInst(true)}>Instalar en el móvil</button></nav>
+          <nav className="footer__links" aria-label="Legal"><a href={href("/cuota-autonomo")}>Calculadora de cuota</a><a href={href("/tramos-autonomos-2026")}>Tramos 2026</a><a href={href("/regularizacion-cuota-autonomos")}>Regularización</a><a href={href("/cambio-base-cotizacion")}>Cambio de base</a><a href={href("/aviso-legal")}>Aviso legal</a><a href={href("/privacidad")}>Privacidad</a><a href={href("/cookies")}>Cookies</a><a href={href("/condiciones")}>Condiciones</a><a href="#contacto">Contacto</a><button type="button" onClick={() => setInst(true)}>Instalar en el móvil</button></nav>
           <p>Cálculos orientativos; no es asesoramiento fiscal. © {new Date().getFullYear()} Cuotio</p>
         </div>
       </footer>

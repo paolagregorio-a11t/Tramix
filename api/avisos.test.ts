@@ -102,3 +102,10 @@ describe("GET /api/avisos-baja", () => {
     expect(fetch).not.toHaveBeenCalled();
   });
 });
+
+describe("planificar con suscripciones activas", () => {
+  it("solo avisa a quien tiene Pro", () => {
+    const plan = planificar(new Date(2026, 9, 26), [perfil(A), perfil(B)], [...meses(A, 9), ...meses(B, 9)], new Set(), new Set([B]));
+    expect(plan.map((e) => e.userId)).toEqual([B]);
+  });
+});

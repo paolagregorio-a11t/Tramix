@@ -39,13 +39,24 @@ type Props = {
   notaDatos: string;
   onReset?: () => void;
   ajustesExtra?: ReactNode;
+  /** Account only, once subscriptions are on: alerts, assistant and import are Cuotio Pro. Without it nothing is locked. */
+  pro?: { activo: boolean; mejorar: (donde: "avisos" | "asistente" | "importar") => void };
 };
+
+function ProBloqueo({ titulo, texto, onClick }: { titulo: string; texto: string; onClick: () => void }) {
+  return (<div className="pro-lock">
+    <span className="pro-tag">Pro</span>
+    <b>{titulo}</b><p className="muted small">{texto}</p>
+    <button className="btn" onClick={onClick}>Probar Pro 14 días gratis</button>
+  </div>);
+}
 
 /**
  * The Cuotio app itself (summary, months, assistant, alerts, settings), shared by the demo and the real account.
  * Analytics events keep their demo_* names in the demo so existing funnels keep working; the account sends app_*.
  */
-export function CuotioApp({ modo, state: s, setState: setS, sheet, setSheet, notaDatos, onReset, ajustesExtra }: Props) {
+export function CuotioApp({ modo, state: s, setState: setS, sheet, setSheet, notaDatos, onReset, ajustesExtra, pro }: Props) {
+  const bloqueado = !!pro && !pro.activo;
   const ev = (name: string) => `${modo === "demo" ? "demo" : "app"}_${name}`;
   const [tab, setTab] = useState<Tab>("resumen");
   const [edit, setEdit] = useState<number | null>(null);
@@ -136,7 +147,7 @@ export function CuotioApp({ modo, state: s, setState: setS, sheet, setSheet, not
 
         {tab === "meses" && (<section className="card">
           <div className="card__h"><h2>Tus meses</h2><small>Toca uno para editarlo</small></div>
-          <button className="btn imp__go" onClick={() => setSheet("import")}><IconUpload /> Subir extracto o factura</button>
+          <button className="btn imp__go" onClick={() => (bloqueado ? pro!.mejorar("importar") : setSheet("import"))}><IconUpload /> Subir extracto o factura</button>
           <ul className="mlist">
             {s.meses.map((m, i) => { const v = valores[i]; const mx = Math.max(...valores, 1); return (
               <li key={i}><button onClick={() => setEdit(i)}>
@@ -147,21 +158,24 @@ export function CuotioApp({ modo, state: s, setState: setS, sheet, setSheet, not
           <p className="muted small">Computable = (ingresos − gastos) menos la deducción genérica del {s.regimen === "societario" ? 3 : 7} %.</p>
         </section>)}
 
-        {tab === "asistente" && <Assistant data={assist} context={ctx} />}
+        {tab === "asistente" && (bloqueado
+          ? <section className="card"><ProBloqueo titulo="El asistente es parte de Cuotio Pro" texto="Pregúntale lo que quieras sobre tu tramo, la regularización o los plazos, con tus propias cifras." onClick={() => pro!.mejorar("asistente")} /></section>
+          : <Assistant data={assist} context={ctx} />)}
 
         {tab === "avisos" && (<section className="card">
           <div className="card__h"><h2>Ventanas de cambio</h2><small>Hasta 6 al año</small></div>
+          {bloqueado && <ProBloqueo titulo="Los avisos por email son de Cuotio Pro" texto="Te escribimos una semana antes de cada plazo con el tramo que te conviene. Las fechas las ves siempre gratis." onClick={() => pro!.mejorar("avisos")} />}
           <ul className="wins">
             {ventanasDelAno(hoy.getFullYear()).map((v, i) => {
               const pasada = v.limite < new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
               const es = !pasada && v.limite.getTime() === prox.ventana.limite.getTime();
               return (<li key={i} className={pasada ? "past" : es ? "next" : ""}>
                 <div><b>Pedir antes del {fecha(v.limite)}</b><small>Efecto el {fecha(v.efecto)}{pasada ? " · pasada" : es ? " · próxima" : ""}</small></div>
-                <button type="button" role="switch" aria-checked={s.avisos[i]} aria-label={`Aviso por email, ventana ${i + 1}`} disabled={pasada} className={`sw ${s.avisos[i] ? "on" : ""}`}
-                  onClick={() => { setS({ ...s, avisos: s.avisos.map((a, j) => (j === i ? !a : a)) }); buzz(); }}><i /></button></li>);
+                <button type="button" role="switch" aria-checked={!bloqueado && s.avisos[i]} aria-label={`Aviso por email, ventana ${i + 1}`} disabled={pasada} className={`sw ${!bloqueado && s.avisos[i] ? "on" : ""}`}
+                  onClick={() => { if (bloqueado) return pro!.mejorar("avisos"); setS({ ...s, avisos: s.avisos.map((a, j) => (j === i ? !a : a)) }); buzz(); }}><i /></button></li>);
             })}
           </ul>
-          <p className="muted small">Te escribimos unos días antes de cada plazo con el tramo recomendado y cómo cambiarlo.</p>
+          <p className="muted small">Te escribimos una semana antes de cada plazo con el tramo recomendado y cómo cambiarlo.</p>
         </section>)}
 
         {tab === "ajustes" && (<section className="card">

@@ -11,6 +11,8 @@ import { fmt } from "../lib";
 import { surface, track } from "../analytics";
 import { cargar, exportar, guardar } from "./datos";
 import { cuentasActivas, proveedores, supabase } from "./supabase";
+import { cobroActivo, esPro } from "./pro";
+import { PlanAjustes, ProSheet, useSuscripcion } from "./Pro";
 import "../styles/demo.css";
 import "../styles/cuenta.css";
 
@@ -354,6 +356,10 @@ function App({ sb, session, state, setState, estado, reintentar }: { sb: Supabas
   const [ocupado, setOcupado] = useState(false);
   const [error, setError] = useState("");
   const email = session.user.email ?? "";
+  const { sub, esperar } = useSuscripcion(sb, session.user.id);
+  const [proDonde, setProDonde] = useState<string | null>(null);
+  // While the subscription is still loading, nothing is locked (avoids a flash of "Pro" banners for people who already pay).
+  const pro = cobroActivo() ? { activo: sub === undefined || esPro(sub), mejorar: (d: string) => setProDonde(d) } : undefined;
 
   async function descargar() {
     setError("");
@@ -387,6 +393,7 @@ function App({ sb, session, state, setState, estado, reintentar }: { sb: Supabas
   const ajustes = (
     <div className="cu-ajustes">
       <div className="cu-email"><small>Tu cuenta</small><b>{email}</b></div>
+      <PlanAjustes sub={sub} session={session} onMejorar={() => setProDonde("ajustes")} />
       <button className="btn btn--soft" onClick={descargar}>Descargar mis datos</button>
       <button className="btn btn--ghost" onClick={salir}>Cerrar sesión</button>
       {!confirmar && <button className="btn btn--ghost cu-peligro" onClick={() => setConfirmar(true)}>Borrar mi cuenta</button>}
@@ -401,12 +408,13 @@ function App({ sb, session, state, setState, estado, reintentar }: { sb: Supabas
 
   return (
     <div className="cu">
-      <CuotioApp modo="cuenta" state={state} setState={setState} sheet={sheet} setSheet={setSheet} ajustesExtra={ajustes}
+      <CuotioApp modo="cuenta" state={state} setState={setState} sheet={sheet} setSheet={setSheet} ajustesExtra={ajustes} pro={pro}
         notaDatos="Tus datos se guardan en tu cuenta, en servidores de la Unión Europea." />
       {estado !== "guardado" && <div className={`cu-estado ${estado === "error" ? "cu-estado--error" : ""}`} role="status">
         {estado === "guardando" ? "Guardando…" : <>No se ha podido guardar <button className="linkbtn" onClick={reintentar}>Reintentar</button></>}
       </div>}
       {sheet === "install" && <InstallSheet onClose={() => setSheet(null)} />}
+      {proDonde && <ProSheet session={session} donde={proDonde} onClose={() => setProDonde(null)} onPagado={() => void esperar()} />}
     </div>
   );
 }
