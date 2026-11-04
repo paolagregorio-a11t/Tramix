@@ -1,7 +1,5 @@
 {
-  "regions": [
-    "fra1"
-  ],
+  "regions": ["fra1"],
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "headers": [
@@ -45,11 +43,5 @@
     "api/ask.ts": {
       "maxDuration": 30
     }
-  },
-  "crons": [
-    {
-      "path": "/api/avisos",
-      "schedule": "0 7 * * *"
-    }
-  ]
+  }
 }

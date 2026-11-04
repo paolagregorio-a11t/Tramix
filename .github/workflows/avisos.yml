@@ -1,0 +1,21 @@
+# Sends the deadline alert emails: once a day it calls /api/avisos on the live site.
+# Needs the repo secret CRON_SECRET (Settings > Secrets and variables > Actions), the same value as in Vercel.
+# Scheduled runs only happen on the default branch. "Run workflow" launches it by hand.
+name: Avisos por email
+on:
+  schedule:
+    - cron: "0 7 * * *"   # 07:00 UTC, 08:00 or 09:00 in Spain
+  workflow_dispatch:
+permissions: {}
+jobs:
+  enviar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Call /api/avisos
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          test -n "$CRON_SECRET" || { echo "Falta el secreto CRON_SECRET en GitHub"; exit 1; }
+          curl -sS --fail-with-body --retry 3 --retry-all-errors --max-time 120 \
+            -H "Authorization: Bearer $CRON_SECRET" https://cuotio.es/api/avisos

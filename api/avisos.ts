@@ -6,9 +6,9 @@ import { ESTADOS_PRO, paddleConfig } from "./_paddle.js";
 import { supabaseAdmin, type SupabaseAdmin } from "./_supabase.js";
 
 /**
- * GET /api/avisos   (called once a day by the Vercel cron, see vercel.json)
+ * GET /api/avisos   (called once a day by GitHub Actions, see .github/workflows/avisos.yml)
  * Emails each account that switched on the alert for the coming deadline, 7 days or less before it, once per deadline.
- * Protected by CRON_SECRET: Vercel sends it as "Authorization: Bearer <CRON_SECRET>".
+ * Protected by CRON_SECRET, sent as "Authorization: Bearer <CRON_SECRET>".
  */
 export const DIAS_ANTES = 7;
 const MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
