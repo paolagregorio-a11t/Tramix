@@ -52,3 +52,8 @@ export function missing(c: Config): string[] {
   if (!c.site) m.push("SITE_URL");
   return m;
 }
+
+/** Small standalone HTML page for links opened from an email (unsubscribe and similar). */
+export const page = (title: string, msg: string, site: string) => `<!doctype html><html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cuotio</title>
+<body style="margin:0;font-family:system-ui,sans-serif;background:#0b1220;color:#fff;display:grid;place-items:center;min-height:100vh;text-align:center;padding:24px">
+<main style="max-width:420px"><h1 style="font-size:1.8rem;margin:0 0 12px">${title}</h1><p style="color:#9fb0cf;line-height:1.6">${msg}</p><p><a href="${site || "/"}" style="color:#e9b44c">Volver a Cuotio</a></p></main></body></html>`;

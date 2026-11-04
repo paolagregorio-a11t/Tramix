@@ -80,6 +80,14 @@ Qué se guarda: email (en el sistema de cuentas de Supabase), tramo, tipo de aut
 
 Eventos de la app con cuenta en Umami (sin emails ni importes): `cuenta_google`, `cuenta_registro`, `cuenta_entrada_ok` (`metodo`: `google`, `password` o `codigo`), `cuenta_entrada_error` (`paso`), `cuenta_codigo_pedido`, `cuenta_password_cambiada`, `cuenta_alta` (`desde_demo`), `cuenta_exportar`, `cuenta_salir`, `cuenta_borrada`; y dentro de la app los mismos que la demo con prefijo `app_` en lugar de `demo_` (`app_abierta`, `app_mes_guardado`, `app_pestana`, `app_hoja`, `app_simulador`, `app_importar`).
 
+### 7.1 Avisos por email antes de cada plazo
+
+Cada día a las 7:00 (UTC) Vercel llama a `/api/avisos`. Si faltan 7 días o menos para el próximo plazo, escribe a cada cuenta que tenga ese aviso encendido y meses guardados, una sola vez por plazo, con el tramo recomendado. El enlace del pie del email apaga sus avisos.
+
+1. Supabase > SQL Editor: ejecuta `supabase/migrations/20261104000000_avisos_enviados.sql` (la tabla donde se apunta lo ya enviado).
+2. Vercel > Environment Variables: añade `CRON_SECRET` (una cadena aleatoria larga, `openssl rand -hex 32`). Comprueba que `SUPABASE_SERVICE_ROLE_KEY`, `RESEND_API_KEY`, `EMAIL_FROM`, `UNSUBSCRIBE_SECRET` y `SITE_URL` estén en Production.
+3. Tras publicar, en Vercel > Settings > Cron Jobs verás `/api/avisos`. Con "Run" lo lanzas a mano; el resultado sale en los Logs.
+
 ## 8. Antes de hacerlo público
 - Completa `src/legal/config.ts` (nombre, NIF, domicilio, email). Mientras estén vacíos, las páginas legales muestran "[pendiente de completar]".
 - La tabla de tramos 2026 y las seis ventanas de cambio de base **están verificadas con el texto del BOE** (Orden PJC/297/2026, art. 18; Reglamento, art. 45). Cada año hay que actualizar `src/engine/tramos.ts` con la nueva Orden de cotización.
