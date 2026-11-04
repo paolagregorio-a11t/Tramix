@@ -82,12 +82,11 @@ Eventos de la app con cuenta en Umami (sin emails ni importes): `cuenta_google`,
 
 ### 7.1 Avisos por email antes de cada plazo
 
-Cada día a las 7:00 (UTC) un flujo de GitHub Actions (`.github/workflows/avisos.yml`) llama a `/api/avisos`. Si faltan 7 días o menos para el próximo plazo, escribe a cada cuenta que tenga ese aviso encendido y meses guardados, una sola vez por plazo, con el tramo recomendado. El enlace del pie del email apaga sus avisos.
+Cada día a las 7:00 (UTC) Vercel llama a `/api/avisos`. Si faltan 7 días o menos para el próximo plazo, escribe a cada cuenta que tenga ese aviso encendido y meses guardados, una sola vez por plazo, con el tramo recomendado. El enlace del pie del email apaga sus avisos.
 
 1. Supabase > SQL Editor: ejecuta `supabase/migrations/20261104000000_avisos_enviados.sql` (la tabla donde se apunta lo ya enviado).
 2. Vercel > Environment Variables: añade `CRON_SECRET` (una cadena aleatoria larga, `openssl rand -hex 32`). Comprueba que `SUPABASE_SERVICE_ROLE_KEY`, `RESEND_API_KEY`, `EMAIL_FROM`, `UNSUBSCRIBE_SECRET` y `SITE_URL` estén en Production.
-3. GitHub > el repo > Settings > Secrets and variables > Actions > New repository secret: `CRON_SECRET`, con el mismo valor que en Vercel.
-4. Tras fusionar, en GitHub > Actions > "Avisos por email" > Run workflow lo lanzas a mano; el resultado sale en el registro del flujo y en los Logs de Vercel.
+3. Tras publicar, en Vercel > Settings > Cron Jobs verás `/api/avisos`. Con "Run" lo lanzas a mano; el resultado sale en los Logs.
 
 ### 7.2 Suscripciones con Paddle (Cuotio Pro)
 
