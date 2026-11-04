@@ -4,7 +4,7 @@
  */
 export const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
-/** logoCid: reference the logo as an inline attachment (cid:cuotio-logo) instead of a hosted URL. */
+/** unsubscribeUrl: empty for account emails (sign-in codes), which are not a mailing list. logoCid: reference the logo as an inline attachment (cid:cuotio-logo) instead of a hosted URL. */
 export type Brand = { site: string; unsubscribeUrl: string; contactEmail: string; senderName: string; logoCid?: boolean };
 
 const C = { navy: "#0b1220", navy2: "#121c33", steel: "#2e4c86", gold: "#e9b44c", paper: "#f5f7fa", ink: "#0b1220", muted: "#5a6478", line: "#e1e6ee" };
@@ -44,7 +44,7 @@ export function layout(o: { preheader: string; body: string; brand: Brand; why: 
     <tr><td style="border-top:1px solid ${C.line};padding:24px 36px;background:#fafbfd">
       <p style="margin:0 0 10px;font:400 12.5px/1.55 ${FONT};color:${C.muted}">${o.why}</p>
       <p style="margin:0;font:400 12.5px/1.55 ${FONT};color:${C.muted}">
-        <a href="${esc(b.unsubscribeUrl)}" style="color:${C.muted};text-decoration:underline">Darme de baja</a> &nbsp;·&nbsp;
+        ${b.unsubscribeUrl ? `<a href="${esc(b.unsubscribeUrl)}" style="color:${C.muted};text-decoration:underline">Darme de baja</a> &nbsp;·&nbsp;` : ""}
         <a href="${esc(b.site)}/#privacidad" style="color:${C.muted};text-decoration:underline">Privacidad</a> &nbsp;·&nbsp;
         <a href="mailto:${esc(b.contactEmail)}" style="color:${C.muted};text-decoration:underline">${esc(b.contactEmail || "Contacto")}</a>
       </p>

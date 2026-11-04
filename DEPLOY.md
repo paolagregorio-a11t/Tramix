@@ -53,7 +53,58 @@ Eventos que se registran (sin emails, importes ni texto libre; cada uno lleva `a
 
 Para ver dónde se atascan: **Umami → Reports → Funnel**, por ejemplo `/` → evento `calculo_tramo` → evento `lista_espera_enviada` → evento `lista_espera_ok`, o `/demo` → `demo_volver_web` → `web_desde_demo` → `lista_espera_ok`.
 
-## 7. Antes de hacerlo público
+## 7. Cuentas de usuario y base de datos (Supabase, Frankfurt)
+La app con cuenta vive en `cuotio.es/app`. Cada persona entra con **Google** (un toque) o con **email y contraseña**; el código por email solo se usa para recuperar la contraseña. La sesión se queda abierta en cada dispositivo hasta que la persona la cierra. Sus meses, tramo y avisos se guardan en una base de datos en la UE. Las reglas de la base de datos (*Row Level Security*) hacen que cada cuenta solo pueda leer y cambiar sus propias filas, aunque fallara el código de la web. Mientras no estén puestas las variables de Supabase, `/app` muestra "Las cuentas llegan muy pronto" y el resto de la web sigue igual.
+
+1. **Proyecto.** En [supabase.com](https://supabase.com) → **New project**, nombre `cuotio`, **Region: Central EU (Frankfurt)**. Guarda la contraseña de la base de datos en tu gestor de contraseñas (no hace falta para la web).
+2. **Tablas y reglas.** **SQL Editor → New query**, pega el contenido de `supabase/migrations/20261103000000_cuentas.sql` y pulsa **Run**. Crea las tablas `perfiles` y `meses` con sus reglas.
+3. **Correos desde cuotio.es (Resend).** El correo que trae Supabase de serie solo envía unos pocos emails por hora. **Authentication → Emails → SMTP Settings → Enable custom SMTP**:
+   - Host `smtp.resend.com`, puerto `465`, usuario `resend`, contraseña: una clave de Resend (puede ser una nueva de solo envío, *Sending access*).
+   - Remitente `hola@cuotio.es`, nombre `Cuotio`.
+4. **Plantilla del código (recuperar contraseña).** **Authentication → Emails → Templates → Magic Link**: asunto `Tu código de Cuotio` y como cuerpo pega `supabase/templates/codigo.html` (se regenera con `npm run email:supabase`). Lleva `{{ .Token }}`, que es el código; sin eso el correo llega sin código.
+5. **Email y contraseña.** **Authentication → Sign In / Providers → Email**: activado. Desactiva **Confirm email** para que al crear la cuenta se entre directamente, sin ir al correo. (Contrapartida: no comprobamos que el email sea de quien se registra. Antes de enviar avisos por email habrá que confirmarlo una vez.) En **Password strength** pon mínimo 8 caracteres y activa *Prevent use of leaked passwords* si tu plan lo permite.
+6. **Continuar con Google.**
+   - En [Google Cloud Console](https://console.cloud.google.com): crea un proyecto `Cuotio` → **APIs y servicios → Pantalla de consentimiento de OAuth**: tipo *Externo*, nombre `Cuotio`, logo, email de soporte, dominio `cuotio.es` y enlace a `https://cuotio.es/privacidad`. Permisos: solo `email`, `profile` y `openid`. Publica la app (estado *En producción*).
+   - **Credenciales → Crear credenciales → ID de cliente de OAuth → Aplicación web.** En *URIs de redireccionamiento autorizados* pega la *Callback URL* que muestra Supabase en **Authentication → Sign In / Providers → Google** (algo como `https://xxxx.supabase.co/auth/v1/callback`).
+   - Copia el *ID de cliente* y el *Secreto* en ese mismo apartado de Supabase y activa Google.
+   - **Authentication → URL Configuration**: *Site URL* `https://cuotio.es`, y en *Redirect URLs* añade `https://cuotio.es/app` (y, si quieres probar en las vistas previas de Vercel, `https://*-paolagregoriio-1613s-projects.vercel.app/app`).
+   - En la app nativa (APK) no se muestra el botón de Google: allí se entra con email y contraseña.
+7. **Claves en Vercel.** En **Project Settings → API** de Supabase copia y añade en Vercel (**Settings → Environment Variables**):
+   - `VITE_SUPABASE_URL` = *Project URL* (pública). La URL y la clave pública del proyecto de Cuotio ya están en `src/cuenta/supabase.ts` (así llegan también a la app instalada y al APK); estas dos variables solo hacen falta si cambias de proyecto.
+   - `VITE_SUPABASE_ANON_KEY` = clave *publishable* (`sb_publishable_…`) o la antigua *anon* (pública: lo que protege los datos son las reglas del paso 2).
+   - `SUPABASE_SERVICE_ROLE_KEY` = clave *secret* (`sb_secret_…`) o la antigua *service_role*. **Es secreta**: solo aquí, nunca en el código, en un chat ni en la app. Solo la usa `/api/borrar-cuenta` para borrar cuentas.
+8. **Contrato de encargo de tratamiento (RGPD).** Supabase lo incluye en sus condiciones; en **Organization → Legal Documents** puedes descargarlo y guardarlo firmado junto a los de Resend, Vercel y Umami.
+9. Haz un nuevo *Deploy* y prueba: abre `cuotio.es/app`, entra con Google y crea también una cuenta con email y contraseña; elige tu tramo y añade un mes. Prueba *He olvidado la contraseña*. Recarga la página: el mes debe seguir ahí. En otro navegador, con otro email, no deben verse tus datos. Prueba también **Ajustes → Descargar mis datos** y **Borrar mi cuenta**.
+
+Qué se guarda: email (en el sistema de cuentas de Supabase), tramo, tipo de autónomo, avisos y los ingresos y gastos de cada mes. Los extractos del banco se siguen leyendo en el dispositivo y no se suben. Al borrar la cuenta se borra todo al momento (las tablas tienen `on delete cascade`).
+
+Eventos de la app con cuenta en Umami (sin emails ni importes): `cuenta_google`, `cuenta_registro`, `cuenta_entrada_ok` (`metodo`: `google`, `password` o `codigo`), `cuenta_entrada_error` (`paso`), `cuenta_codigo_pedido`, `cuenta_password_cambiada`, `cuenta_alta` (`desde_demo`), `cuenta_exportar`, `cuenta_salir`, `cuenta_borrada`; y dentro de la app los mismos que la demo con prefijo `app_` en lugar de `demo_` (`app_abierta`, `app_mes_guardado`, `app_pestana`, `app_hoja`, `app_simulador`, `app_importar`).
+
+### 7.1 Avisos por email antes de cada plazo
+
+Cada día a las 7:00 (UTC) Vercel llama a `/api/avisos`. Si faltan 7 días o menos para el próximo plazo, escribe a cada cuenta que tenga ese aviso encendido y meses guardados, una sola vez por plazo, con el tramo recomendado. El enlace del pie del email apaga sus avisos.
+
+1. Supabase > SQL Editor: ejecuta `supabase/migrations/20261104000000_avisos_enviados.sql` (la tabla donde se apunta lo ya enviado).
+2. Vercel > Environment Variables: añade `CRON_SECRET` (una cadena aleatoria larga, `openssl rand -hex 32`). Comprueba que `SUPABASE_SERVICE_ROLE_KEY`, `RESEND_API_KEY`, `EMAIL_FROM`, `UNSUBSCRIBE_SECRET` y `SITE_URL` estén en Production.
+3. Tras publicar, en Vercel > Settings > Cron Jobs verás `/api/avisos`. Con "Run" lo lanzas a mano; el resultado sale en los Logs.
+
+### 7.2 Suscripciones con Paddle (Cuotio Pro)
+
+Paddle cobra, factura y aplica el IVA como revendedor (Merchant of Record). Primero se prueba todo en el sandbox (sandbox-vendors.paddle.com), sin dinero real.
+
+1. Supabase > SQL Editor: ejecuta `supabase/migrations/20261104010000_suscripciones.sql`.
+2. Paddle > Catalog > Products: crea "Cuotio Pro" con dos precios recurrentes, 3,99 €/mes y 35 €/año, IVA incluido ("tax inclusive") y 14 días de prueba en cada uno. Copia los dos `pri_…`.
+3. Paddle > Developer tools > Authentication: crea un token de cliente (`test_…` en sandbox) y una API key con permisos de lectura de clientes y de suscripciones, y de escritura de sesiones del portal de clientes.
+4. Paddle > Developer tools > Notifications > New destination: URL `https://cuotio.es/api/paddle-webhook` y todos los eventos `subscription.*`. Copia su secret key.
+5. Paddle > Checkout > Checkout settings: pon `cuotio.es` como dominio aprobado y como "Default payment link" `https://cuotio.es/app`.
+6. Vercel: añade las variables de `.env.example` (apartado Paddle) y vuelve a desplegar. Las `VITE_` también en Preview si quieres probar en las vistas previas.
+7. Prueba con la tarjeta de pruebas de Paddle (4242 4242 4242 4242, cualquier fecha futura y CVC 100). En Ajustes debe aparecer "Pro · prueba gratis hasta…".
+
+Cuando Paddle apruebe la cuenta real, repite los pasos 2 a 5 en vendors.paddle.com, cambia `VITE_PADDLE_ENV` a `production` y las claves por las reales.
+
+En cuanto existe `PADDLE_WEBHOOK_SECRET`, los avisos por email solo se envían a cuentas con Pro; y con `VITE_PADDLE_CLIENT_TOKEN`, la app bloquea avisos, asistente e importación para quien no tenga Pro.
+
+## 8. Antes de hacerlo público
 - Completa `src/legal/config.ts` (nombre, NIF, domicilio, email). Mientras estén vacíos, las páginas legales muestran "[pendiente de completar]".
 - La tabla de tramos 2026 y las seis ventanas de cambio de base **están verificadas con el texto del BOE** (Orden PJC/297/2026, art. 18; Reglamento, art. 45). Cada año hay que actualizar `src/engine/tramos.ts` con la nueva Orden de cotización.
 - Haz que una gestoría o un abogado revise los textos legales.
@@ -64,5 +115,6 @@ npm run dev            # servidor local
 npm test               # tests del motor, la API y los emails
 npm run typecheck      # tipos de la web, la API y los emails
 npm run email:preview  # genera emails/preview/*.html para verlos
+npm run email:supabase # genera la plantilla del código de acceso para Supabase
 npm run build          # compila a dist/
 ```

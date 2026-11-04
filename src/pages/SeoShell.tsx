@@ -50,6 +50,7 @@ export function SeoShell({ route, children }: { route: RouteDef; children: React
             <a href={href("/aviso-legal")}>Aviso legal</a>
             <a href={href("/privacidad")}>Privacidad</a>
             <a href={href("/cookies")}>Cookies</a>
+            <a href={href("/condiciones")}>Condiciones</a>
           </nav>
         </div>
       </footer>

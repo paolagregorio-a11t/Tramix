@@ -4,13 +4,15 @@ import { TABLA_2026 } from "./engine/tramos";
 export type Crumb = { name: string; path: string };
 export type RouteDef = {
   path: string;
-  kind: "home" | "demo" | "legal" | "cuota" | "cuota-x" | "tramos" | "regularizacion" | "cambio-base";
+  kind: "home" | "demo" | "app" | "legal" | "cuota" | "cuota-x" | "tramos" | "regularizacion" | "cambio-base";
   title: string;
   description: string;
   crumbs: Crumb[];
   /** Monthly net yield for programmatic pages. */
   x?: number;
   priority: number;
+  /** Private pages (the signed-in app): prerendered so direct links work, but kept out of the sitemap and search results. */
+  privada?: boolean;
 };
 
 const Y = TABLA_2026.year;
@@ -47,10 +49,14 @@ export const ROUTES: RouteDef[] = [
   { path: "/demo", kind: "demo", priority: 0.8, crumbs: [HOME, { name: "Demo", path: "/demo" }],
     title: "Demo interactiva · Cuotio",
     description: "Prueba Cuotio con datos de ejemplo: proyección de tu tramo, simulador, avisos de plazo y asistente. Gratis y sin registro." },
+  { path: "/app", kind: "app", priority: 0, privada: true, crumbs: [HOME, { name: "App", path: "/app" }],
+    title: "Entrar · Cuotio", description: "Entra en tu cuenta de Cuotio para seguir tus ingresos y tu tramo de autónomo." },
   { path: "/privacidad", kind: "legal", priority: 0.2, crumbs: [HOME, { name: "Privacidad", path: "/privacidad" }],
     title: "Política de privacidad · Cuotio", description: "Qué datos trata Cuotio, para qué, cuánto tiempo y cómo ejercer tus derechos." },
   { path: "/aviso-legal", kind: "legal", priority: 0.2, crumbs: [HOME, { name: "Aviso legal", path: "/aviso-legal" }],
     title: "Aviso legal · Cuotio", description: "Titular del sitio, naturaleza orientativa del servicio y condiciones de uso de Cuotio." },
+  { path: "/condiciones", kind: "legal", priority: 0.2, crumbs: [HOME, { name: "Condiciones", path: "/condiciones" }],
+    title: "Condiciones de contratación · Cuotio", description: "Planes y precios de Cuotio, prueba gratuita de 14 días, renovación, cancelación y reembolsos." },
   { path: "/cookies", kind: "legal", priority: 0.2, crumbs: [HOME, { name: "Cookies", path: "/cookies" }],
     title: "Política de cookies · Cuotio", description: "Cuotio no usa cookies de seguimiento ni publicidad. Detalle del almacenamiento local de la demo." },
 ];

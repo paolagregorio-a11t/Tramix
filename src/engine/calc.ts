@@ -1,4 +1,4 @@
-import type { TramosTable } from "./tramos";
+import type { TramosTable } from "./tramos.js";
 
 export type Month = { ingresos: number; gastos: number };
 export type Regimen = "persona-fisica" | "societario";

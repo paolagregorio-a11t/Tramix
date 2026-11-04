@@ -11,11 +11,13 @@
     "typecheck": "tsc -b && tsc -p tsconfig.server.json",
     "cap:sync": "npm run build && cap sync",
     "email:preview": "tsx emails/preview.ts",
-    "build:spa": "tsc -b && vite build"
+    "build:spa": "tsc -b && vite build",
+    "email:supabase": "tsx emails/supabase-templates.ts"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.3",
     "@capacitor/core": "^8.5.3",
+    "@supabase/supabase-js": "^2.118.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"

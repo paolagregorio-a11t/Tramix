@@ -3,9 +3,10 @@ import { doNotTrack, optedOut, setOptOut } from "../analytics";
 import { href } from "../router";
 import { Logo } from "../components/Logo";
 import { FECHA_LEGAL, TITULAR, pend } from "./config";
+import { INCLUYE_GRATIS, INCLUYE_PRO, PLANES, PRUEBA_DIAS } from "../cuenta/planes";
 import "../styles/legal.css";
 
-export type LegalKey = "privacidad" | "aviso-legal" | "cookies";
+export type LegalKey = "privacidad" | "aviso-legal" | "cookies" | "condiciones";
 
 const pages: Record<LegalKey, { title: string; body: ReactNode }> = {
   "aviso-legal": {
@@ -38,18 +39,19 @@ const pages: Record<LegalKey, { title: string; body: ReactNode }> = {
         <h2>Qué datos tratamos y para qué</h2>
         <ul>
           <li><b>Email de la lista de espera.</b> Para avisarte del lanzamiento de Cuotio y enviarte el correo de bienvenida. Base jurídica: tu consentimiento (art. 6.1.a RGPD).</li>
-          <li><b>Datos introducidos en la demo.</b> Se guardan únicamente en tu navegador (almacenamiento local) y no se envían a ningún servidor.</li>
+          <li><b>Tu cuenta.</b> Si creas una cuenta guardamos tu email y, si entras con contraseña, una versión cifrada de ella que nadie puede leer (si entras con Google, Google solo nos indica tu email y tu nombre), el tramo que pagas, tu tipo de autónomo, tus preferencias de avisos y los ingresos y gastos que registras cada mes. Los usamos solo para calcular tu tramo, mostrarte la proyección y avisarte antes de cada plazo. Base jurídica: la prestación del servicio que nos pides al crear la cuenta (art. 6.1.b RGPD). Se guardan en servidores de la Unión Europea (Frankfurt, Alemania), cifrados, y cada cuenta solo puede leer sus propios datos.</li>
+          <li><b>Datos introducidos en la demo.</b> Se guardan únicamente en tu navegador (almacenamiento local) y no se envían a ningún servidor, salvo que al crear tu cuenta elijas traspasarlos a ella.</li>
           <li><b>Extractos bancarios.</b> Se leen en tu propio dispositivo para calcular tus ingresos y gastos. No se envían a ningún servidor.</li>
           <li><b>Facturas.</b> Si subes una factura, se envía a Google (Gemini) únicamente para extraer sus datos (fecha, importes, emisor y cliente) y mostrártelos. No la guardamos. Solo se envía si marcas la casilla de aceptación. Base jurídica: tu consentimiento.</li>
           <li><b>Estadísticas de uso anónimas.</b> Contamos visitas y algunos pasos (por ejemplo, si se usa la calculadora, si se abre la demo o si se completa el formulario de la lista de espera) para saber qué partes de Cuotio cuestan más y mejorarlas. Usamos Umami, una herramienta sin cookies que no guarda nada en tu dispositivo ni tu dirección IP, y que no permite identificarte ni seguirte entre sitios. Nunca enviamos tu email, tus importes ni lo que escribes. Base jurídica: nuestro interés legítimo en mejorar el servicio (art. 6.1.f RGPD). Puedes desactivarlas en la <a href={href("/cookies")}>política de cookies</a>, y respetamos la opción «No rastrear» de tu navegador.</li>
           <li><b>Preguntas al asistente.</b> Si escribes una pregunta libre, se envía junto con unas cifras agregadas (tramo, rendimiento mensual previsto, plazo) a un proveedor de modelos de inteligencia artificial para generar la respuesta. No enviamos tu email ni datos que te identifiquen; no escribas datos personales en la pregunta. Base jurídica: tu iniciativa al usar la función.</li>
         </ul>
         <h2>Cuánto tiempo los conservamos</h2>
-        <p>Hasta que retires tu consentimiento o solicites la supresión. Si no hay lanzamiento, se eliminarán a los 24 meses.</p>
+        <p>Email de la lista de espera: hasta que retires tu consentimiento o solicites la supresión; si no hay lanzamiento, se eliminarán a los 24 meses. Datos de tu cuenta: mientras la mantengas abierta. Cuando la borras, se eliminan al momento tu cuenta, tus ajustes y tus meses; las copias de seguridad del proveedor se sobrescriben en un plazo máximo de 30 días.</p>
         <h2>Destinatarios</h2>
-        <p>Usamos proveedores que tratan datos por nuestra cuenta, con contrato de encargo de tratamiento: un servicio de envío de correo electrónico, la plataforma de alojamiento del sitio, el servicio de estadísticas anónimas (Umami, con servidores en la Unión Europea) y un proveedor de inteligencia artificial para el asistente. No cedemos tus datos a terceros para fines propios.</p>
+        <p>Si contratas Cuotio Pro, Paddle.com Market Ltd (Reino Unido, país con decisión de adecuación de la UE) recibe tu email y tus datos de pago como vendedor de la suscripción y responsable de su cobro y facturación; nosotros solo guardamos el estado de tu suscripción. Usamos proveedores que tratan datos por nuestra cuenta, con contrato de encargo de tratamiento: un servicio de envío de correo electrónico (Resend, región UE), la plataforma de alojamiento del sitio (Vercel, con las funciones del servidor en Frankfurt), la base de datos y el sistema de cuentas (Supabase, con servidores en Frankfurt), el servicio de estadísticas anónimas (Umami, con servidores en la Unión Europea) y un proveedor de inteligencia artificial para el asistente. No cedemos tus datos a terceros para fines propios. Algunos de estos proveedores son empresas de Estados Unidos: si alguna vez acceden a datos desde fuera de la Unión Europea, lo hacen con las garantías del RGPD (cláusulas contractuales tipo de la Comisión Europea o el Marco de Privacidad de Datos UE-EE. UU.).</p>
         <h2>Tus derechos</h2>
-        <p>Puedes acceder, rectificar, suprimir, oponerte, limitar el tratamiento y solicitar la portabilidad de tus datos, y retirar el consentimiento en cualquier momento, escribiendo a {pend(TITULAR.email)}. Si consideras que no hemos atendido tus derechos, puedes reclamar ante la Agencia Española de Protección de Datos (aepd.es).</p>
+        <p>Puedes acceder, rectificar, suprimir, oponerte, limitar el tratamiento y solicitar la portabilidad de tus datos, y retirar el consentimiento en cualquier momento, escribiendo a {pend(TITULAR.email)}. Si tienes cuenta, desde <b>Ajustes</b> puedes además descargar todos tus datos y borrar tu cuenta tú mismo. Si consideras que no hemos atendido tus derechos, puedes reclamar ante la Agencia Española de Protección de Datos (aepd.es).</p>
         <h2>Darse de baja</h2>
         <p>Todos los correos incluyen un enlace para cancelar la suscripción.</p>
       </>
@@ -65,7 +67,34 @@ const pages: Record<LegalKey, { title: string; body: ReactNode }> = {
         <OptOut />
         <h2>Almacenamiento local</h2>
         <p>La demo guarda tus datos de ejemplo en el almacenamiento local de tu navegador para que no los pierdas al recargar. Es un almacenamiento estrictamente necesario para esa función, no se comparte y puedes borrarlo desde los ajustes de tu navegador o con el botón «Restablecer datos de ejemplo».</p>
+        <p>Si tienes cuenta, el navegador guarda también tu sesión en el almacenamiento local para que no tengas que entrar cada vez. Es estrictamente necesario para usar tu cuenta y se borra al cerrar sesión.</p>
+        <h2>Pago de Cuotio Pro</h2>
+        <p>Solo si decides contratar Cuotio Pro, se abre la ventana de pago de Paddle, que puede usar sus propias cookies técnicas, necesarias para completar el pago de forma segura y prevenir el fraude. Antes de abrirla no se carga nada de Paddle.</p>
         <p>Si en el futuro incorporamos cookies, actualizaremos esta política y te pediremos tu consentimiento antes de activarlas.</p>
+      </>
+    ),
+  },
+  condiciones: {
+    title: "Condiciones de contratación",
+    body: (
+      <>
+        <h2>Planes y precios</h2>
+        <p><b>Gratis:</b> {INCLUYE_GRATIS.join(", ").toLowerCase()}.</p>
+        <p><b>Cuotio Pro:</b> {INCLUYE_PRO.join(", ").toLowerCase()}. Cuesta <b>{PLANES.mes.precio} {PLANES.mes.periodo}</b> o <b>{PLANES.anio.precio} {PLANES.anio.periodo}</b>, IVA incluido.</p>
+        <h2>Prueba gratuita</h2>
+        <p>Cuotio Pro incluye {PRUEBA_DIAS} días de prueba gratis. Al empezarla se pide un método de pago, pero no se cobra nada hasta que acaba la prueba. Si la cancelas antes, no pagas nada.</p>
+        <h2>Quién cobra</h2>
+        <p>El pago lo gestiona <b>Paddle.com</b>, que actúa como revendedor autorizado (Merchant of Record) de Cuotio: Paddle es quien te vende la suscripción, cobra, emite la factura y aplica el IVA que corresponda. En tu extracto bancario aparecerá Paddle. Las condiciones de compra de Paddle están en <a href="https://www.paddle.com/legal/checkout-buyer-terms" rel="noopener">paddle.com/legal/checkout-buyer-terms</a>.</p>
+        <h2>Renovación y cancelación</h2>
+        <p>La suscripción se renueva sola al final de cada periodo (mes o año). Puedes cancelarla cuando quieras desde <b>Ajustes &gt; Gestionar suscripción</b>, sin permanencia: sigues teniendo Pro hasta el final del periodo ya pagado y no se te vuelve a cobrar.</p>
+        <h2>Reembolsos</h2>
+        <p>Si no estás satisfecho, te devolvemos el importe íntegro de tu primer pago (y de cualquier renovación) si lo pides en los <b>14 días</b> siguientes al cobro, escribiendo a {pend(TITULAR.email)}. El reembolso lo tramita Paddle al mismo método de pago.</p>
+        <h2>Cambios de precio</h2>
+        <p>Si cambiamos el precio te avisaremos por email al menos 30 días antes de tu siguiente renovación, y podrás cancelar antes de que se aplique.</p>
+        <h2>Naturaleza del servicio</h2>
+        <p>Cuotio da cálculos y avisos orientativos y no hace trámites ante la Seguridad Social. No es asesoramiento fiscal, laboral ni jurídico (ver el <a href="/aviso-legal">aviso legal</a>).</p>
+        <h2>Titular</h2>
+        <p>{pend(TITULAR.nombre)} · NIF {pend(TITULAR.nif)} · {pend(TITULAR.domicilio)} · {pend(TITULAR.email)}</p>
       </>
     ),
   },
