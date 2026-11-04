@@ -26,7 +26,8 @@ export function supabase(): Promise<SupabaseClient> {
 export async function proveedores(): Promise<{ google: boolean }> {
   try {
     const r = await fetch(`${URL}/auth/v1/settings`, { headers: { apikey: KEY! } });
+    if (!r.ok) return { google: true };
     const d = (await r.json()) as { external?: { google?: boolean } };
-    return { google: !!d.external?.google };
-  } catch { return { google: false }; }
+    return { google: d.external?.google !== false };
+  } catch { return { google: true }; } // if we cannot tell, show it rather than hide a working sign-in
 }

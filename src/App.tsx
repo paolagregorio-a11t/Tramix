@@ -44,6 +44,8 @@ export default function App({ path: initial }: { path?: string }) {
 }
 
 function Home() {
+  // Sign-in links from Supabase emails land on the site URL (cuotio.es/?code=…): send them to the app, which finishes the sign-in.
+  useEffect(() => { if (/[?&]code=/.test(location.search)) location.replace(`/app${location.search}`); }, []);
   const [inst, setInst] = useState(false);
   const hero = useRef<HTMLDivElement>(null);
   const [filmRef, filmSeen] = useInView<HTMLDivElement>(0.2);

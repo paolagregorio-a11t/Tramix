@@ -30,6 +30,14 @@ function Pantalla({ children, titulo = "Cuotio" }: { children: ReactNode; titulo
   );
 }
 
+/**
+ * "He olvidado la contraseña": remembered for an hour on this device, so that entering with the code
+ * or with the link in that email (it opens in another tab) leads to choosing a new password.
+ */
+const RECUPERAR_KEY = "cuotio-recuperar";
+function marcarRecuperar(on: boolean) { try { if (on) localStorage.setItem(RECUPERAR_KEY, String(Date.now())); else localStorage.removeItem(RECUPERAR_KEY); } catch { /* ignore */ } }
+function pidioRecuperar(): boolean { try { const t = Number(localStorage.getItem(RECUPERAR_KEY)); return !!t && Date.now() - t < 3600_000; } catch { return false; } }
+
 /** /app: sign in with a code sent by email, first-time setup, and then the app with the person's own data. */
 export function CuentaPage() {
   const [sb, setSb] = useState<SupabaseClient | null>(null);
@@ -47,8 +55,10 @@ export function CuentaPage() {
         setSession(s);
         if (evento === "SIGNED_IN") {
           // Back from Google: count it once and remove ?code= from the address bar.
-          if (location.search.includes("code=")) { track("cuenta_entrada_ok", { metodo: "google" }); history.replaceState(null, "", location.pathname); }
-          try { setNuevaPass(sessionStorage.getItem("cuotio-nueva-pass") === "1"); } catch { /* ignore */ }
+          // Back from Google or from the recovery link in the email: count it once and clean the address bar.
+          const recuperar = pidioRecuperar();
+          if (/[?&]code=/.test(location.search)) { track("cuenta_entrada_ok", { metodo: recuperar ? "enlace" : "google" }); history.replaceState(null, "", location.pathname); }
+          setNuevaPass(recuperar);
         }
       });
       off = () => data.subscription.unsubscribe();
@@ -63,7 +73,7 @@ export function CuentaPage() {
   if (fallo) return <Pantalla><section className="card"><h2>No hemos podido cargar Cuotio</h2><p className="muted">Revisa tu conexión y vuelve a intentarlo.</p><button className="btn" onClick={() => location.reload()}>Reintentar</button></section></Pantalla>;
   if (!sb || session === undefined) return <Pantalla><p className="cu-cargando" role="status">Cargando…</p></Pantalla>;
   if (!session) return <Entrar sb={sb} />;
-  if (nuevaPass) return <NuevaPassword sb={sb} onListo={() => { try { sessionStorage.removeItem("cuotio-nueva-pass"); } catch { /* ignore */ } setNuevaPass(false); }} />;
+  if (nuevaPass) return <NuevaPassword sb={sb} onListo={() => { marcarRecuperar(false); setNuevaPass(false); }} />;
   return <MiCuenta key={session.user.id} sb={sb} session={session} />;
 }
 
@@ -124,10 +134,11 @@ function Entrar({ sb }: { sb: SupabaseClient }) {
   async function pedirCodigo(e?: FormEvent) {
     e?.preventDefault();
     setEnviando(true); setError(""); setAviso("");
-    const { error } = await sb.auth.signInWithOtp({ email: limpio(), options: { shouldCreateUser: false } });
+    const { error } = await sb.auth.signInWithOtp({ email: limpio(), options: { shouldCreateUser: false, emailRedirectTo: `${location.origin}/app` } });
     setEnviando(false);
     // Same answer whether or not the account exists, so nobody can use this form to find out who has an account.
     if (error && error.status === 429) { setError(errorAcceso(error.message, 429)); return; }
+    marcarRecuperar(true);
     track("cuenta_codigo_pedido");
     if (modo === "codigo") setAviso("Si hay una cuenta con este email, te hemos enviado un código nuevo.");
     setModo("codigo");
@@ -137,12 +148,9 @@ function Entrar({ sb }: { sb: SupabaseClient }) {
     e.preventDefault();
     const token = String(new FormData(e.currentTarget).get("codigo") ?? "").replace(/\D/g, "");
     setEnviando(true); setError(""); setAviso("");
-    // Set before verifying: the sign-in event fires while verifyOtp is still running.
-    const marca = (on: boolean) => { try { if (on) sessionStorage.setItem("cuotio-nueva-pass", "1"); else sessionStorage.removeItem("cuotio-nueva-pass"); } catch { /* ignore */ } };
-    marca(true);
     const { error } = await sb.auth.verifyOtp({ email: limpio(), token, type: "email" });
     setEnviando(false);
-    if (error) { marca(false); track("cuenta_entrada_error", { paso: "codigo" }); setError("El código no es correcto o ha caducado. Revísalo o pide uno nuevo."); return; }
+    if (error) { track("cuenta_entrada_error", { paso: "codigo" }); setError("El código no es correcto o ha caducado. Revísalo o pide uno nuevo."); return; }
     track("cuenta_entrada_ok", { metodo: "codigo" });
   }
 
